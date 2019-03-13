@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Home from './views/Home.jsx';
 import Profile from './views/Profile.jsx';
@@ -9,6 +9,10 @@ class App extends Component {
     return (
       <Router>
         <React.Fragment>
+          <div>
+            <Link to='/'>Home</Link>
+            <Link to='/profile'>Profile</Link>
+          </div>
           <Route path="/" exact component={Home} />
           <Route path="/profile" exact component={Profile} />
         </React.Fragment>
