@@ -1,0 +1,21 @@
+nav.navbar {
+	background-color: transparent;
+
+	.navbar-item {
+		font-size: 25px;
+		font-weight: 600;
+		color: white;
+
+		&:hover {
+			color: white;
+		}
+	}
+	
+	.navbar-burger {
+		color: white;
+	}
+
+	.navbar-menu {
+		background-color: transparent;
+	}
+}

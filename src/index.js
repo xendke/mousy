@@ -5,6 +5,7 @@ import App from './App';
 
 import 'normalize.css';
 import './index.scss';
+import 'bulma/css/bulma.css'
 
 
 ReactDOM.render(<App />, document.getElementById('root'));
