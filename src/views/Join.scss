@@ -1,8 +1,22 @@
 form.section {
-	max-width: 650px;
+	max-width: 418px;
 	margin: auto;
+	padding-top: 25px;
+
+	p {
+		color: white;
+    font-size: 24px;
+    margin-bottom: 24px;
+	}
 
 	.label {
 		color: white;
+	}
+
+	.checkbox-label {
+		padding-left: 10px;
+	}
+	.button.is-text {
+		font-size: 14px;
 	}
 }

@@ -12,11 +12,11 @@ class App extends Component {
     return (
       <Router>
         <React.Fragment>
-          <TopNav />
-          <Route path="/" exact component={Home} />
-          <Route path="/profile" exact component={Profile} />
-          <Route path="/login" exact component={LogIn} />
-          <Route path="/join" exact component={Join} />
+            <TopNav />
+            <Route path="/" exact component={Home} />
+            <Route path="/profile" exact component={Profile} />
+            <Route path="/login" exact component={LogIn} />
+            <Route path="/join" exact component={Join} />
         </React.Fragment>
       </Router>
     );
