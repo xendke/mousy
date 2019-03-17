@@ -21,7 +21,7 @@ const LogIn = (props) => {
 			<div className="field">
 				<label className="label">Password</label>
 				<div className="control">
-					<input className="input" type="password" placeholder="SuperSecret12" value={password} onChange={(e) => {
+					<input className="input" type="password" placeholder="secretPassw0rd" value={password} onChange={(e) => {
 						const val = e.target.value;
 						setPassword(val);
 					}} />
@@ -36,7 +36,7 @@ const LogIn = (props) => {
 						className="button is-primary is-inverted"
 						onClick={(e) => {
 							e.preventDefault();
-							props.firebase.doCreateUserWithEmailAndPassword(email, password)
+							props.firebase.doSignInWithEmailAndPassword(email, password)
 								.then(authUser => {
 									// this.setState({ ...INITIAL_STATE });
 									console.log(authUser);

@@ -29,28 +29,28 @@ class Join extends React.Component {
 				<div className="field">
 					<label className="label">Name</label>
 					<div className="control">
-						<input className="input" type="text" placeholder="John Doe" value={name} onChange={this.handleChange}/>
+						<input className="input" type="text" placeholder="John Doe" name="name" value={name} onChange={this.handleChange}/>
 					</div>
 				</div>
 
 				<div className="field">
 					<label className="label">Username</label>
 					<div className="control">
-						<input className="input" type="text" placeholder="shy-guy" value={username} onChange={this.handleChange}/>
+						<input className="input" type="text" placeholder="shy-guy" name="username" value={username} onChange={this.handleChange}/>
 					</div>
 				</div>
 
 				<div className="field">
 					<label className="label">Email</label>
 					<div className="control">
-						<input className="input" type="text" placeholder="your@email.com" value={email} onChange={this.handleChange}/>
+						<input className="input" type="text" placeholder="your@email.com" name="email" value={email} onChange={this.handleChange}/>
 					</div>
 				</div>
 
 				<div className="field">
 					<label className="label">Password</label>
 					<div className="control">
-						<input className="input" type="password" placeholder="secretPassw0rd" value={password} onChange={this.handleChange}/>
+						<input className="input" type="password" placeholder="secretPassw0rd" name="password" value={password} onChange={this.handleChange}/>
 					</div>
 				</div>
 
@@ -88,6 +88,7 @@ class Join extends React.Component {
 						<textarea
 							className="textarea"
 							placeholder="Tell us about yourself"
+							name="interests"
 							value={interests}
 							onChange={this.handleChange}
 						>
