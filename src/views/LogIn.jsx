@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { withFirebase } from '../components/firebase';
+import { connect } from 'react-redux';
+import * as userActions from '../redux/actions/user';
 // import './LogIn.scss';
 
 const LogIn = (props) => {
@@ -38,11 +40,9 @@ const LogIn = (props) => {
 							e.preventDefault();
 							props.firebase.doSignInWithEmailAndPassword(email, password)
 								.then(authUser => {
-									// this.setState({ ...INITIAL_STATE });
-									console.log(authUser);
+									props.dispatch(userActions.signIn());
 								})
 								.catch(error => {
-									// this.setState({ error });
 									console.log(error);
 								});
 						}}
@@ -55,4 +55,10 @@ const LogIn = (props) => {
 	);
 }
 
-export default withFirebase(LogIn);
+const mapStateToProps = (state) => {
+	return {
+		user: state.user,
+	}
+}
+
+export default connect(mapStateToProps)(withFirebase(LogIn));

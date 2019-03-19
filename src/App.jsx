@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { connect } from 'react-redux';
+import { withFirebase } from './components/firebase';
 
 import Home from './views/Home.jsx';
 import Profile from './views/Profile.jsx';
 import Join from './views/Join.jsx';
 import LogIn from './views/LogIn.jsx';
 import TopNav from './components/TopNav.jsx';
+import * as userActions from './redux/actions/user';
 
 class App extends Component {
+  componentDidMount() {
+    const { firebase, dispatch } = this.props;
+
+    firebase.auth.onAuthStateChanged(authUser => {
+      authUser
+        ? dispatch(userActions.setAuth(authUser))
+        : dispatch(userActions.setAuth(null));
+    });
+  }
   render() {
     return (
       <Router>
@@ -23,4 +35,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  }
+}
+
+export default connect(mapStateToProps)(withFirebase(App));

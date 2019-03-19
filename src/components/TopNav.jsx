@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withFirebase } from './firebase';
+import * as userActions from '../redux/actions/user';
 import './TopNav.scss';
 
-const TopNav = () => {
+const TopNav = (props) => {
 	const [isNavbarOpened, setIsNavbarOpened] = useState(false);
 
 	const toggleNavbar = () => { setIsNavbarOpened(!isNavbarOpened); };
@@ -30,8 +33,29 @@ const TopNav = () => {
 				<div className="navbar-end">
 					<div className="navbar-item">
 						<div className="buttons" onClick={toggleNavbar}>
-							<Link to="/join" className="button is-primary is-inverted">Sign up</Link>
-							<Link to="/login" className="button is-primary is-inverted is-outlined">Log in</Link>
+							{ props.user.isSignedIn &&
+								(
+									<button
+										className="button is-primary is-inverted"
+										onClick={() => {
+											props.firebase.doSignOut()
+												.then(() => {
+													props.dispatch(userActions.signOut());
+											})
+										}}
+									>
+										Log Out
+									</button>
+								)
+							}
+							{ !props.user.isSignedIn &&
+								(
+									<React.Fragment>
+										<Link to="/join" className="button is-primary is-inverted">Sign up</Link>
+										<Link to="/login" className="button is-primary is-inverted is-outlined">Log in</Link>
+									</React.Fragment>
+								)
+							}
 						</div>
 					</div>
 				</div>
@@ -40,4 +64,10 @@ const TopNav = () => {
 	);
 }
 
-export default TopNav;
+const mapStateToProps = (state) => {
+	return {
+		user: state.user,
+	}
+}
+
+export default connect(mapStateToProps)(withFirebase(TopNav));
