@@ -1,9 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const Profile = () => {
+const Profile = (props) => {
+	console.log(props.user);
 	return (
-		<div>Profile</div>
+		<div>{ props.user.auth ? props.user.auth.email : 'Not Signed In'}</div>
 	);
 }
 
-export default Profile;
+const mapStateToProps = (state) => {
+	return {
+		user: state.user,
+	}
+}
+
+export default connect(mapStateToProps)(Profile);

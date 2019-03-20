@@ -15,9 +15,12 @@ class App extends Component {
     const { firebase, dispatch } = this.props;
 
     firebase.auth.onAuthStateChanged(authUser => {
-      authUser
-        ? dispatch(userActions.setAuth(authUser))
-        : dispatch(userActions.setAuth(null));
+      if(authUser) {
+        dispatch(userActions.signIn());
+        dispatch(userActions.setAuth(authUser));
+      } else {
+        dispatch(userActions.setAuth(null));
+      }
     });
   }
   render() {
