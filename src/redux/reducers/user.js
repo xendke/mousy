@@ -11,6 +11,7 @@ export default (state = {}, action) => {
 			return {
 				...state,
 				isSignedIn: action.isSignedIn,
+				auth: action.auth,
 			};
 		case SET_AUTH:
 			return {

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withFirebase } from './firebase';
-import * as userActions from '../redux/actions/user';
 import './TopNav.scss';
 
 const TopNav = (props) => {
@@ -38,10 +37,10 @@ const TopNav = (props) => {
 									<button
 										className="button is-primary is-inverted"
 										onClick={() => {
-											props.firebase.doSignOut()
+											props.firebase.doSignOut() // success handled by onAuthChanged
 												.then(() => {
-													props.dispatch(userActions.signOut());
-											})
+													props.history.push('/');
+												});
 										}}
 									>
 										Log Out
@@ -70,4 +69,4 @@ const mapStateToProps = (state) => {
 	}
 }
 
-export default connect(mapStateToProps)(withFirebase(TopNav));
+export default withRouter(connect(mapStateToProps)(withFirebase(TopNav)));

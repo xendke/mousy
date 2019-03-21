@@ -16,10 +16,9 @@ class App extends Component {
 
     firebase.auth.onAuthStateChanged(authUser => {
       if(authUser) {
-        dispatch(userActions.signIn());
-        dispatch(userActions.setAuth(authUser));
+        dispatch(userActions.signIn(authUser));
       } else {
-        dispatch(userActions.setAuth(null));
+        dispatch(userActions.signOut());
       }
     });
   }
