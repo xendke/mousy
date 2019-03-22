@@ -1,11 +1,15 @@
-form.section {
+form.Login.section {
 	.help {
 		font-size: 0.75rem;
+		margin-bottom: 0.25rem;
 	}
 	article.message.is-danger {
 		.message-body {
 			padding: 10px 10px;
 			margin-top: 20px;
 		}
+	}
+	.button.is-primary {
+		margin-top: 10px;
 	}
 }

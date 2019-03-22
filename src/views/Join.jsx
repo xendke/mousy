@@ -127,7 +127,7 @@ class Join extends React.Component {
 							Sign up
 						</button>
 					</div>
-					<div className="control">
+					<div className="control to-login">
 						<Link to="/login" className="button is-text">Already have an account?</Link>
 					</div>
 				</div>

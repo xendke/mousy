@@ -9,6 +9,7 @@ const LogIn = (props) => {
 	const [email, setEmail] = useState('');
 	const [emailError, setEmailError] = useState(undefined);
 	const [password, setPassword] = useState('');
+	const [passwordError, setPasswordError] = useState(undefined);
 	const [errorMessage, setErrorMessage] = useState(undefined);
 
 	return (
@@ -16,7 +17,10 @@ const LogIn = (props) => {
 			{ props.user.isSignedIn &&
 				<Redirect to="/profile"/>
 			}
-			<form className="section">
+			<form className="Login section">
+				<p>
+					Hi there!
+				</p>
 
 				<div className="field">
 					<label className="label">Email</label>
@@ -40,19 +44,34 @@ const LogIn = (props) => {
 						}
 					</div>
 					{ emailError && 
-						<p className="help is-danger">This email is invalid</p>
+						<p className="help is-danger">{emailError}</p>
 					}
 				</div>
 
 				<div className="field">
 					<label className="label">Password</label>
-					<div className="control">
-						<input className="input" type="password" placeholder="secretPassw0rd" value={password} onChange={(e) => {
-							const val = e.target.value;
-							setErrorMessage(undefined);
-							setPassword(val);
-						}} />
+					<div className="control has-icons-left has-icons-right">
+						<input className={`input ${passwordError ? 'is-danger' : ''}`} type="password" placeholder="secretPassw0rd" 
+							value={password}
+							onChange={(e) => {
+								const val = e.target.value;
+								setErrorMessage(undefined);
+								setPasswordError(undefined);
+								setPassword(val);
+							}} 
+						/>
+						<span className="icon is-small is-left">
+							<i className="fas fa-key"></i>
+						</span>
+						{ passwordError && 
+							<span className="icon is-small is-right">
+								<i className="fas fa-exclamation-triangle"></i>
+							</span>
+						}
 					</div>
+					{ passwordError && 
+						<p className="help is-danger">{passwordError}</p>
+					}
 				</div>
 
 				{ errorMessage &&
@@ -63,28 +82,33 @@ const LogIn = (props) => {
 					</article>
 				}
 
-				<div className="field is-grouped">
-					<div className="control">
-						<button
-							className="button is-primary is-inverted"
-							onClick={(e) => {
-								e.preventDefault();
-								if(!isValidEmail(email)) {
-									setEmailError("Invalid Email");
-									return;
-								} else {
-									setEmailError(undefined);
-								}
-								props.firebase.doSignInWithEmailAndPassword(email, password) // success handled by onAuthStateChanged
-									.catch(error => {
-										setErrorMessage(error.message);
-									});
-							}}
-						>
-							Log in
-						</button>
-					</div>
-				</div>
+				<button
+					className="button is-primary is-inverted"
+					onClick={(e) => {
+						e.preventDefault();
+						let error = false;
+						if(!isValidEmail(email)) {
+							setEmailError("Invalid Email");
+							error = true;
+						} else {
+							setEmailError(undefined);
+						}
+						if(password.length < 1) {
+							setPasswordError("Password cannot be empty.");
+							error = true;
+						} else {
+							setPasswordError(undefined);
+						}
+						if(error) return;
+
+						props.firebase.doSignInWithEmailAndPassword(email, password) // success handled by onAuthStateChanged
+							.catch(error => {
+								setErrorMessage(error.message);
+							});
+					}}
+				>
+					Log in
+				</button>
 			</form>
 		</React.Fragment>
 	);

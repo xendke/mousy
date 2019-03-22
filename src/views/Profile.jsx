@@ -2,9 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const Profile = (props) => {
-	console.log(props.user);
+	if(!props.user.auth) {
+		return <div>Not Signed In.</div>;
+	}
+
 	return (
-		<div>{ props.user.auth ? props.user.auth.email : 'Not Signed In'}</div>
+		<section className="section">
+			<p>
+				Welcome back, {props.user.auth.email}!
+			</p>
+		</section>
 	);
 }
 
