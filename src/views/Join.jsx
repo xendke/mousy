@@ -113,14 +113,26 @@ class Join extends React.Component {
 							className="button is-primary is-inverted"
 							onClick={(e) => {
 								e.preventDefault();
-								this.props.firebase.doCreateUserWithEmailAndPassword(email, password)
-									.then(authUser => {
-										// this.setState({ ...INITIAL_STATE });
-										console.log(authUser);
-									})
-									.catch(error => {
-										// this.setState({ error });
-										console.log(error);
+								this.props.firebase.doUsernameExistsCheck(this.state.username)
+									.then(res => {
+										if(!res.exists) {
+											this.props.firebase.doCreateUserWithEmailAndPassword(email, password)
+												.then(authUser => {
+													this.props.firebase.doUserInfoEdit(authUser.user.uid, {
+														name: this.state.name,
+														username: this.state.username,
+														email: this.state.email,
+														interests: this.state.interests,
+													}); // TODO: Login and Redirect to Profile
+												})
+												.catch(error => {
+													// this.setState({ error });
+													console.log(error);
+												});
+											}
+										})
+									.catch(err => {
+										console.log(err);
 									});
 							}}
 						>

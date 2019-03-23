@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 import config from './firebase-auth';
 
 class Firebase {
@@ -9,6 +10,7 @@ class Firebase {
     } else { console.log("tried to init more than one firebase"); return; }
 
     this.auth = app.auth();
+    this.db = app.firestore();
   }
 
   // *** Auth API ***
@@ -25,6 +27,14 @@ class Firebase {
 
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);
+
+  // *** Firestore API ***
+
+  doUsernameExistsCheck = (username) =>
+    this.db.collection("usernames").doc(username).get();
+
+  doUserInfoEdit = (uid, information) =>
+    this.db.collection("users").doc(uid).set(information);
 }
 
 export default Firebase;
