@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { withFirebase } from '../components/firebase';
+import { connect } from 'react-redux';
 import './Join.scss';
 
 class Join extends React.Component {
@@ -42,6 +43,8 @@ class Join extends React.Component {
 		});
   };
 	render() {
+		if(this.props.user.isSignedIn) return (<Redirect to="/profile"/>);
+
 		const { name, username, email, password, interests, usernameIsAvailable, checkingUsernameExists } = this.state;
 		return (
 			<form className="section">
@@ -157,4 +160,11 @@ class Join extends React.Component {
 	}
 }
 
-export default withFirebase(Join);
+
+const mapStateToProps = (state) => {
+	return {
+		user: state.user,
+	}
+}
+
+export default connect(mapStateToProps)(withFirebase(Join));
