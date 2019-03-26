@@ -17,10 +17,32 @@ class Join extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 	handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+		const { name, value } = event.target;
+		const isValidUsername = (name === 'username' && value.length > 4);
+
+		this.setState(
+			{ 
+				[name]: value,
+				...(isValidUsername && { checkingUsernameExists: true }),
+			}, () => {
+				if (isValidUsername) {
+					this.props.firebase.doUsernameExistsCheck(this.state.username)
+						.then((res) => {
+							this.setState({
+								usernameIsAvailable: !res.exists,
+								checkingUsernameExists: false,
+							});
+						});
+				} else {
+					this.setState({
+						usernameIsAvailable: false,
+						checkingUsernameExists: false,
+					});
+				}
+		});
   };
 	render() {
-		const { name, username, email, password, interests } = this.state;
+		const { name, username, email, password, interests, usernameIsAvailable, checkingUsernameExists } = this.state;
 		return (
 			<form className="section">
 				<p>
@@ -38,6 +60,15 @@ class Join extends React.Component {
 					<div className="control">
 						<input className="input" type="text" placeholder="shy-guy" name="username" value={username} onChange={this.handleChange}/>
 					</div>
+					{ checkingUsernameExists ? 
+						<p className="help">Checking if username is available...</p>
+						:
+						(
+							usernameIsAvailable ? <p className="help">Username is available!</p>
+							:
+							( this.state.username.length > 4 ? <p className="help">Username is not available.</p> : <div></div>)
+						)
+					}
 				</div>
 
 				<div className="field">
@@ -53,34 +84,6 @@ class Join extends React.Component {
 						<input className="input" type="password" placeholder="secretPassw0rd" name="password" value={password} onChange={this.handleChange}/>
 					</div>
 				</div>
-
-				{/* <div className="field">
-					<label className="label">Username</label>
-					<div className="control has-icons-left has-icons-right">
-						<input className="input is-success" type="text" placeholder="shy-guy" />
-						<span className="icon is-small is-left">
-							<i className="fas fa-user"></i>
-						</span>
-						<span className="icon is-small is-right">
-							<i className="fas fa-check"></i>
-						</span>
-					</div>
-					<p className="help is-success">This username is available</p>
-				</div>
-
-				<div className="field">
-					<label className="label">Email</label>
-					<div className="control has-icons-left has-icons-right">
-						<input className="input is-danger" type="email" placeholder="your@email.com" />
-						<span className="icon is-small is-left">
-							<i className="fas fa-envelope"></i>
-						</span>
-						<span className="icon is-small is-right">
-							<i className="fas fa-exclamation-triangle"></i>
-						</span>
-					</div>
-					<p className="help is-danger">This email is invalid</p>
-				</div> */}
 
 				<div className="field">
 					<label className="label">Interests</label>
@@ -115,7 +118,7 @@ class Join extends React.Component {
 								e.preventDefault();
 								this.props.firebase.doUsernameExistsCheck(this.state.username)
 									.then(res => {
-										if(!res.exists) {
+										if(!res.exists) { // create user if username isn't taken.
 											this.props.firebase.doCreateUserWithEmailAndPassword(email, password)
 												.then(authUser => {
 													this.props.firebase.doUserInfoEdit(authUser.user.uid, {
@@ -123,7 +126,13 @@ class Join extends React.Component {
 														username: this.state.username,
 														email: this.state.email,
 														interests: this.state.interests,
-													}); // TODO: Login and Redirect to Profile
+													})
+													.then(() => {
+														this.props.firebase.doUsernameRegister(this.state.username, authUser.user.uid);
+													})
+													.then(() => {
+														this.props.firebase.doSignInWithEmailAndPassword(this.state.email, this.state.password);
+													});
 												})
 												.catch(error => {
 													// this.setState({ error });

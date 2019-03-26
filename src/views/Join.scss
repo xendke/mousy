@@ -6,7 +6,10 @@ form.section {
 	p {
 		color: white;
     font-size: 24px;
-    margin-bottom: 24px;
+		margin-bottom: 24px;
+		&.help {
+			font-size: 0.75rem;
+		}
 	}
 
 	.label {

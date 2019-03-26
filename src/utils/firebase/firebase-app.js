@@ -35,6 +35,9 @@ class Firebase {
 
   doUserInfoEdit = (uid, information) =>
     this.db.collection("users").doc(uid).set(information);
+
+  doUsernameRegister = (username, uid) =>
+    this.db.collection("usernames").doc(username).set({ uid });
 }
 
 export default Firebase;
