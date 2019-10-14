@@ -2,7 +2,7 @@ import {
 	SIGN_IN,
 	SIGN_OUT,
 	SET_AUTH
-} from '../actions/user';
+} from 'redux/actions/user';
 
 export default (state = {}, action) => {
 	switch(action.type) {
