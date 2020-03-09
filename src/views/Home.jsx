@@ -1,12 +1,17 @@
 import './Home.scss';
 import React from 'react';
+import personImage from '../assets/person.png';
 
 const Home = () => {
 	return (
-		<div className="main">
-			<h1>Don't Be Shy</h1>
-			<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-			<button className="dl">Download</button>
+		<div className="the-fold columns">
+			<div className="fold-text column">
+				<h1>Don't Be Shy!</h1>
+				<p>Connect with people like you.</p>
+			</div>
+			<div className="fold-image column">
+				<img src={personImage} alt="Digitally rendered human sitting with pets."/>
+			</div>
 		</div>
 	);
 }

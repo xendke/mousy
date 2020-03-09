@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withFirebase } from './firebase';
+import logoImage from '../assets/logo.png';
 import './TopNav.scss';
 
 const TopNav = (props) => {
@@ -13,7 +14,7 @@ const TopNav = (props) => {
 		<nav className="navbar" role="navigation" aria-label="main navigation">
 			<div className="navbar-brand">
 				<Link className="navbar-item" to="/">
-					Shy App
+					<img src={logoImage} alt="ShyApp Logo" className="navbar-logo"/>
 				</Link>
 
 				<button
