@@ -36,6 +36,9 @@ class Firebase {
   doUserInfoEdit = (uid, information) =>
     this.db.collection("users").doc(uid).set(information);
 
+  doUserInfoGet = (uid) =>
+    this.db.collection("users").doc(uid).get();
+
   doUsernameRegister = (username, uid) =>
     this.db.collection("usernames").doc(username).set({ uid });
 }
