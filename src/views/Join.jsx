@@ -48,20 +48,23 @@ class Join extends React.Component {
 		const { name, username, email, password, interests, usernameIsAvailable, checkingUsernameExists } = this.state;
 		return (
 			<form className="section">
+				<h1>
+					Sign Up
+				</h1>
 				<p>
-					Join a community that listens! Share your story...
+					Join a community that listens!
 				</p>
 				<div className="field">
 					<label className="label">Name</label>
 					<div className="control">
-						<input className="input" type="text" placeholder="John Doe" name="name" value={name} onChange={this.handleChange}/>
+						<input className="input" type="text" name="name" value={name} onChange={this.handleChange}/>
 					</div>
 				</div>
 
 				<div className="field">
 					<label className="label">Username</label>
 					<div className="control">
-						<input className="input" type="text" placeholder="shy-guy" name="username" value={username} onChange={this.handleChange}/>
+						<input className="input" type="text" name="username" value={username} onChange={this.handleChange}/>
 					</div>
 					{ checkingUsernameExists ? 
 						<p className="help">Checking if username is available...</p>
@@ -77,14 +80,14 @@ class Join extends React.Component {
 				<div className="field">
 					<label className="label">Email</label>
 					<div className="control">
-						<input className="input" type="text" placeholder="your@email.com" name="email" value={email} onChange={this.handleChange}/>
+						<input className="input" type="text" name="email" value={email} onChange={this.handleChange}/>
 					</div>
 				</div>
 
 				<div className="field">
 					<label className="label">Password</label>
 					<div className="control">
-						<input className="input" type="password" placeholder="secretPassw0rd" name="password" value={password} onChange={this.handleChange}/>
+						<input className="input" type="password" name="password" value={password} onChange={this.handleChange}/>
 					</div>
 				</div>
 
@@ -93,7 +96,6 @@ class Join extends React.Component {
 					<div className="control">
 						<textarea
 							className="textarea"
-							placeholder="Tell us about yourself"
 							name="interests"
 							value={interests}
 							onChange={this.handleChange}
@@ -116,7 +118,7 @@ class Join extends React.Component {
 				<div className="field is-grouped">
 					<div className="control">
 						<button 
-							className="button is-primary is-inverted"
+							className="button is-primary"
 							onClick={(e) => {
 								e.preventDefault();
 								this.props.firebase.doUsernameExistsCheck(this.state.username)
@@ -152,7 +154,7 @@ class Join extends React.Component {
 						</button>
 					</div>
 					<div className="control to-login">
-						<Link to="/login" className="button is-text">Already have an account?</Link>
+						<Link to="/login" className="is-text">Already have an account?</Link>
 					</div>
 				</div>
 			</form>

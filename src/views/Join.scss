@@ -2,12 +2,19 @@
 
 form.section {
 	max-width: 418px;
-	margin: auto;
+	margin: 10px auto 40px;
 	padding-top: 25px;
+	background-color: $white;
+  border-radius: 5px;
+
+	h1 {
+		font-weight: 700;
+		font-size: 24px;
+	}
 
 	p {
-		color: $white;
-    font-size: 24px;
+		color: $black;
+    font-size: 16px;
 		margin-bottom: 24px;
 		&.help {
 			font-size: 0.75rem;
@@ -15,7 +22,17 @@ form.section {
 	}
 
 	.label {
-		color: $white;
+		color: $black;
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	.field {
+		margin-bottom: 14px;
+	}
+
+	input, textarea {
+		background: $white;
 	}
 
 	.checkbox-label {
@@ -26,6 +43,13 @@ form.section {
 	}
 	div.control.to-login {
 		display: flex;
-    align-items: center;
+		align-items: center;
+		a {
+			color: $black;
+			&:hover {
+				color: $black;
+				text-decoration: underline;
+			}
+		}
 	}
 }

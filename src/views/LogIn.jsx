@@ -18,14 +18,14 @@ const LogIn = (props) => {
 				<Redirect to="/profile"/>
 			}
 			<form className="Login section">
-				<p>
+				<h1>
 					Hi there!
-				</p>
+				</h1>
 
 				<div className="field">
 					<label className="label">Email</label>
 					<div className="control has-icons-left has-icons-right">
-						<input className={`input ${emailError ? 'is-danger' : ''}`} type="text" placeholder="your@email.com" 
+						<input className={`input ${emailError ? 'is-danger' : ''}`} type="text"
 							value={email}
 							onChange={(e) => {
 								const val = e.target.value;
@@ -51,7 +51,7 @@ const LogIn = (props) => {
 				<div className="field">
 					<label className="label">Password</label>
 					<div className="control has-icons-left has-icons-right">
-						<input className={`input ${passwordError ? 'is-danger' : ''}`} type="password" placeholder="secretPassw0rd" 
+						<input className={`input ${passwordError ? 'is-danger' : ''}`} type="password" 
 							value={password}
 							onChange={(e) => {
 								const val = e.target.value;
@@ -83,7 +83,7 @@ const LogIn = (props) => {
 				}
 
 				<button
-					className="button is-primary is-inverted"
+					className="button is-primary"
 					onClick={(e) => {
 						e.preventDefault();
 						let error = false;
