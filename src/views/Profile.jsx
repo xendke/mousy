@@ -16,7 +16,13 @@ const Profile = ({ user, firebase }) => {
 			setUserData(userInfo.data());
 		})();
 		(async function() {
-			// await firebase.doUserPostsAdd(user.auth.uid, {name: 'hellow'});
+			// await firebase.doUserPostsAdd(user.auth.uid, {content: 'hellow'});
+			// {
+			// 	content,
+			// 	userinfo, // name, username,
+			// 	uid,
+			// 	datetime,
+			// }
 
 			const postsCollection = await firebase.doUserPostsGet(user.auth.uid);
 			const posts = [];
@@ -32,13 +38,24 @@ const Profile = ({ user, firebase }) => {
 
 	return (
 		<section className="section">
-			<p>
-				Welcome back, {userData.name}!
-			</p>
-			<p>Your interests: {userData.interests}</p>
-			{posts.map((post) => (
-				<Post key={post.name} data={post}/>
-			))}
+			<div className="level">
+				<div className="level-item">
+					<figure className="image is-64x64">
+						<img className="is-rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCoxWc5ukrkkaNHBArZt7YJq15_xWWDb4NdQ&usqp=CAU" alt="User Avatar"/>
+					</figure>
+				</div>
+			</div>
+			<h1 className="title has-text-centered is-capitalized">
+				{userData.name}
+			</h1>
+			<h2 className="subtitle has-text-centered">
+				#{userData.interests}
+			</h2>
+			{
+				posts.map(({ content }) => (
+					<Post key={content} userFullName={userData.name} username={userData.username} content={content}/>
+				))
+			}
 		</section>
 	);
 }
