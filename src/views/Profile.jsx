@@ -7,23 +7,11 @@ import { withFirebase } from '../components/firebase';
 const Profile = ({ user, firebase }) => {
 	if(!user.auth) return (<Loading />);
 
-	const [userData, setUserData] = useState(undefined);
+	const userData = user && user.info;
 	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
 		(async function() {
-			const userInfo = await firebase.doUserInfoGet(user.auth.uid);
-			setUserData(userInfo.data());
-		})();
-		(async function() {
-			// await firebase.doUserPostsAdd(user.auth.uid, {content: 'hellow'});
-			// {
-			// 	content,
-			// 	userinfo, // name, username,
-			// 	uid,
-			// 	datetime,
-			// }
-
 			const postsCollection = await firebase.doUserPostsGet(user.auth.uid);
 			const posts = [];
 

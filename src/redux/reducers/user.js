@@ -1,10 +1,17 @@
 import {
 	SIGN_IN,
 	SIGN_OUT,
-	SET_AUTH
+	SET_AUTH,
+	SET_INFO
 } from 'redux/actions/user';
 
-export default (state = {}, action) => {
+const defaultState = {
+	isSignedIn: false,
+	auth: null,
+	info: {}
+}
+
+export default (state = defaultState, action) => {
 	switch(action.type) {
 		case SIGN_OUT:
 		case SIGN_IN:
@@ -18,6 +25,11 @@ export default (state = {}, action) => {
 				...state,
 				auth: action.auth,
 			};
+		case SET_INFO:
+				return {
+					...state,
+					info: action.info,
+				};
 		default:
 				return state;
 	}

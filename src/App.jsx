@@ -8,17 +8,19 @@ import Profile from './views/Profile.jsx';
 import Join from './views/Join.jsx';
 import LogIn from './views/LogIn.jsx';
 import TopNav from './components/TopNav.jsx';
-import * as userActions from './redux/actions/user';
+import { signIn, signOut, setInfo } from './redux/actions/user';
 
 class App extends Component {
   componentDidMount() {
     const { firebase, dispatch } = this.props;
 
-    firebase.auth.onAuthStateChanged(authUser => {
+    firebase.auth.onAuthStateChanged(async (authUser) => {
       if(authUser) {
-        dispatch(userActions.signIn(authUser));
+        dispatch(signIn(authUser));
+        const userInfo = await firebase.doUserInfoGet(authUser.uid);
+        dispatch(setInfo(userInfo.data()));
       } else {
-        dispatch(userActions.signOut());
+        dispatch(signOut());
       }
     });
   }
