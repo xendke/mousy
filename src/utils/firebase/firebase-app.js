@@ -41,6 +41,12 @@ class Firebase {
 
   doUsernameRegister = (username, uid) =>
     this.db.collection("usernames").doc(username).set({ uid });
+
+  doUserPostsGet = (uid) =>
+    this.db.collection("users").doc(uid).collection("posts").get();
+
+  doUserPostsAdd = (uid, newPost) =>
+    this.db.collection("users").doc(uid).collection("posts").add(newPost);
 }
 
 export default Firebase;
