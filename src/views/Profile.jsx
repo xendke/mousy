@@ -40,8 +40,8 @@ const Profile = ({ user, firebase }) => {
 				# {userData.interests.join(', ')}
 			</h2>
 			{
-				posts.map(({ content }) => (
-					<Post key={content} userFullName={userData.name} username={userData.username} content={content}/>
+				posts.map(({ content, createdAt }) => (
+					<Post key={content} userFullName={userData.name} username={userData.username} content={content} createdAt={createdAt} />
 				))
 			}
 		</section>

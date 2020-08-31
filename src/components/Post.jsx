@@ -1,17 +1,22 @@
 import React from 'react';
+import { formatDistanceToNowStrict } from 'date-fns';
 
 import './Post.scss'
 
-const Post = ({ userFullName, username, content }) => {
+const Post = ({ userFullName, username, content, createdAt }) => {
+	const timePosted = formatDistanceToNowStrict(createdAt)
+
 	return (
 		<div className="Post box">
 			<article className="media">
 				<div className="media-content">
 					<div className="content">
 						<p>
-							<strong className="is-capitalized">{userFullName}</strong> <small>@{username}</small> <small>31m</small>
-							<br/>
-							{ content }
+							<strong className="is-capitalized">{userFullName}</strong>
+							<small> @{username}</small> 
+							<small className='has-text-grey-light'> {timePosted} ago</small>
+							<br />
+							{content}
 						</p>
 					</div>
 					<nav className="level is-mobile">

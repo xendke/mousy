@@ -61,9 +61,9 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
 				<h1 className="title is-medium">
 					Feed
 				</h1>
-				{posts.map(({ content, userId }, index) => {
+				{posts.map(({ content, userId, createdAt }, index) => {
 					const user = otherUsers[userId] || { name: 'Loading User', username: 'loading'}
-					return <Post key={index} userFullName={user.name} username={user.username} content={content}/>
+					return <Post key={index} userFullName={user.name} username={user.username} content={content} createdAt={createdAt} />
 				})}
 			</div>
 		)
