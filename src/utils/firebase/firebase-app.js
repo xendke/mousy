@@ -43,10 +43,17 @@ class Firebase {
     this.db.collection("usernames").doc(username).set({ uid });
 
   doUserPostsGet = (uid) =>
-    this.db.collection("users").doc(uid).collection("posts").get();
+    this.db.collection("posts").where("userId", "==", uid).orderBy('createdAt', 'desc').get();
 
-  doUserPostsAdd = (uid, newPost) =>
-    this.db.collection("users").doc(uid).collection("posts").add(newPost);
+  doUserPostsAdd = (newPost) =>
+    this.db.collection("posts").add(newPost);
+  
+  doInterestsPostsGet = (interests) =>
+    this.db.collection("posts")
+      .where("interests", "array-contains-any", interests)
+      .orderBy('createdAt', 'desc')
+      .limit(20)
+      .get();
 }
 
 export default Firebase;

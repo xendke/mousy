@@ -22,7 +22,7 @@ const Profile = ({ user, firebase }) => {
 		})();
 	}, [user.auth]);
 
-	if(!userData) return (<Loading />);
+	if(!userData.name) return (<Loading />);
 
 	return (
 		<section className="section">
@@ -37,7 +37,7 @@ const Profile = ({ user, firebase }) => {
 				{userData.name}
 			</h1>
 			<h2 className="subtitle has-text-centered">
-				#{userData.interests}
+				# {userData.interests.join(', ')}
 			</h2>
 			{
 				posts.map(({ content }) => (

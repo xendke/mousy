@@ -1,3 +1,12 @@
 .PostForm.box {
 	margin: 0 auto;
+
+	a.image {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 40px;
+		height: auto;
+		margin-right: 15px;
+	}
 }

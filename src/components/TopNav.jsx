@@ -35,17 +35,27 @@ const TopNav = (props) => {
 						<div className="buttons" onClick={toggleNavbar}>
 							{ props.user.isSignedIn &&
 								(
-									<button
-										className="button is-primary is-inverted"
-										onClick={() => {
-											props.firebase.doSignOut() // success handled by onAuthChanged
-												.then(() => {
-													props.history.push('/');
-												});
-										}}
-									>
-										Log Out
-									</button>
+									<>
+										{ !props.history.location.pathname.includes('profile') && 
+											<button
+												className="button is-primary is-inverted is-outlined"
+												onClick={() => props.history.push('/profile')}
+											>
+												Profile
+											</button>
+										}
+										<button
+											className="button is-primary is-inverted"
+											onClick={() => {
+												props.firebase.doSignOut() // success handled by onAuthChanged
+													.then(() => {
+														props.history.push('/');
+													});
+											}}
+										>
+											Log Out
+										</button>
+									</>
 								)
 							}
 							{ !props.user.isSignedIn &&
