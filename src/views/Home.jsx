@@ -4,32 +4,38 @@ import PostForm from '../components/PostForm';
 import Post from '../components/Post';
 import { connect } from 'react-redux';
 import { withFirebase } from '../components/firebase';
+import { setOtherUserInfo } from '../redux/actions/otherUsers';
 import personImage from '../assets/person.png';
 
 import './Home.scss';
 
-const Home = ({ otherUsers, user, firebase }) => {
+const Home = ({ otherUsers, user, firebase, dispatch }) => {
 	const [posts, setPosts] = useState([])
 	if(!user.auth && user.isSignedIn) return (<Loading />);
+
+	console.log(user.info)
 
 	useEffect(() => {
 		const getFeed = async () => {
 			const postsCollection = await firebase.doInterestsPostsGet(user.info.interests)
 			const newPosts = [];
-			postsCollection.forEach((post) => {
-				const user = post.data()
-				newPosts.push(user)
-				
-				// check if we have cache for user, if not then go on
-				firebase.doUserInfoGet(user.userId).then((userInfo) => {
-					// dispatch action to store userId info
-					// userInfo.data()
-				})
+			postsCollection.forEach((postRef) => {
+				const post = postRef.data()
+				newPosts.push(post)
+			})
+
+			const uniqueUsers = [...new Set(newPosts.map(post => post.userId))]
+			uniqueUsers.forEach((userId) => {
+				if(!otherUsers[userId]) {
+					firebase.doUserInfoGet(userId).then((userInfo) => {
+						dispatch(setOtherUserInfo(userId, userInfo.data()))
+					})
+				}
 			})
 			
 			setPosts(newPosts)
 		}
-		if(user.info.interests) getFeed()
+		if(user.info.interests && user.info.interests.length > 0) getFeed()
 	}, [user.info])
 
 	if(!user.isSignedIn) {
