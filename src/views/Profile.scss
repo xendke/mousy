@@ -1,0 +1,11 @@
+.Profile.container {
+	margin: auto;
+
+	.user-info {
+		@media screen and (min-width: 1024px) {
+			height: 100%;
+			position: sticky;
+			top: 10px;
+		}
+	}
+}

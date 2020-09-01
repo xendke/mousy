@@ -1,5 +1,9 @@
 @import "./styles.scss";
 
+html {
+  overflow-y: visible !important;
+}
+
 html, body, div#root {
   height: 100%
 }
