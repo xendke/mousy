@@ -13,8 +13,6 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
 	const [posts, setPosts] = useState([])
 	if(!user.auth && user.isSignedIn) return (<Loading />);
 
-	console.log(user.info)
-
 	useEffect(() => {
 		const getFeed = async () => {
 			const postsCollection = await firebase.doInterestsPostsGet(user.info.interests)
