@@ -11,6 +11,7 @@ import './Home.scss';
 
 const Home = ({ otherUsers, user, firebase, dispatch }) => {
 	const [posts, setPosts] = useState([])
+	const [loadingPosts, setLoadingPosts] = useState(true)
 	if(!user.auth && user.isSignedIn) return (<Loading />);
 
 	useEffect(() => {
@@ -32,6 +33,7 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
 			})
 			
 			setPosts(newPosts)
+			setLoadingPosts(false)
 		}
 		if(user.info.interests && user.info.interests.length > 0) getFeed()
 	}, [user.info])
@@ -52,6 +54,12 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
 
 	const userData = user && user.info
 
+	const postsComponents = posts
+		.map(({ content, userId, createdAt }, index) => {
+			const user = otherUsers[userId] || { name: 'Loading User', username: 'loading'}
+			return <Post key={index} userFullName={user.name} username={user.username} content={content} createdAt={createdAt} />
+		})
+
 	if(userData) {
 		return (
 			<div className="Feed">
@@ -59,10 +67,9 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
 				<h1 className="title is-medium">
 					Feed
 				</h1>
-				{posts.map(({ content, userId, createdAt }, index) => {
-					const user = otherUsers[userId] || { name: 'Loading User', username: 'loading'}
-					return <Post key={index} userFullName={user.name} username={user.username} content={content} createdAt={createdAt} />
-				})}
+				{
+					loadingPosts ? <Loading /> : postsComponents
+				}
 			</div>
 		)
 	}

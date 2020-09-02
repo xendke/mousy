@@ -11,6 +11,7 @@ const Profile = ({ user, firebase }) => {
 
 	const userData = user && user.info;
 	const [posts, setPosts] = useState([]);
+	const [loadingPosts, setLoadingPosts] = useState(true);
 
 	useEffect(() => {
 		(async function() {
@@ -21,10 +22,16 @@ const Profile = ({ user, firebase }) => {
 				posts.push(post.data())
 			})
 			setPosts(posts);
+			setLoadingPosts(false);
 		})();
 	}, [user.auth]);
 
 	if(!userData.name) return (<Loading />);
+
+	const postsComponents =  posts
+		.map(({ content, createdAt }) => (
+			<Post key={content} userFullName={userData.name} username={userData.username} content={content} createdAt={createdAt} />
+		))
 
 	return (
 		<section className="Profile section container columns is-desktop">
@@ -47,9 +54,7 @@ const Profile = ({ user, firebase }) => {
 
 			<div className="column">
 				{
-					posts.map(({ content, createdAt }) => (
-						<Post key={content} userFullName={userData.name} username={userData.username} content={content} createdAt={createdAt} />
-					))
+					loadingPosts ? <Loading/> : postsComponents
 				}
 			</div>
 
