@@ -140,7 +140,7 @@ class Join extends React.Component {
 														name: this.state.name,
 														username: this.state.username,
 														email: this.state.email,
-														interests: this.state.interests.split(','),
+														interests: this.state.interests.toLowerCase().split(','),
 													})
 													.then(() => {
 														this.props.firebase.doUsernameRegister(this.state.username, authUser.user.uid);
