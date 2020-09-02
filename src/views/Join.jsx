@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { withFirebase } from '../components/firebase';
 import { connect } from 'react-redux';
+import { debounce } from '../utils';
+
 import './Join.scss';
 
 class Join extends React.Component {
@@ -17,31 +19,38 @@ class Join extends React.Component {
 
 		this.handleChange = this.handleChange.bind(this);
 	}
+
+	checkIfUsernameExists = debounce((isValidUsername) => {
+		if (isValidUsername) {
+			this.props.firebase.doUsernameExistsCheck(this.state.username)
+				.then((res) => {
+					console.log(res)
+					this.setState({
+						usernameIsAvailable: !res.exists,
+						checkingUsernameExists: false,
+					});
+				});
+		} else {
+			this.setState({
+				usernameIsAvailable: false,
+				checkingUsernameExists: false,
+			});
+		}
+	}, 2000)
+
 	handleChange(event) {
 		const { name, value } = event.target;
 		const isValidUsername = (name === 'username' && value.length > 4);
 
 		this.setState(
-			{ 
+			() => ({ 
 				[name]: value,
 				...(isValidUsername && { checkingUsernameExists: true }),
-			}, () => {
-				if (isValidUsername) {
-					this.props.firebase.doUsernameExistsCheck(this.state.username)
-						.then((res) => {
-							this.setState({
-								usernameIsAvailable: !res.exists,
-								checkingUsernameExists: false,
-							});
-						});
-				} else {
-					this.setState({
-						usernameIsAvailable: false,
-						checkingUsernameExists: false,
-					});
-				}
-		});
-  };
+			}), 
+			() => this.checkIfUsernameExists(isValidUsername)
+		);
+	};
+
 	render() {
 		if(this.props.user.isSignedIn) return (<Redirect to="/profile"/>);
 
@@ -102,6 +111,7 @@ class Join extends React.Component {
 						>
 						</textarea>
 					</div>
+					<p className="help">Comma-separated list of interests.</p>
 				</div>
 
 				<div className="field">
