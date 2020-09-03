@@ -1,0 +1,33 @@
+@import 'src/styles.scss';
+
+nav.navbar {
+  background-color: transparent;
+
+  .navbar-item {
+    font-size: 25px;
+    font-weight: 600;
+    color: $white;
+
+    &:hover {
+      color: $white;
+    }
+    .navbar-logo {
+      max-height: 2rem;
+    }
+  }
+
+  .navbar-burger {
+    color: $white;
+    background: none;
+    outline: none;
+    border: none;
+  }
+
+  .navbar-menu {
+    background-color: transparent;
+
+    @media screen and (max-width: 1023px) {
+      box-shadow: 0 16px 15px rgba(10, 10, 10, 0.1);
+    }
+  }
+}

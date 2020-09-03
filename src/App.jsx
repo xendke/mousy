@@ -7,7 +7,7 @@ import Home from './views/Home'
 import Profile from './views/Profile'
 import Join from './views/Join'
 import LogIn from './views/LogIn'
-import TopNav from './components/TopNav'
+import { TopNav } from './components'
 import { signIn, signOut, setInfo } from './redux/actions/user'
 
 class App extends Component {

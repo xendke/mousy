@@ -8,7 +8,7 @@ class Firebase {
     if (!app.apps.length) {
       app.initializeApp(config)
     } else {
-      console.log('tried to init more than one firebase')
+      console.error('tried to init more than one firebase instance')
       return
     }
 

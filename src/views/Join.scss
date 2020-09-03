@@ -1,55 +1,56 @@
-@import "../styles.scss";
+@import 'src/styles.scss';
 
 form.section {
-	max-width: 418px;
-	margin: 10px auto 40px;
-	padding-top: 25px;
-	background-color: $white;
+  max-width: 418px;
+  margin: 10px auto 40px;
+  padding-top: 25px;
+  background-color: $white;
   border-radius: 5px;
 
-	h1 {
-		font-weight: 700;
-		font-size: 24px;
-	}
+  h1 {
+    font-weight: 700;
+    font-size: 24px;
+  }
 
-	p {
-		color: $black;
+  p {
+    color: $black;
     font-size: 16px;
-		margin-bottom: 24px;
-		&.help {
-			font-size: 0.75rem;
-		}
-	}
+    margin-bottom: 24px;
+    &.help {
+      font-size: 0.75rem;
+    }
+  }
 
-	.label {
-		color: $black;
-		font-size: 14px;
-		font-weight: 500;
-	}
+  .label {
+    color: $black;
+    font-size: 14px;
+    font-weight: 500;
+  }
 
-	.field {
-		margin-bottom: 14px;
-	}
+  .field {
+    margin-bottom: 14px;
+  }
 
-	input, textarea {
-		background: $white;
-	}
+  input,
+  textarea {
+    background: $white;
+  }
 
-	.checkbox-label {
-		padding-left: 10px;
-	}
-	.button.is-text {
-		font-size: 14px;
-	}
-	div.control.to-login {
-		display: flex;
-		align-items: center;
-		a {
-			color: $black;
-			&:hover {
-				color: $black;
-				text-decoration: underline;
-			}
-		}
-	}
+  .checkbox-label {
+    padding-left: 10px;
+  }
+  .button.is-text {
+    font-size: 14px;
+  }
+  div.control.to-login {
+    display: flex;
+    align-items: center;
+    a {
+      color: $black;
+      &:hover {
+        color: $black;
+        text-decoration: underline;
+      }
+    }
+  }
 }

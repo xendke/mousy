@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { withFirebase } from './firebase'
+import { withFirebase } from '../firebase'
 
 import './PostForm.scss'
 
