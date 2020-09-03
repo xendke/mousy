@@ -1,42 +1,42 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { connect } from 'react-redux';
-import { withFirebase } from './components/firebase';
+import React, { Component } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { withFirebase } from './components/firebase'
 
-import Home from './views/Home.jsx';
-import Profile from './views/Profile.jsx';
-import Join from './views/Join.jsx';
-import LogIn from './views/LogIn.jsx';
-import TopNav from './components/TopNav.jsx';
-import { signIn, signOut, setInfo } from './redux/actions/user';
+import Home from './views/Home'
+import Profile from './views/Profile'
+import Join from './views/Join'
+import LogIn from './views/LogIn'
+import TopNav from './components/TopNav'
+import { signIn, signOut, setInfo } from './redux/actions/user'
 
 class App extends Component {
   componentDidMount() {
-    const { firebase, dispatch } = this.props;
+    const { firebase, dispatch } = this.props
 
     firebase.auth.onAuthStateChanged(async (authUser) => {
-      if(authUser) {
-        dispatch(signIn(authUser));
-        const userInfo = await firebase.doUserInfoGet(authUser.uid);
-        dispatch(setInfo(userInfo.data()));
+      if (authUser) {
+        dispatch(signIn(authUser))
+        const userInfo = await firebase.doUserInfoGet(authUser.uid)
+        dispatch(setInfo(userInfo.data()))
       } else {
-        dispatch(signOut());
+        dispatch(signOut())
       }
-    });
+    })
   }
 
   render() {
     return (
       <Router>
-        <React.Fragment>
-            <TopNav />
-            <Route path="/" exact component={Home} />
-            <Route path="/profile" exact component={Profile} />
-            <Route path="/login" exact component={LogIn} />
-            <Route path="/join" exact component={Join} />
-        </React.Fragment>
+        <>
+          <TopNav />
+          <Route path="/" exact component={Home} />
+          <Route path="/profile" exact component={Profile} />
+          <Route path="/login" exact component={LogIn} />
+          <Route path="/join" exact component={Join} />
+        </>
       </Router>
-    );
+    )
   }
 }
 
@@ -46,4 +46,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(withFirebase(App));
+export default connect(mapStateToProps)(withFirebase(App))

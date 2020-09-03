@@ -12,7 +12,7 @@
     "react-dom": "^16.12.0",
     "react-redux": "^6.0.1",
     "react-router-dom": "5.2.0",
-    "react-scripts": "2.1.8",
+    "react-scripts": "3.4.3",
     "redux": "^4.0.5"
   },
   "scripts": {
@@ -22,7 +22,10 @@
     "eject": "react-scripts eject",
     "clean": "rm -rf ./build",
     "predeploy": "npm run clean && npm run build",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "precommit": "lint-staged"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -32,5 +35,17 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.13",
+    "prettier": "^2.1.1"
+  }
 }
