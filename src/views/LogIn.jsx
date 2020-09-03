@@ -83,7 +83,7 @@ const LogIn = ({ user, firebase }) => {
         )}
 
         <button
-          type="button"
+          type="submit"
           className="button is-primary"
           onClick={(event) => {
             event.preventDefault()

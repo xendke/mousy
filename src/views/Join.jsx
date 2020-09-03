@@ -8,10 +8,10 @@ import './Join.scss'
 
 class Join extends React.Component {
   checkIfUsernameExists = debounce((isValidUsername) => {
-    const { firebase, username } = this.props
+    const { username } = this.state
+    const { firebase } = this.props
     if (isValidUsername) {
       firebase.doUsernameExistsCheck(username).then((res) => {
-        console.log(res)
         this.setState({
           usernameIsAvailable: !res.exists,
           checkingUsernameExists: false,
@@ -67,13 +67,10 @@ class Join extends React.Component {
 
     const usernameAvailabilityMessage = () => {
       if (checkingUsernameExists) {
-        return (
-          <p className="help">
-            {usernameIsAvailable
-              ? 'Username is available!'
-              : 'Checking if username is available...'}
-          </p>
-        )
+        return <p className="help">Checking if username is available...</p>
+      }
+      if (usernameIsAvailable) {
+        return <p className="help">Username is available!</p>
       }
       if (username.length > 4) {
         return <p className="help">Username is not available</p>
@@ -182,47 +179,39 @@ class Join extends React.Component {
         <div className="field is-grouped">
           <div className="control">
             <button
-              type="button"
+              type="submit"
               className="button is-primary"
-              onClick={(e) => {
-                e.preventDefault()
-                firebase
-                  .doUsernameExistsCheck(username)
-                  .then((res) => {
-                    if (!res.exists) {
-                      // create user if username isn't taken.
-                      firebase
-                        .doCreateUserWithEmailAndPassword(email, password)
-                        .then((authUser) => {
-                          firebase
-                            .doUserInfoEdit(authUser.user.uid, {
-                              name,
-                              username,
-                              email,
-                              interests: interests.toLowerCase().split(','),
-                            })
-                            .then(() => {
-                              firebase.doUsernameRegister(
-                                username,
-                                authUser.user.uid
-                              )
-                            })
-                            .then(() => {
-                              firebase.doSignInWithEmailAndPassword(
-                                email,
-                                password
-                              )
-                            })
-                        })
-                        .catch((error) => {
-                          // this.setState({ error });
-                          console.log(error)
-                        })
-                    }
-                  })
-                  .catch((err) => {
-                    console.log(err)
-                  })
+              onClick={async (event) => {
+                event.preventDefault()
+                try {
+                  const { exists } = await firebase.doUsernameExistsCheck(
+                    username
+                  )
+                  if (!exists) {
+                    const formattedInterests = interests
+                      .toLowerCase()
+                      .split(',')
+                      .map((s) => s.trim())
+
+                    const authUser = await firebase.doCreateUserWithEmailAndPassword(
+                      email,
+                      password
+                    )
+                    await firebase.doUserInfoEdit(authUser.user.uid, {
+                      name,
+                      username,
+                      email,
+                      interests: formattedInterests,
+                    })
+                    await firebase.doUsernameRegister(
+                      username,
+                      authUser.user.uid
+                    )
+                    await firebase.doSignInWithEmailAndPassword(email, password)
+                  }
+                } catch (error) {
+                  console.error(error)
+                }
               }}
             >
               Sign up
