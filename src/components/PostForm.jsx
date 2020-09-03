@@ -31,7 +31,7 @@ const PostForm = ({ user, firebase }) => {
 
   return (
     <div className="PostForm box">
-      <div className="field is-grouped">
+      <form className="field is-grouped">
         <Link className="image" to="/profile">
           <img
             className="is-rounded"
@@ -52,7 +52,7 @@ const PostForm = ({ user, firebase }) => {
         </p>
         <p className="control">
           <button
-            type="button"
+            type="submit"
             className={`button is-primary ${isLoading ? 'is-loading' : null}`}
             onClick={submitPost}
             disabled={isLoading}
@@ -60,7 +60,7 @@ const PostForm = ({ user, firebase }) => {
             Post
           </button>
         </p>
-      </div>
+      </form>
       {success && !error && (
         <div className="notification is-primary is-light">
           <button

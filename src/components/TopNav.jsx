@@ -5,7 +5,7 @@ import { withFirebase } from './firebase'
 import logoImage from '../assets/logo.png'
 import './TopNav.scss'
 
-const TopNav = (props) => {
+const TopNav = ({ user, history, firebase }) => {
   const [isNavbarOpened, setIsNavbarOpened] = useState(false)
 
   const toggleNavbar = () => {
@@ -48,13 +48,13 @@ const TopNav = (props) => {
               onKeyDown={toggleNavbar}
               onClick={toggleNavbar}
             >
-              {props.user.isSignedIn && (
+              {user.isSignedIn && (
                 <>
-                  {!props.history.location.pathname.includes('profile') && (
+                  {!history.location.pathname.includes('profile') && (
                     <button
                       type="button"
                       className="button is-primary is-inverted is-outlined"
-                      onClick={() => props.history.push('/profile')}
+                      onClick={() => history.push('/profile')}
                     >
                       Profile
                     </button>
@@ -63,10 +63,10 @@ const TopNav = (props) => {
                     type="button"
                     className="button is-primary is-inverted"
                     onClick={() => {
-                      props.firebase
+                      firebase
                         .doSignOut() // success handled by onAuthChanged
                         .then(() => {
-                          props.history.push('/')
+                          history.push('/')
                         })
                     }}
                   >
@@ -74,7 +74,7 @@ const TopNav = (props) => {
                   </button>
                 </>
               )}
-              {!props.user.isSignedIn && (
+              {!user.isSignedIn && (
                 <>
                   <Link to="/join" className="button is-primary is-inverted">
                     Sign up

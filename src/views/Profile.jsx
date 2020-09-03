@@ -12,16 +12,17 @@ const Profile = ({ user, firebase }) => {
   const [loadingPosts, setLoadingPosts] = useState(true)
 
   useEffect(() => {
-    ;(async function () {
+    const iife = async () => {
       const postsCollection = await firebase.doUserPostsGet(user.auth.uid)
-      const posts = []
+      const newPosts = []
 
       postsCollection.forEach((post) => {
-        posts.push(post.data())
+        newPosts.push(post.data())
       })
-      setPosts(posts)
+      setPosts(newPosts)
       setLoadingPosts(false)
-    })()
+    }
+    iife()
   }, [user.auth, firebase])
 
   if (!user.auth) {

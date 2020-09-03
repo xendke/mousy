@@ -7,6 +7,24 @@ import { debounce } from '../utils'
 import './Join.scss'
 
 class Join extends React.Component {
+  checkIfUsernameExists = debounce((isValidUsername) => {
+    const { firebase, username } = this.props
+    if (isValidUsername) {
+      firebase.doUsernameExistsCheck(username).then((res) => {
+        console.log(res)
+        this.setState({
+          usernameIsAvailable: !res.exists,
+          checkingUsernameExists: false,
+        })
+      })
+    } else {
+      this.setState({
+        usernameIsAvailable: false,
+        checkingUsernameExists: false,
+      })
+    }
+  }, 2000)
+
   constructor(props) {
     super(props)
     this.state = {
@@ -19,25 +37,6 @@ class Join extends React.Component {
 
     this.handleChange = this.handleChange.bind(this)
   }
-
-  checkIfUsernameExists = debounce((isValidUsername) => {
-    if (isValidUsername) {
-      this.props.firebase
-        .doUsernameExistsCheck(this.state.username)
-        .then((res) => {
-          console.log(res)
-          this.setState({
-            usernameIsAvailable: !res.exists,
-            checkingUsernameExists: false,
-          })
-        })
-    } else {
-      this.setState({
-        usernameIsAvailable: false,
-        checkingUsernameExists: false,
-      })
-    }
-  }, 2000)
 
   handleChange(event) {
     const { name, value } = event.target
@@ -53,7 +52,8 @@ class Join extends React.Component {
   }
 
   render() {
-    if (this.props.user.isSignedIn) return <Redirect to="/profile" />
+    const { user, firebase } = this.props
+    if (user.isSignedIn) return <Redirect to="/profile" />
 
     const {
       name,
@@ -64,91 +64,116 @@ class Join extends React.Component {
       usernameIsAvailable,
       checkingUsernameExists,
     } = this.state
+
+    const usernameAvailabilityMessage = () => {
+      if (checkingUsernameExists) {
+        return (
+          <p className="help">
+            {usernameIsAvailable
+              ? 'Username is available!'
+              : 'Checking if username is available...'}
+          </p>
+        )
+      }
+      if (username.length > 4) {
+        return <p className="help">Username is not available</p>
+      }
+
+      return null
+    }
+
     return (
       <form className="section">
         <h1>Sign Up</h1>
         <p>Join a community that listens!</p>
         <div className="field">
-          <label className="label">Name</label>
           <div className="control">
-            <input
-              className="input"
-              type="text"
-              name="name"
-              value={name}
-              onChange={this.handleChange}
-            />
+            <label htmlFor="name" className="label">
+              Name
+              <input
+                className="input"
+                id="name"
+                type="text"
+                name="name"
+                value={name}
+                onChange={this.handleChange}
+              />
+            </label>
           </div>
         </div>
 
         <div className="field">
-          <label className="label">Username</label>
           <div className="control">
-            <input
-              className="input"
-              type="text"
-              name="username"
-              value={username}
-              onChange={this.handleChange}
-            />
+            <label htmlFor="username" className="label">
+              Username
+              <input
+                className="input"
+                id="username"
+                type="text"
+                name="username"
+                value={username}
+                onChange={this.handleChange}
+              />
+            </label>
           </div>
-          {checkingUsernameExists ? (
-            <p className="help">Checking if username is available...</p>
-          ) : usernameIsAvailable ? (
-            <p className="help">Username is available!</p>
-          ) : this.state.username.length > 4 ? (
-            <p className="help">Username is not available.</p>
-          ) : (
-            <div />
-          )}
+          {usernameAvailabilityMessage()}
         </div>
 
         <div className="field">
-          <label className="label">Email</label>
           <div className="control">
-            <input
-              className="input"
-              type="text"
-              name="email"
-              value={email}
-              onChange={this.handleChange}
-            />
+            <label htmlFor="email" className="label">
+              Email
+              <input
+                className="input"
+                id="email"
+                type="text"
+                name="email"
+                value={email}
+                onChange={this.handleChange}
+              />
+            </label>
           </div>
         </div>
 
         <div className="field">
-          <label className="label">Password</label>
           <div className="control">
-            <input
-              className="input"
-              type="password"
-              name="password"
-              value={password}
-              onChange={this.handleChange}
-            />
+            <label htmlFor="password" className="label">
+              Password
+              <input
+                className="input"
+                id="password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={this.handleChange}
+              />
+            </label>
           </div>
         </div>
 
         <div className="field">
-          <label className="label">Interests</label>
           <div className="control">
-            <textarea
-              className="textarea"
-              name="interests"
-              value={interests}
-              onChange={this.handleChange}
-            />
+            <label htmlFor="interests" className="label">
+              Interests
+              <textarea
+                className="textarea"
+                id="interests"
+                name="interests"
+                value={interests}
+                onChange={this.handleChange}
+              />
+            </label>
           </div>
           <p className="help">Comma-separated list of interests.</p>
         </div>
 
         <div className="field">
           <div className="control">
-            <label className="checkbox">
-              <input type="checkbox" />
+            <label htmlFor="checkbox" className="checkbox">
+              <input type="checkbox" id="checkbox" />
               <span className="checkbox-label">
-                I agree to the{' '}
-                <a href="https://google.com">terms and conditions</a>
+                I agree to the
+                <a href="https://google.com"> terms and conditions</a>
               </span>
             </label>
           </div>
@@ -161,33 +186,31 @@ class Join extends React.Component {
               className="button is-primary"
               onClick={(e) => {
                 e.preventDefault()
-                this.props.firebase
-                  .doUsernameExistsCheck(this.state.username)
+                firebase
+                  .doUsernameExistsCheck(username)
                   .then((res) => {
                     if (!res.exists) {
                       // create user if username isn't taken.
-                      this.props.firebase
+                      firebase
                         .doCreateUserWithEmailAndPassword(email, password)
                         .then((authUser) => {
-                          this.props.firebase
+                          firebase
                             .doUserInfoEdit(authUser.user.uid, {
-                              name: this.state.name,
-                              username: this.state.username,
-                              email: this.state.email,
-                              interests: this.state.interests
-                                .toLowerCase()
-                                .split(','),
+                              name,
+                              username,
+                              email,
+                              interests: interests.toLowerCase().split(','),
                             })
                             .then(() => {
-                              this.props.firebase.doUsernameRegister(
-                                this.state.username,
+                              firebase.doUsernameRegister(
+                                username,
                                 authUser.user.uid
                               )
                             })
                             .then(() => {
-                              this.props.firebase.doSignInWithEmailAndPassword(
-                                this.state.email,
-                                this.state.password
+                              firebase.doSignInWithEmailAndPassword(
+                                email,
+                                password
                               )
                             })
                         })

@@ -5,7 +5,7 @@ import { withFirebase } from '../components/firebase'
 import isValidEmail from '../utils/validation'
 import './Login.scss'
 
-const LogIn = (props) => {
+const LogIn = ({ user, firebase }) => {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState(undefined)
   const [password, setPassword] = useState('')
@@ -14,59 +14,65 @@ const LogIn = (props) => {
 
   return (
     <>
-      {props.user.isSignedIn && <Redirect to="/profile" />}
+      {user.isSignedIn && <Redirect to="/profile" />}
       <form className="Login section">
         <h1>Hi there!</h1>
 
         <div className="field">
-          <label className="label">Email</label>
-          <div className="control has-icons-left has-icons-right">
-            <input
-              className={`input ${emailError ? 'is-danger' : ''}`}
-              type="text"
-              value={email}
-              onChange={(e) => {
-                const val = e.target.value
-                setErrorMessage(undefined)
-                setEmailError(undefined)
-                setEmail(val)
-              }}
-            />
-            <span className="icon is-small is-left">
-              <i className="fas fa-envelope" />
-            </span>
-            {emailError && (
-              <span className="icon is-small is-right">
-                <i className="fas fa-exclamation-triangle" />
+          <label htmlFor="email" className="label">
+            Email
+            <div className="control has-icons-left has-icons-right">
+              <input
+                className={`input ${emailError ? 'is-danger' : ''}`}
+                id="email"
+                type="text"
+                value={email}
+                onChange={(e) => {
+                  const val = e.target.value
+                  setErrorMessage(undefined)
+                  setEmailError(undefined)
+                  setEmail(val)
+                }}
+              />
+              <span className="icon is-small is-left">
+                <i className="fas fa-envelope" />
               </span>
-            )}
-          </div>
-          {emailError && <p className="help is-danger">{emailError}</p>}
+              {emailError && (
+                <span className="icon is-small is-right">
+                  <i className="fas fa-exclamation-triangle" />
+                </span>
+              )}
+            </div>
+            {emailError && <p className="help is-danger">{emailError}</p>}
+          </label>
         </div>
 
         <div className="field">
-          <label className="label">Password</label>
-          <div className="control has-icons-left has-icons-right">
-            <input
-              className={`input ${passwordError ? 'is-danger' : ''}`}
-              type="password"
-              value={password}
-              onChange={(e) => {
-                const val = e.target.value
-                setErrorMessage(undefined)
-                setPasswordError(undefined)
-                setPassword(val)
-              }}
-            />
-            <span className="icon is-small is-left">
-              <i className="fas fa-key" />
-            </span>
-            {passwordError && (
-              <span className="icon is-small is-right">
-                <i className="fas fa-exclamation-triangle" />
+          <label htmlFor="password" className="label">
+            Password
+            <div className="control has-icons-left has-icons-right">
+              <input
+                className={`input ${passwordError ? 'is-danger' : ''}`}
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  const val = e.target.value
+                  setErrorMessage(undefined)
+                  setPasswordError(undefined)
+                  setPassword(val)
+                }}
+              />
+              <span className="icon is-small is-left">
+                <i className="fas fa-key" />
               </span>
-            )}
-          </div>
+              {passwordError && (
+                <span className="icon is-small is-right">
+                  <i className="fas fa-exclamation-triangle" />
+                </span>
+              )}
+            </div>
+          </label>
           {passwordError && <p className="help is-danger">{passwordError}</p>}
         </div>
 
@@ -79,8 +85,8 @@ const LogIn = (props) => {
         <button
           type="button"
           className="button is-primary"
-          onClick={(e) => {
-            e.preventDefault()
+          onClick={(event) => {
+            event.preventDefault()
             let error = false
             if (!isValidEmail(email)) {
               setEmailError('Invalid Email')
@@ -96,7 +102,7 @@ const LogIn = (props) => {
             }
             if (error) return
 
-            props.firebase
+            firebase
               .doSignInWithEmailAndPassword(email, password) // success handled by onAuthStateChanged
               .catch((e) => {
                 setErrorMessage(e.message)
