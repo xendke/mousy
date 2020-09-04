@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Post, Loading } from '../components'
-import { withFirebase } from '../components/firebase'
+import { Post, Loading } from '../../components'
+import { withFirebase } from '../../components/firebase'
 
 import './Profile.scss'
 

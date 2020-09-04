@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { withFirebase } from '../components/firebase'
-import { debounce } from '../utils'
+import { withFirebase } from '../../components/firebase'
+import { debounce } from '../../utils'
 
 import './Join.scss'
 

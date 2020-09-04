@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Loading, Post, PostForm } from '../components'
-import { withFirebase } from '../components/firebase'
-import { setOtherUserInfo } from '../redux/actions/otherUsers'
-import personImage from '../assets/person.png'
+import { Loading, Post, PostForm } from '../../components'
+import { withFirebase } from '../../components/firebase'
+import { setOtherUserInfo } from '../../redux/actions/otherUsers'
+import personImage from '../../assets/person.png'
 
 import './Home.scss'
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { withFirebase } from '../components/firebase'
-import isValidEmail from '../utils/validation'
+import { withFirebase } from '../../components/firebase'
+import isValidEmail from '../../utils/validation'
 import './Login.scss'
 
-const LogIn = ({ user, firebase }) => {
+const Login = ({ user, firebase }) => {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState(undefined)
   const [password, setPassword] = useState('')
@@ -122,4 +122,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(withFirebase(LogIn))
+export default connect(mapStateToProps)(withFirebase(Login))
