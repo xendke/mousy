@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { signIn, signOut, setInfo } from './redux/actions/user'
 import { withFirebase } from './components/firebase'
 import { Home, Profile, Join, Login } from './views'
-import { TopNav } from './components'
+import { TopNav, Footer } from './components'
 
 class App extends Component {
   componentDidMount() {
@@ -31,6 +31,7 @@ class App extends Component {
           <Route path="/shy/:userId" component={Profile} />
           <Route path="/login" exact component={Login} />
           <Route path="/join" exact component={Join} />
+          <Footer />
         </>
       </Router>
     )
