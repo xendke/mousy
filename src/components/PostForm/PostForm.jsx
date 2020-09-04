@@ -32,7 +32,7 @@ const PostForm = ({ user, firebase }) => {
   return (
     <div className="PostForm box">
       <form className="field is-grouped">
-        <Link className="image" to="/profile">
+        <Link className="image" to="/me">
           <img
             className="is-rounded"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCoxWc5ukrkkaNHBArZt7YJq15_xWWDb4NdQ&usqp=CAU"

@@ -5,14 +5,24 @@ import { withFirebase } from '../../components/firebase'
 
 import './Profile.scss'
 
-const Profile = ({ user, firebase }) => {
-  const userData = user && user.info
+const Profile = ({ user, firebase, match }) => {
+  const { params } = match
+  const [userData, setUserData] = useState(params.userId ? {} : user.info)
   const [posts, setPosts] = useState([])
   const [loadingPosts, setLoadingPosts] = useState(true)
 
   useEffect(() => {
+    if (!params.userId) return
+    firebase.doUserInfoGet(params.userId).then((res) => {
+      setUserData(res.data())
+    })
+  }, [params.userId, firebase])
+
+  useEffect(() => {
     const iife = async () => {
-      const postsCollection = await firebase.doUserPostsGet(user.auth.uid)
+      const postsCollection = await firebase.doUserPostsGet(
+        params.userId || user.auth.uid
+      )
       const newPosts = []
 
       postsCollection.forEach((post) => {
@@ -22,7 +32,7 @@ const Profile = ({ user, firebase }) => {
       setLoadingPosts(false)
     }
     iife()
-  }, [user.auth, firebase])
+  }, [user.auth, params.userId, firebase])
 
   if (!user.auth) {
     return <Loading />

@@ -14,7 +14,7 @@ const Login = ({ user, firebase }) => {
 
   return (
     <>
-      {user.isSignedIn && <Redirect to="/profile" />}
+      {user.isSignedIn && <Redirect to="/me" />}
       <form className="Login section">
         <h1>Hi there!</h1>
 

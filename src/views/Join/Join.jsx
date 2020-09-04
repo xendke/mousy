@@ -53,7 +53,7 @@ class Join extends React.Component {
 
   render() {
     const { user, firebase } = this.props
-    if (user.isSignedIn) return <Redirect to="/profile" />
+    if (user.isSignedIn) return <Redirect to="/me" />
 
     const {
       name,

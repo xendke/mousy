@@ -54,7 +54,7 @@ const TopNav = ({ user, history, firebase }) => {
                     <button
                       type="button"
                       className="button is-primary is-inverted is-outlined"
-                      onClick={() => history.push('/profile')}
+                      onClick={() => history.push('/me')}
                     >
                       Profile
                     </button>
