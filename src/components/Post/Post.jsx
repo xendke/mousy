@@ -1,10 +1,20 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { formatDistanceToNowStrict } from 'date-fns'
 
 import './Post.scss'
 
-const Post = ({ userFullName, username, content, createdAt }) => {
+const Post = ({ userFullName, username, userId, content, createdAt }) => {
   const timePosted = formatDistanceToNowStrict(createdAt)
+  const userRoute = `/shy/${userId}`
+  const author = (
+    <>
+      <strong className="is-capitalized has-text-grey-darker">
+        {userFullName}
+      </strong>
+      <small className="has-text-grey-dark"> @{username}</small>
+    </>
+  )
 
   return (
     <div className="Post box">
@@ -12,8 +22,7 @@ const Post = ({ userFullName, username, content, createdAt }) => {
         <div className="media-content">
           <div className="content">
             <p>
-              <strong className="is-capitalized">{userFullName}</strong>
-              <small> @{username}</small>
+              {userId ? <Link to={userRoute}>{author}</Link> : author}
               <small className="has-text-grey-light"> {timePosted} ago</small>
               <br />
               {content}

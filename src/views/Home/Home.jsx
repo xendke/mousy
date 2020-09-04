@@ -68,6 +68,7 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
         key={`${userOrLoading.username}_${createdAt}`}
         userFullName={userOrLoading.name}
         username={userOrLoading.username}
+        userId={userId}
         content={content}
         createdAt={createdAt}
       />
