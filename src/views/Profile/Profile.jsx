@@ -55,7 +55,7 @@ const Profile = ({ user, firebase, match }) => {
   ))
 
   return (
-    <section className="Profile section container columns is-desktop">
+    <section className="Profile container columns is-desktop">
       <div className="column is-one-quarter-desktop user-info">
         <div className="level">
           <div className="level-item">
