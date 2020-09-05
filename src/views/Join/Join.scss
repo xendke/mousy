@@ -2,10 +2,15 @@
 
 form.section {
   max-width: 418px;
-  margin: 10px auto 40px;
+  margin: 10px 15px 40px;
   padding-top: 25px;
+  padding-bottom: 25px;
   background-color: $white;
   border-radius: 5px;
+
+  @media screen and (min-width: 500px) {
+    margin: 10px auto 40px;
+  }
 
   h1 {
     font-weight: 700;

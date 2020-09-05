@@ -24,10 +24,20 @@ nav.navbar {
   }
 
   .navbar-menu {
-    background-color: transparent;
+    background-color: $primary-color;
 
     @media screen and (max-width: 1023px) {
       box-shadow: 0 16px 15px rgba(10, 10, 10, 0.1);
+      opacity: 0;
+      display: block;
+      position: absolute;
+      width: 100%;
+      top: 40px;
+      transition: opacity 0.2s ease-in-out;
+
+      &.is-active {
+        opacity: 1;
+      }
     }
   }
 }
