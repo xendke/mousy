@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signIn, signOut, setInfo } from './redux/actions/user'
 import { withFirebase } from './components/firebase'
-import { Home, Profile, Join, Login } from './views'
+import { Home, Profile, Account, Join, Login } from './views'
 import { TopNav, Footer } from './components'
 
 class App extends Component {
@@ -28,6 +28,7 @@ class App extends Component {
           <TopNav />
           <Route path="/" exact component={Home} />
           <Route path="/me" exact component={Profile} />
+          <Route path="/account" exact component={Account} />
           <Route path="/shy/:userId" component={Profile} />
           <Route path="/login" exact component={Login} />
           <Route path="/join" exact component={Join} />
