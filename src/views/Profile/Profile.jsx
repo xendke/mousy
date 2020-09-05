@@ -7,9 +7,13 @@ import './Profile.scss'
 
 const Profile = ({ user, firebase, match }) => {
   const { params } = match
-  const [userData, setUserData] = useState(params.userId ? {} : user.info)
+  const [userData, setUserData] = useState({})
   const [posts, setPosts] = useState([])
   const [loadingPosts, setLoadingPosts] = useState(true)
+
+  useEffect(() => {
+    if (user.info && !params.userId) setUserData(user.info)
+  }, [user.info, params.userId])
 
   useEffect(() => {
     if (!params.userId) return

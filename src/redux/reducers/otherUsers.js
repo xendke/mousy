@@ -1,8 +1,6 @@
 import { SET_OTHERS_INFO } from '../actions/otherUsers'
 
-const defaultState = {
-  otherUsers: {},
-}
+const defaultState = {}
 
 export default (state = defaultState, action) => {
   switch (action.type) {
