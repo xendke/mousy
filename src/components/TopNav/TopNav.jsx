@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withFirebase } from '../firebase'
@@ -7,13 +7,38 @@ import './TopNav.scss'
 
 const TopNav = ({ user, history, firebase }) => {
   const [isNavbarOpened, setIsNavbarOpened] = useState(false)
+  const nodeRef = useRef()
+
+  const closeNavbarAndGo = (path) => () => {
+    setIsNavbarOpened(false)
+    history.push(path)
+  }
 
   const toggleNavbar = () => {
     setIsNavbarOpened(!isNavbarOpened)
   }
 
+  const closeOnOutsideClick = (event) => {
+    if (!nodeRef.current.contains(event.target)) {
+      setIsNavbarOpened(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', closeOnOutsideClick)
+
+    return () => {
+      document.removeEventListener('mousedown', closeOnOutsideClick)
+    }
+  }, [])
+
   return (
-    <nav className="navbar" role="navigation" aria-label="main navigation">
+    <nav
+      ref={nodeRef}
+      className="navbar"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div className="navbar-brand">
         <Link className="navbar-item" to="/">
           <img src={logoImage} alt="ShyApp Logo" className="navbar-logo" />
@@ -41,20 +66,14 @@ const TopNav = ({ user, history, firebase }) => {
       >
         <div className="navbar-end">
           <div className="navbar-item">
-            <div
-              className="buttons"
-              role="button"
-              tabIndex="0"
-              onKeyDown={toggleNavbar}
-              onClick={toggleNavbar}
-            >
+            <div className="buttons">
               {user.isSignedIn && (
                 <>
-                  {!history.location.pathname.includes('profile') && (
+                  {!history.location.pathname.includes('/me') && (
                     <button
                       type="button"
                       className="button is-primary is-inverted is-outlined"
-                      onClick={() => history.push('/me')}
+                      onClick={closeNavbarAndGo('/me')}
                     >
                       Profile
                     </button>
@@ -63,6 +82,7 @@ const TopNav = ({ user, history, firebase }) => {
                     type="button"
                     className="button is-primary is-inverted"
                     onClick={() => {
+                      toggleNavbar()
                       firebase
                         .doSignOut() // success handled by onAuthChanged
                         .then(() => {
@@ -76,15 +96,20 @@ const TopNav = ({ user, history, firebase }) => {
               )}
               {!user.isSignedIn && (
                 <>
-                  <Link to="/join" className="button is-primary is-inverted">
+                  <button
+                    onClick={closeNavbarAndGo('/join')}
+                    type="button"
+                    className="button is-primary is-inverted"
+                  >
                     Sign up
-                  </Link>
-                  <Link
-                    to="/login"
+                  </button>
+                  <button
+                    onClick={closeNavbarAndGo('/login')}
+                    type="button"
                     className="button is-primary is-inverted is-outlined"
                   >
                     Log in
-                  </Link>
+                  </button>
                 </>
               )}
             </div>
