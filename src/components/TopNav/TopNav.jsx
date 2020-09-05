@@ -25,12 +25,16 @@ const TopNav = ({ user, history, firebase }) => {
   }
 
   useEffect(() => {
-    document.addEventListener('mousedown', closeOnOutsideClick)
+    if (isNavbarOpened) {
+      document.addEventListener('mousedown', closeOnOutsideClick)
+    } else {
+      document.removeEventListener('mousedown', closeOnOutsideClick)
+    }
 
     return () => {
       document.removeEventListener('mousedown', closeOnOutsideClick)
     }
-  }, [])
+  }, [isNavbarOpened])
 
   return (
     <nav
