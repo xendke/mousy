@@ -26,6 +26,10 @@ form.section {
     }
   }
 
+  .notification.is-danger {
+    padding: 1.25rem 1.5rem;
+  }
+
   .label {
     color: $black;
     font-size: 14px;

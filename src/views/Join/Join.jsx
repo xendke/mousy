@@ -33,6 +33,7 @@ class Join extends React.Component {
       email: '',
       password: '',
       interests: '',
+      error: null,
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -61,6 +62,7 @@ class Join extends React.Component {
       email,
       password,
       interests,
+      error,
       usernameIsAvailable,
       checkingUsernameExists,
     } = this.state
@@ -83,6 +85,10 @@ class Join extends React.Component {
       <form className="section">
         <h1>Sign Up</h1>
         <p>Join a community that listens!</p>
+        {error && (
+          <div className="notification is-danger is-light">{error}</div>
+        )}
+
         <div className="field">
           <div className="control">
             <label htmlFor="name" className="label">
@@ -184,15 +190,23 @@ class Join extends React.Component {
               onClick={async (event) => {
                 event.preventDefault()
                 try {
+                  if (username.length < 4) {
+                    throw Error('Username must be at least 4 characters.')
+                  }
+
+                  const formattedInterests = interests
+                    .toLowerCase()
+                    .split(',')
+                    .map((s) => s.trim())
+
+                  if (formattedInterests.length < 2) {
+                    throw Error('You should have at least two interests.')
+                  }
+
                   const { exists } = await firebase.doUsernameExistsCheck(
                     username
                   )
                   if (!exists) {
-                    const formattedInterests = interests
-                      .toLowerCase()
-                      .split(',')
-                      .map((s) => s.trim())
-
                     const authUser = await firebase.doCreateUserWithEmailAndPassword(
                       email,
                       password
@@ -209,8 +223,8 @@ class Join extends React.Component {
                     )
                     await firebase.doSignInWithEmailAndPassword(email, password)
                   }
-                } catch (error) {
-                  console.error(error)
+                } catch (e) {
+                  this.setState(() => ({ error: e.message }))
                 }
               }}
             >
