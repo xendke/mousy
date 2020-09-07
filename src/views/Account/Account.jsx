@@ -12,8 +12,11 @@ const Account = ({ user, firebase }) => {
     setPicture(e.target.files[0])
   }
 
-  const upload = () => {
-    firebase.doUploadUserAvatar(user.auth.uid, picture)
+  const uploadAvatar = () => {
+    firebase
+      .doUploadUserAvatar(user.auth.uid, picture)
+      .then((snapshot) => snapshot.ref.getDownloadURL())
+      .then((url) => console.log(url))
   }
 
   if (!user.isSignedIn) {
@@ -24,7 +27,7 @@ const Account = ({ user, firebase }) => {
       <div className="box">
         Account
         <input type="file" onChange={(e) => onChangePicture(e)} />
-        <button type="button" onClick={upload}>
+        <button type="button" onClick={uploadAvatar}>
           Upload
         </button>
       </div>
