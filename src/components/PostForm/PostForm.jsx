@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withFirebase } from '../firebase'
 
 import './PostForm.scss'
+import { Avatar } from 'components'
 
 const PostForm = ({ user, firebase }) => {
   const [content, setContent] = useState('')
@@ -33,11 +34,7 @@ const PostForm = ({ user, firebase }) => {
     <div className="PostForm box">
       <form className="field is-grouped">
         <Link className="image" to="/me">
-          <img
-            className="is-rounded"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCoxWc5ukrkkaNHBArZt7YJq15_xWWDb4NdQ&usqp=CAU"
-            alt="User Avatar"
-          />
+          <Avatar userId={user.auth.uid} />
         </Link>
         <p className="control is-expanded">
           <input

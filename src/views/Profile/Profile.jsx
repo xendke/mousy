@@ -1,25 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Post, Loading } from '../../components'
+import { Post, Loading, Avatar } from '../../components'
 import { withFirebase } from '../../components/firebase'
 
 import './Profile.scss'
-
-const DEFAULT_AVATAR =
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCoxWc5ukrkkaNHBArZt7YJq15_xWWDb4NdQ&usqp=CAU'
-const getAvatarUrl = (uid) =>
-  `https://firebasestorage.googleapis.com/v0/b/shy-app-io.appspot.com/o/${uid}?alt=media&token=b67d4268-536a-4db7-835a-190d09856a25`
 
 const Profile = ({ user, firebase, match }) => {
   const { params } = match
   const [userData, setUserData] = useState({})
   const [posts, setPosts] = useState([])
   const [loadingPosts, setLoadingPosts] = useState(true)
-  const [avatarUrl, setAvatarUrl] = useState(DEFAULT_AVATAR)
-
-  useEffect(() => {
-    setAvatarUrl(getAvatarUrl(params.userId || user.auth.uid))
-  }, [user.auth, params.userId])
 
   useEffect(() => {
     if (user.info && !params.userId) setUserData(user.info)
@@ -56,7 +46,7 @@ const Profile = ({ user, firebase, match }) => {
 
   const postsComponents = posts.map(({ content, createdAt }) => (
     <Post
-      key={content}
+      key={`${userData.username}_${createdAt}`}
       userFullName={userData.name}
       username={userData.username}
       content={content}
@@ -70,12 +60,7 @@ const Profile = ({ user, firebase, match }) => {
         <div className="level">
           <div className="level-item">
             <figure className="image is-64x64">
-              <img
-                className="is-rounded"
-                src={avatarUrl}
-                onError={() => setAvatarUrl(DEFAULT_AVATAR)}
-                alt="User Avatar"
-              />
+              <Avatar userId={params.userId || user.auth.uid} />
             </figure>
           </div>
         </div>
