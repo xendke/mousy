@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Post, Loading, Avatar } from '../../components'
 import { withFirebase } from '../../components/firebase'
 
@@ -70,6 +71,17 @@ const Profile = ({ user, firebase, match }) => {
         <h2 className="subtitle has-text-centered">
           # {userData.interests.join(', ')}
         </h2>
+        <Link to="/account">
+          <button
+            type="button"
+            className="button is-small is-primary is-inverted is-outlined"
+          >
+            <span className="icon is-small">
+              <i className="fas fa-cog" />
+            </span>
+            <span>Edit</span>
+          </button>
+        </Link>
       </div>
 
       <div className="column">

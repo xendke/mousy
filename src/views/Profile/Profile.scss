@@ -1,11 +1,36 @@
-.Profile.container {
-	margin: auto;
+@import 'src/styles.scss';
 
-	.user-info {
-		@media screen and (min-width: 1024px) {
-			height: 100%;
-			position: sticky;
-			top: 10px;
-		}
-	}
+.Profile.container {
+  margin: auto;
+
+  .user-info {
+    color: $green;
+
+    img {
+      border: 2px solid $green;
+    }
+
+    h1,
+    h2 {
+      color: $green;
+    }
+
+    a {
+      display: flex;
+      justify-content: center;
+      .button {
+        color: $green;
+        border-color: $green;
+        &:hover {
+          background-color: $green;
+        }
+      }
+    }
+
+    @media screen and (min-width: 1024px) {
+      height: 100%;
+      position: sticky;
+      top: 10px;
+    }
+  }
 }
