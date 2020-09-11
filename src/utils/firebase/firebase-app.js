@@ -15,13 +15,16 @@ class Firebase {
 
     this.auth = app.auth()
     this.db = app.firestore()
-    this.storage = app.storage().ref()
+    this.storage = app.storage()
   }
 
   // *** Storage API ***
 
-  doUploadUserAvatar = (name, file) =>
-    this.storage.child(name).put(file, { contentType: file.type })
+  doAvatarUrlGet = (userId) =>
+    this.storage.ref(`avatars/${userId}`).getDownloadURL()
+
+  doUploadUserAvatar = (userId, file) =>
+    this.storage.ref(`avatars/${userId}`).put(file, { contentType: file.type })
 
   // *** Auth API ***
 
