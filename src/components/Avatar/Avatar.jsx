@@ -4,7 +4,7 @@ import { withFirebase } from '../firebase'
 const DEFAULT_AVATAR =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCoxWc5ukrkkaNHBArZt7YJq15_xWWDb4NdQ&usqp=CAU'
 
-const Avatar = ({ userId, firebase }) => {
+const Avatar = ({ userId, refresh, firebase }) => {
   const [avatarUrl, setAvatarUrl] = useState(DEFAULT_AVATAR)
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const Avatar = ({ userId, firebase }) => {
       }
     }
     iife()
-  }, [userId, firebase])
+  }, [userId, firebase, refresh])
 
   return (
     <figure className="Avatar image">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Avatar, ImageCropper } from '../../../components'
 import { withFirebase } from '../../../components/firebase'
@@ -9,9 +9,7 @@ const AvatarPage = ({ user, firebase }) => {
   const [inputFile, setInputFile] = useState(null)
   const [picture, setPicture] = useState(null)
   const [uploading, setUploading] = useState(false)
-  const [success, setSuccess] = useState(false)
-
-  const [userId, setUserId] = useState(user.auth.uid)
+  const [successCount, setSuccessCount] = useState(false)
 
   const onChangePicture = (e) => {
     const file = e.target.files[0]
@@ -29,7 +27,7 @@ const AvatarPage = ({ user, firebase }) => {
         setUploading(false)
         setPicture(null)
         setInputFile(null)
-        setSuccess(true)
+        setSuccessCount(successCount + 1)
       })
       .catch((error) => console.error(error))
   }
@@ -38,18 +36,14 @@ const AvatarPage = ({ user, firebase }) => {
     setPicture(blob)
   }
 
-  useEffect(() => {
-    setUserId(userId)
-  }, [success, userId])
-
   return (
     <div className="AvatarPage">
-      {success && (
+      {successCount > 0 && (
         <div className="notification is-success is-light">
           Successfully updated your avatar!
         </div>
       )}
-      <Avatar userId={userId} />
+      <Avatar userId={user.auth.uid} refresh={successCount} />
       <label htmlFor="fileInpupt" className="button is-primary">
         Choose a File
         <input

@@ -34,7 +34,13 @@ const getCroppedImg = (image, crop) => {
 }
 
 const ImageCropper = ({ src, getImageBlob }) => {
-  const [crop, setCrop] = useState({ aspect: 1 / 1 })
+  const [crop, setCrop] = useState({
+    unit: '%',
+    x: 50,
+    y: 50,
+    width: 100,
+    aspect: 1 / 1,
+  })
   const [imageRef, setImageRef] = useState(null)
 
   return (
@@ -42,8 +48,10 @@ const ImageCropper = ({ src, getImageBlob }) => {
       src={src}
       crop={crop}
       crossorigin="anonymous"
+      keepSelection
+      minWidth={100}
       onChange={(newCrop) => setCrop(newCrop)}
-      onDragEnd={() => {
+      onComplete={() => {
         if (!imageRef) return
         getCroppedImg(imageRef, crop).then((blob) => {
           getImageBlob(blob)
