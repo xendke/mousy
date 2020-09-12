@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import ReactCrop from 'react-image-crop'
 
 const getCroppedImg = (image, crop) => {
+  console.log({ image, crop })
   const canvas = document.createElement('canvas')
   const scaleX = image.naturalWidth / image.width
   const scaleY = image.naturalHeight / image.height
@@ -24,7 +25,6 @@ const getCroppedImg = (image, crop) => {
   return new Promise((resolve) => {
     canvas.toBlob(
       (blob) => {
-        // blob.name = fileName
         resolve(blob)
       },
       'image/jpeg',
@@ -33,15 +33,21 @@ const getCroppedImg = (image, crop) => {
   })
 }
 
-const ImageCropper = ({ src, getImageBlob }) => {
+const ImageCropper = ({ src, grabImageBlob, loading }) => {
   const [crop, setCrop] = useState({
-    unit: '%',
-    x: 50,
-    y: 50,
+    unit: 'px',
+    x: 0,
+    y: 0,
+    height: 100,
     width: 100,
     aspect: 1 / 1,
   })
   const [imageRef, setImageRef] = useState(null)
+
+  const getCropAndReturnBlob = (ref = null) =>
+    getCroppedImg(ref || imageRef, crop).then((blob) => {
+      grabImageBlob(blob)
+    })
 
   return (
     <ReactCrop
@@ -50,15 +56,15 @@ const ImageCropper = ({ src, getImageBlob }) => {
       crossorigin="anonymous"
       keepSelection
       minWidth={100}
+      locked={loading}
       onChange={(newCrop) => setCrop(newCrop)}
       onComplete={() => {
         if (!imageRef) return
-        getCroppedImg(imageRef, crop).then((blob) => {
-          getImageBlob(blob)
-        })
+        getCropAndReturnBlob()
       }}
       onImageLoaded={(image) => {
         setImageRef(image)
+        getCropAndReturnBlob(image)
       }}
       circularCrop
     />

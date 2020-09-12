@@ -4,6 +4,8 @@
   margin: auto;
 
   .user-info {
+    display: flex;
+    flex-direction: column;
     color: $green;
 
     img {
@@ -16,8 +18,9 @@
     }
 
     a {
-      display: flex;
-      justify-content: center;
+      align-self: flex-start;
+      margin: auto;
+
       .button {
         color: $green;
         border-color: $green;

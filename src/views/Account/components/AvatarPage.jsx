@@ -32,7 +32,7 @@ const AvatarPage = ({ user, firebase }) => {
       .catch((error) => console.error(error))
   }
 
-  const getImageBlob = (blob) => {
+  const grabImageBlob = (blob) => {
     setPicture(blob)
   }
 
@@ -56,7 +56,11 @@ const AvatarPage = ({ user, firebase }) => {
       </label>
       {inputFile && (
         <div className="cropper">
-          <ImageCropper src={inputFile} getImageBlob={getImageBlob} />
+          <ImageCropper
+            src={inputFile}
+            grabImageBlob={grabImageBlob}
+            loading={uploading}
+          />
         </div>
       )}
       {picture && (
