@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import Avatar from '../Avatar/Avatar'
 import { withFirebase } from '../firebase'
 
 import './PostForm.scss'
-import { Avatar } from 'components'
 
 const PostForm = ({ user, firebase }) => {
   const [content, setContent] = useState('')

@@ -19,7 +19,11 @@ const Avatar = ({ userId, firebase }) => {
     iife()
   }, [userId, firebase])
 
-  return <img className="is-rounded" src={avatarUrl} alt="User Avatar" />
+  return (
+    <figure className="Avatar image">
+      <img className="is-rounded" src={avatarUrl} alt="User Avatar" />
+    </figure>
+  )
 }
 
 export default withFirebase(Avatar)
