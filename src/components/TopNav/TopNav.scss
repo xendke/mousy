@@ -19,8 +19,10 @@ nav.navbar {
   .navbar-burger {
     color: $white;
     background: none;
-    outline: none;
     border: none;
+  }
+  .navbar-burger:focus {
+    outline: thin dotted;
   }
 
   .navbar-menu {

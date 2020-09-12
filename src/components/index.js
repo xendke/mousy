@@ -4,5 +4,6 @@ import Post from './Post/Post'
 import PostForm from './PostForm/PostForm'
 import TopNav from './TopNav/TopNav'
 import Footer from './Footer/Footer'
+import ImageCropper from './ImageCropper/ImageCropper'
 
-export { Avatar, Loading, Post, PostForm, TopNav, Footer }
+export { Avatar, Loading, Post, PostForm, TopNav, Footer, ImageCropper }
