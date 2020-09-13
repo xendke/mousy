@@ -1,25 +1,35 @@
 import React, { useState } from 'react'
-import ReactCrop from 'react-image-crop'
+import Cropper from 'react-easy-crop'
+import Loading from '../Loading/Loading'
 
-const getCroppedImg = (image, crop) => {
-  console.log({ image, crop })
+import './ImageCropper.scss'
+
+const createImage = (url) =>
+  new Promise((resolve, reject) => {
+    const image = new Image()
+    image.addEventListener('load', () => resolve(image))
+    image.addEventListener('error', (error) => reject(error))
+    image.setAttribute('crossOrigin', 'anonymous')
+    image.src = url
+  })
+
+export const getCroppedImg = async (objectUrlImage, crop) => {
+  const image = await createImage(objectUrlImage)
   const canvas = document.createElement('canvas')
-  const scaleX = image.naturalWidth / image.width
-  const scaleY = image.naturalHeight / image.height
-  canvas.width = crop.width
-  canvas.height = crop.height
   const ctx = canvas.getContext('2d')
+  canvas.width = 200
+  canvas.height = 200
 
   ctx.drawImage(
     image,
-    crop.x * scaleX,
-    crop.y * scaleY,
-    crop.width * scaleX,
-    crop.height * scaleY,
-    0,
-    0,
+    crop.x,
+    crop.y,
     crop.width,
-    crop.height
+    crop.height,
+    0,
+    0,
+    canvas.width,
+    canvas.height
   )
 
   return new Promise((resolve) => {
@@ -33,41 +43,37 @@ const getCroppedImg = (image, crop) => {
   })
 }
 
-const ImageCropper = ({ src, grabImageBlob, loading }) => {
+const ImageCropper = ({ src, getCrop, loading }) => {
   const [crop, setCrop] = useState({
-    unit: 'px',
     x: 0,
     y: 0,
-    height: 100,
-    width: 100,
-    aspect: 1 / 1,
   })
-  const [imageRef, setImageRef] = useState(null)
+  const [zoom, setZoom] = useState(1.5)
 
-  const getCropAndReturnBlob = (ref = null) =>
-    getCroppedImg(ref || imageRef, crop).then((blob) => {
-      grabImageBlob(blob)
-    })
+  if (loading) {
+    return (
+      <div className="ImageCropper">
+        <Loading />
+      </div>
+    )
+  }
 
   return (
-    <ReactCrop
-      src={src}
-      crop={crop}
-      crossorigin="anonymous"
-      keepSelection
-      minWidth={100}
-      locked={loading}
-      onChange={(newCrop) => setCrop(newCrop)}
-      onComplete={() => {
-        if (!imageRef) return
-        getCropAndReturnBlob()
-      }}
-      onImageLoaded={(image) => {
-        setImageRef(image)
-        getCropAndReturnBlob(image)
-      }}
-      circularCrop
-    />
+    <div className="ImageCropper cropper-container">
+      <Cropper
+        image={src}
+        crop={crop}
+        zoom={zoom}
+        aspect={1 / 1}
+        cropShape="round"
+        showGrid={false}
+        onZoomChange={setZoom}
+        onCropChange={(newCrop) => setCrop(newCrop)}
+        onCropComplete={(_, cropInfo) => {
+          getCrop(cropInfo)
+        }}
+      />
+    </div>
   )
 }
 

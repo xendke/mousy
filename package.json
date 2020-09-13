@@ -10,7 +10,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-image-crop": "^8.6.5",
+    "react-easy-crop": "^3.1.1",
     "react-redux": "^6.0.1",
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.3",

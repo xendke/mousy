@@ -1,0 +1,10 @@
+.ImageCropper {
+  .Loading {
+    min-width: 200px;
+  }
+  &.cropper-container {
+    position: relative;
+    min-width: 200px;
+    min-height: 200px;
+  }
+}

@@ -1,8 +1,8 @@
 export const throttle = (callback, limit) => {
   let waiting = false
-  return () => {
+  return (...args) => {
     if (!waiting) {
-      callback()
+      callback(...args)
       waiting = true
       setTimeout(() => {
         waiting = false
