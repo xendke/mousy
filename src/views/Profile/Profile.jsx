@@ -55,6 +55,8 @@ const Profile = ({ user, firebase, match }) => {
     />
   ))
 
+  const isOwnProfile = params.userId === user.auth.uid || !params.userId
+
   return (
     <section className="Profile container columns is-desktop">
       <div className="column is-one-quarter-desktop user-info">
@@ -71,17 +73,19 @@ const Profile = ({ user, firebase, match }) => {
         <h2 className="subtitle has-text-centered">
           # {userData.interests.join(', ')}
         </h2>
-        <Link to="/account">
-          <button
-            type="button"
-            className="button is-small is-primary is-inverted is-outlined"
-          >
-            <span className="icon is-small">
-              <i className="fas fa-cog" />
-            </span>
-            <span>Edit</span>
-          </button>
-        </Link>
+        {isOwnProfile && (
+          <Link to="/account">
+            <button
+              type="button"
+              className="button is-small is-primary is-inverted is-outlined"
+            >
+              <span className="icon is-small">
+                <i className="fas fa-cog" />
+              </span>
+              <span>Edit</span>
+            </button>
+          </Link>
+        )}
       </div>
 
       <div className="column">
