@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { withFirebase } from '../../../components/firebase'
 import { setInfo } from '../../../redux/actions/user'
 
-import './AvatarPage.scss'
+import './InfoTab.scss'
 
-const InfoPage = ({ user, firebase, dispatch }) => {
+const InfoTab = ({ user, firebase, dispatch }) => {
   const [name, setName] = useState('')
 
   const updateUserInfo = (e) => {
@@ -17,7 +17,7 @@ const InfoPage = ({ user, firebase, dispatch }) => {
   }
 
   return (
-    <form>
+    <form className="InfoTab">
       <div className="field">
         <div className="control">
           <label htmlFor="name" className="label">
@@ -50,4 +50,4 @@ const mapStateToProps = (state) => ({
   user: state.user,
 })
 
-export default connect(mapStateToProps)(withFirebase(InfoPage))
+export default connect(mapStateToProps)(withFirebase(InfoTab))

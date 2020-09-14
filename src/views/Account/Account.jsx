@@ -2,8 +2,8 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import AvatarPage from './components/AvatarPage'
-import InfoPage from './components/InfoPage'
+import AvatarTab from './components/AvatarTab'
+import InfoTab from './components/InfoTab'
 
 import './Account.scss'
 
@@ -15,8 +15,8 @@ const Account = ({ user }) => {
   }
 
   const tabContents = {
-    avatar: <AvatarPage />,
-    info: <InfoPage />,
+    avatar: <AvatarTab />,
+    info: <InfoTab />,
     interests: <div />,
   }
 

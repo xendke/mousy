@@ -4,9 +4,9 @@ import { Avatar, ImageCropper } from '../../../components'
 import { withFirebase } from '../../../components/firebase'
 import getCroppedImg from '../../../components/ImageCropper/helpers'
 
-import './AvatarPage.scss'
+import './AvatarTab.scss'
 
-const AvatarPage = ({ user, firebase }) => {
+const AvatarTab = ({ user, firebase }) => {
   const [inputFile, setInputFile] = useState(null)
   const [uploading, setUploading] = useState(false)
   const [successCount, setSuccessCount] = useState(false)
@@ -38,7 +38,7 @@ const AvatarPage = ({ user, firebase }) => {
   }
 
   return (
-    <div className="AvatarPage">
+    <div className="AvatarTab">
       {successCount > 0 && (
         <div className="notification is-success is-light">
           Successfully updated your avatar!
@@ -86,4 +86,4 @@ const mapStateToProps = (state) => ({
   user: state.user,
 })
 
-export default connect(mapStateToProps)(withFirebase(AvatarPage))
+export default connect(mapStateToProps)(withFirebase(AvatarTab))
