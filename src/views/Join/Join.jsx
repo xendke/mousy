@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withFirebase } from '../../components/firebase'
-import { debounce } from '../../utils'
+import { formatInterests, debounce } from '../../utils'
 
 import './Join.scss'
 
@@ -194,10 +194,7 @@ class Join extends React.Component {
                     throw Error('Username must be at least 4 characters.')
                   }
 
-                  const formattedInterests = interests
-                    .toLowerCase()
-                    .split(',')
-                    .map((s) => s.trim())
+                  const formattedInterests = formatInterests(interests)
 
                   if (formattedInterests.length < 2) {
                     throw Error('You should have at least two interests.')

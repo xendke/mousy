@@ -7,17 +7,28 @@ import './InfoTab.scss'
 
 const InfoTab = ({ user, firebase, dispatch }) => {
   const [name, setName] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   const updateUserInfo = (e) => {
     e.preventDefault()
+    setLoading(true)
     const { auth, info } = user
     firebase.doUserInfoEdit(auth.uid, { ...info, name }).then(() => {
+      setLoading(false)
+      setSuccess(true)
+      setName('')
       dispatch(setInfo({ ...info, name }))
     })
   }
 
   return (
     <form className="InfoTab">
+      {success && (
+        <div className="notification is-success is-light">
+          Successfully updated your information!
+        </div>
+      )}
       <div className="field">
         <div className="control">
           <label htmlFor="name" className="label">
@@ -38,6 +49,7 @@ const InfoTab = ({ user, firebase, dispatch }) => {
           type="submit"
           className="button is-primary"
           onClick={updateUserInfo}
+          disabled={loading}
         >
           Update
         </button>

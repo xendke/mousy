@@ -23,3 +23,9 @@ export const debounce = (callback, wait) => {
     timeout = setTimeout(later, wait)
   }
 }
+
+export const formatInterests = (interests) =>
+  interests
+    .toLowerCase()
+    .split(',')
+    .map((s) => s.trim())

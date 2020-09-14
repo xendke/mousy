@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import AvatarTab from './components/AvatarTab'
 import InfoTab from './components/InfoTab'
+import InterestsTab from './components/InterestsTab'
 
 import './Account.scss'
 
@@ -17,7 +18,7 @@ const Account = ({ user }) => {
   const tabContents = {
     avatar: <AvatarTab />,
     info: <InfoTab />,
-    interests: <div />,
+    interests: <InterestsTab />,
   }
 
   return (
