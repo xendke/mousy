@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import AvatarPage from './components/AvatarPage'
+import InfoPage from './components/InfoPage'
 
 import './Account.scss'
 
@@ -15,8 +16,8 @@ const Account = ({ user }) => {
 
   const tabContents = {
     avatar: <AvatarPage />,
-    info: <div />,
-    lol: <div />,
+    info: <InfoPage />,
+    interests: <div />,
   }
 
   return (
@@ -48,16 +49,16 @@ const Account = ({ user }) => {
                 Info
               </a>
             </li>
-            <li className={currentTab === 'lol' ? 'is-active' : null}>
+            <li className={currentTab === 'interests' ? 'is-active' : null}>
               <a
-                onClick={() => setCurrentTab('lol')}
+                onClick={() => setCurrentTab('interests')}
                 role="button"
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') setCurrentTab('lol')
+                  if (e.key === 'Enter') setCurrentTab('interests')
                 }}
                 tabIndex="0"
               >
-                Lol
+                Interests
               </a>
             </li>
           </ul>
