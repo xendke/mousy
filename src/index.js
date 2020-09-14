@@ -9,7 +9,6 @@ import App from './App'
 import 'normalize.css'
 import './index.scss'
 import 'bulma/css/bulma.css'
-import 'react-image-crop/lib/ReactCrop.scss'
 
 ReactDOM.render(
   <Provider store={store}>
