@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Loading, Post, PostForm } from '../../components'
 import { withFirebase } from '../../components/firebase'
-import { setOtherUserInfo } from '../../redux/actions/otherUsers'
+import { setUserbaseInfo } from '../../redux/actions/userbase'
 import personImage from '../../assets/person.png'
 
 import './Home.scss'
@@ -26,7 +26,7 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
       uniqueUsers.forEach((userId) => {
         if (!otherUsers[userId]) {
           firebase.doUserInfoGet(userId).then((userInfo) => {
-            dispatch(setOtherUserInfo(userId, userInfo.data()))
+            dispatch(setUserbaseInfo(userId, userInfo.data()))
           })
         }
       })
