@@ -7,7 +7,7 @@ import personImage from '../../assets/person.png'
 
 import './Home.scss'
 
-const Home = ({ otherUsers, user, firebase, dispatch }) => {
+const Home = ({ userbase, user, firebase, dispatch }) => {
   const [posts, setPosts] = useState([])
   const [loadingPosts, setLoadingPosts] = useState(true)
 
@@ -24,7 +24,7 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
 
       const uniqueUsers = [...new Set(newPosts.map((post) => post.userId))]
       uniqueUsers.forEach((userId) => {
-        if (!otherUsers[userId]) {
+        if (!userbase[userId]) {
           firebase.doUserInfoGet(userId).then((userInfo) => {
             dispatch(setUserbaseInfo(userId, userInfo.data()))
           })
@@ -35,7 +35,7 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
       setLoadingPosts(false)
     }
     if (user.info.interests && user.info.interests.length > 0) getFeed()
-  }, [dispatch, firebase, otherUsers, user.info])
+  }, [dispatch, firebase, userbase, user.info])
 
   if (!user.auth && user.isSignedIn) return <Loading />
 
@@ -59,7 +59,7 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
   const userData = user && user.info
 
   const postsComponents = posts.map(({ content, userId, createdAt }) => {
-    const userOrLoading = otherUsers[userId] || {
+    const userOrLoading = userbase[userId] || {
       name: 'Loading User',
       username: 'loading',
     }
@@ -89,7 +89,7 @@ const Home = ({ otherUsers, user, firebase, dispatch }) => {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  otherUsers: state.otherUsers,
+  userbase: state.userbase,
 })
 
 export default connect(mapStateToProps)(withFirebase(Home))
