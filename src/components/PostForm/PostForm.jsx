@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import Avatar from '../Avatar/Avatar'
-import { withFirebase } from '../firebase'
+import Avatar from '~/components/Avatar/Avatar'
+import { withFirebase } from '~/components/firebase'
 
 import './PostForm.scss'
 

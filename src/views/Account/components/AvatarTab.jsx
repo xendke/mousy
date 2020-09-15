@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Avatar, ImageCropper } from '../../../components'
-import { withFirebase } from '../../../components/firebase'
-import getCroppedImg from '../../../components/ImageCropper/helpers'
+import { Avatar, ImageCropper } from '~/components'
+import { withFirebase } from '~/components/firebase'
+import getCroppedImg from '~/components/ImageCropper/helpers'
 
 import './AvatarTab.scss'
 

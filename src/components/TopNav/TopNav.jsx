@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { withFirebase } from '../firebase'
-import logoImage from '../../assets/logo.png'
+import { withFirebase } from '~/components/firebase'
+import logoImage from '~/assets/logo.png'
+
 import './TopNav.scss'
 
 const TopNav = ({ user, history, firebase }) => {

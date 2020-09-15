@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux'
 import { loadState, saveState } from './localStorage'
-import { throttle } from '../utils'
+import { throttle } from '~/utils'
 import userReducer from './reducers/user'
 import userbaseReducer from './reducers/userbase'
 

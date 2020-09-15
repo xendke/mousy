@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Cropper from 'react-easy-crop'
-import Loading from '../Loading/Loading'
+import Loading from '~/components/Loading/Loading'
 
 import './ImageCropper.scss'
 

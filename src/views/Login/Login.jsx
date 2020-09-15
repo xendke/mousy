@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { withFirebase } from '../../components/firebase'
-import isValidEmail from '../../utils/validation'
+import { withFirebase } from '~/components/firebase'
+import isValidEmail from '~/utils/validation'
 import './Login.scss'
 
 const Login = ({ user, firebase }) => {

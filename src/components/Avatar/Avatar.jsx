@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { withFirebase } from '../firebase'
+import { withFirebase } from '~/components/firebase'
 
 const DEFAULT_AVATAR =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCoxWc5ukrkkaNHBArZt7YJq15_xWWDb4NdQ&usqp=CAU'

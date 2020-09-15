@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { withFirebase } from '../../../components/firebase'
-import { setInfo } from '../../../redux/actions/user'
+import { withFirebase } from '~/components/firebase'
+import { setInfo } from '~/redux/actions/user'
 
 import './InfoTab.scss'
 

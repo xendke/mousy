@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { signIn, signOut, setInfo } from './redux/actions/user'
-import { withFirebase } from './components/firebase'
-import { Home, Profile, Account, Join, Login } from './views'
-import { TopNav, Footer } from './components'
+import { signIn, signOut, setInfo } from '~/redux/actions/user'
+import { withFirebase } from '~/components/firebase'
+import { Home, Profile, Account, Join, Login } from '~/views'
+import { TopNav, Footer } from '~/components'
 
 class App extends Component {
   componentDidMount() {
