@@ -43,7 +43,8 @@ const PostForm = ({ user, firebase }) => {
             placeholder="What's up?"
             value={content}
             onChange={(e) => {
-              setContent(e.target.value)
+              const { value } = e.target
+              if (value.length <= 120) setContent(e.target.value)
             }}
           />
         </p>
