@@ -23,21 +23,25 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": [
-    "react", "react-hooks", "jsx-a11y", "prettier"
-  ],
+  "plugins": ["react", "react-hooks", "jsx-a11y", "prettier"],
   "rules": {
-    "react/jsx-filename-extension": [1, {
-      "extensions": [".js", ".jsx"]
-    }],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-console": "off",
     "react/prop-types": 0,
     "prettier/prettier": ["error"],
     "react/jsx-props-no-spreading": 0,
-    "no-underscore-dangle": ["error", { "allow": ["__REDUX_DEVTOOLS_EXTENSION__"] }],
-		"semi": [2, "never"]
+    "no-underscore-dangle": [
+      "error",
+      { "allow": ["__REDUX_DEVTOOLS_EXTENSION__"] }
+    ],
+    "semi": [2, "never"]
   },
   "globals": {
     "window": true,
@@ -47,5 +51,13 @@
     "FileReader": true,
     "Blob": true,
     "navigator": true
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["~", "./src"]],
+        "extensions": [".ts", ".js", ".jsx", ".json"]
+      }
+    }
   }
 }
