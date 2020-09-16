@@ -1,3 +1,7 @@
+export const logger = (...args) => {
+  console.log(...args)
+}
+
 export const throttle = (callback, limit) => {
   let waiting = false
   return (...args) => {
