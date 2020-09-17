@@ -77,9 +77,7 @@ const Login = ({ user, firebase }) => {
         </div>
 
         {errorMessage && (
-          <article className="message is-danger">
-            <div className="message-body">{errorMessage}</div>
-          </article>
+          <div className="notification is-danger is-light">{errorMessage}</div>
         )}
 
         <button

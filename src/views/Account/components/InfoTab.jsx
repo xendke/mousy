@@ -14,11 +14,13 @@ const InfoTab = ({ user, firebase, dispatch }) => {
     e.preventDefault()
     setLoading(true)
     const { auth, info } = user
-    firebase.doUserInfoEdit(auth.uid, { ...info, name }).then(() => {
+    const newInfo = { ...info, name }
+
+    firebase.doUserInfoEdit(auth.uid, newInfo).then(() => {
       setLoading(false)
       setSuccess(true)
       setName('')
-      dispatch(setInfo({ ...info, name }))
+      dispatch(setInfo(newInfo))
     })
   }
 

@@ -44,6 +44,9 @@ form.section {
   textarea {
     background: $white;
   }
+  textarea.textarea {
+    min-height: 5rem;
+  }
 
   .checkbox-label {
     padding-left: 10px;

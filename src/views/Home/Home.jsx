@@ -32,11 +32,13 @@ class Home extends React.Component {
 
       const uniqueUsers = [...new Set(newPosts.map((post) => post.userId))]
       uniqueUsers.forEach((userId) => {
-        if (
+        const shouldFetchUserData =
+          userId !== user.auth.uid ||
           !userbase[userId] ||
           !userbase[userId].lastFetchedAt ||
           Date.now() - userbase[userId].lastFetchedAt > 1800000
-        ) {
+
+        if (shouldFetchUserData) {
           logger('fetching userbase info')
           firebase.doUserInfoGet(userId).then((userInfo) => {
             dispatch(
@@ -54,7 +56,13 @@ class Home extends React.Component {
         loadingPosts: false,
       }))
     }
-    if (user.info.interests && user.info.interests.length > 0) getFeed()
+    const shouldFetchFeed =
+      user.isSignedIn &&
+      user.auth.uid &&
+      user.info.interests &&
+      user.info.interests.length > 0
+
+    if (shouldFetchFeed) getFeed()
   }
 
   render() {
@@ -81,15 +89,21 @@ class Home extends React.Component {
     const userData = user && user.info
 
     const postsComponents = posts.map(({ content, userId, createdAt }) => {
-      const userOrLoading = userbase[userId] || {
-        name: 'Loading User',
-        username: 'loading',
+      let userInfo = {}
+      if (userId === user.auth.uid) {
+        userInfo = user.info
+      } else {
+        userInfo = userbase[userId] || {
+          name: 'Loading User',
+          username: 'loading',
+        }
       }
+
       return (
         <Post
-          key={`${userOrLoading.username}_${createdAt}`}
-          userFullName={userOrLoading.name}
-          username={userOrLoading.username}
+          key={`${userInfo.username}_${createdAt}`}
+          userFullName={userInfo.name}
+          username={userInfo.username}
           userId={userId}
           content={content}
           createdAt={createdAt}

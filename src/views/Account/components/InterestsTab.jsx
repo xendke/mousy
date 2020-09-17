@@ -47,6 +47,7 @@ const InterestsTab = ({ user, firebase, dispatch }) => {
             />
           </label>
         </div>
+        <p className="help">Comma-separated list of interests.</p>
       </div>
       <div className="control">
         <button
