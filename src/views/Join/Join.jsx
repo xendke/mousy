@@ -2,7 +2,9 @@ import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
-import { formatInterests, debounce } from '~/utils'
+import { debounce, formatInterests } from '~/utils'
+
+import { Info, Credentials } from './components'
 
 import './Join.scss'
 
@@ -34,9 +36,15 @@ class Join extends React.Component {
       password: '',
       interests: '',
       error: null,
+      step: 'info',
     }
 
     this.handleChange = this.handleChange.bind(this)
+    this.setError = this.setError.bind(this)
+  }
+
+  setError(message) {
+    this.setState(() => ({ error: message }))
   }
 
   handleChange(event) {
@@ -53,7 +61,7 @@ class Join extends React.Component {
   }
 
   render() {
-    const { user, firebase } = this.props
+    const { user } = this.props
     if (user.isSignedIn) return <Redirect to="/me" />
 
     const {
@@ -65,21 +73,42 @@ class Join extends React.Component {
       error,
       usernameIsAvailable,
       checkingUsernameExists,
+      step,
     } = this.state
 
-    const usernameAvailabilityMessage = () => {
-      if (checkingUsernameExists) {
-        return <p className="help">Checking if username is available...</p>
-      }
-      if (usernameIsAvailable) {
-        return <p className="help">Username is available!</p>
-      }
-      if (username.length > 4) {
-        return <p className="help">Username is not available</p>
-      }
+    const Continue = (
+      <div className="field is-grouped">
+        <div className="control ">
+          <button
+            type="button"
+            className="button is-primary"
+            onClick={() => {
+              if (name.length <= 2) {
+                return this.setError('Name is too short.')
+              }
+              if (username.length <= 4) {
+                return this.setError('Username is too short.')
+              }
+              if (!usernameIsAvailable) {
+                return this.setError('Username is not available.')
+              }
+              if (formatInterests(interests).length < 2) {
+                return this.setError('Must have at least two interests.')
+              }
+              return this.setState(() => ({ step: 'credentials' }))
+            }}
+          >
+            Continue
+          </button>
+        </div>
 
-      return null
-    }
+        <div className="control to-login">
+          <Link to="/login" className="is-text">
+            Already have an account?
+          </Link>
+        </div>
+      </div>
+    )
 
     return (
       <form className="section">
@@ -88,152 +117,27 @@ class Join extends React.Component {
         {error && (
           <div className="notification is-danger is-light">{error}</div>
         )}
-
-        <div className="field">
-          <div className="control">
-            <label htmlFor="name" className="label">
-              Name
-              <input
-                className="input"
-                id="name"
-                type="text"
-                name="name"
-                value={name}
-                onChange={this.handleChange}
-              />
-            </label>
-          </div>
-        </div>
-
-        <div className="field">
-          <div className="control">
-            <label htmlFor="username" className="label">
-              Username
-              <input
-                className="input"
-                id="username"
-                type="text"
-                name="username"
-                value={username}
-                onChange={this.handleChange}
-              />
-            </label>
-          </div>
-          {usernameAvailabilityMessage()}
-        </div>
-
-        <div className="field">
-          <div className="control">
-            <label htmlFor="email" className="label">
-              Email
-              <input
-                className="input"
-                id="email"
-                type="text"
-                name="email"
-                value={email}
-                onChange={this.handleChange}
-              />
-            </label>
-          </div>
-        </div>
-
-        <div className="field">
-          <div className="control">
-            <label htmlFor="password" className="label">
-              Password
-              <input
-                className="input"
-                id="password"
-                type="password"
-                name="password"
-                value={password}
-                onChange={this.handleChange}
-              />
-            </label>
-          </div>
-        </div>
-
-        <div className="field">
-          <div className="control">
-            <label htmlFor="interests" className="label">
-              Interests
-              <textarea
-                className="textarea"
-                id="interests"
-                name="interests"
-                value={interests}
-                onChange={this.handleChange}
-              />
-            </label>
-          </div>
-          <p className="help">Comma-separated list of interests.</p>
-        </div>
-
-        <div className="field">
-          <div className="control">
-            <label htmlFor="checkbox" className="checkbox">
-              <input type="checkbox" id="checkbox" />
-              <span className="checkbox-label">
-                I agree to the
-                <a href="https://google.com"> terms and conditions</a>
-              </span>
-            </label>
-          </div>
-        </div>
-
-        <div className="field is-grouped">
-          <div className="control">
-            <button
-              type="submit"
-              className="button is-primary"
-              onClick={async (event) => {
-                event.preventDefault()
-                try {
-                  if (username.length < 4) {
-                    throw Error('Username must be at least 4 characters.')
-                  }
-
-                  const formattedInterests = formatInterests(interests)
-
-                  if (formattedInterests.length < 2) {
-                    throw Error('You should have at least two interests.')
-                  }
-
-                  const { exists } = await firebase.doUsernameExistsCheck(
-                    username
-                  )
-                  if (!exists) {
-                    const authUser = await firebase.doCreateUserWithEmailAndPassword(
-                      email,
-                      password
-                    )
-                    await firebase.doUserInfoEdit(authUser.user.uid, {
-                      name,
-                      username,
-                      email,
-                      interests: formattedInterests,
-                    })
-                    await firebase.doUsernameRegister(
-                      username,
-                      authUser.user.uid
-                    )
-                    await firebase.doSignInWithEmailAndPassword(email, password)
-                  }
-                } catch (e) {
-                  this.setState(() => ({ error: e.message }))
-                }
-              }}
-            >
-              Sign up
-            </button>
-          </div>
-          <div className="control to-login">
-            <Link to="/login" className="is-text">
-              Already have an account?
-            </Link>
-          </div>
-        </div>
+        {step === 'info' ? (
+          <Info
+            handleChange={this.handleChange}
+            name={name}
+            username={username}
+            interests={interests}
+            checkingUsernameExists={checkingUsernameExists}
+            usernameIsAvailable={usernameIsAvailable}
+            action={Continue}
+          />
+        ) : (
+          <Credentials
+            handleChange={this.handleChange}
+            email={email}
+            password={password}
+            name={name}
+            username={username}
+            interests={interests}
+            setError={this.setError}
+          />
+        )}
       </form>
     )
   }
