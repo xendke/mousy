@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Loading, Post, PostForm } from '~/components'
+import { Loading, Post, PostForm, Empty } from '~/components'
+import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
 import { setUserbaseInfo } from '~/redux/actions/userbase'
 import personImage from '~/assets/person.png'
@@ -126,12 +127,24 @@ class Home extends React.Component {
       )
     })
 
+    const getContent = () => {
+      if (loadingPosts) return <Loading />
+      if (postsComponents.length > 0) return postsComponents
+      const actions = [<Action key="Account" link="/account" label="Account" />]
+      return (
+        <Empty
+          message="No posts here. Try adding more of your interests!"
+          actions={actions}
+        />
+      )
+    }
+
     if (userInfo) {
       return (
         <div className="Feed">
           <PostForm />
           <h1 className="title is-medium">Feed</h1>
-          {loadingPosts ? <Loading /> : postsComponents}
+          {getContent()}
         </div>
       )
     }
