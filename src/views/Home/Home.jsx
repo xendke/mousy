@@ -18,58 +18,75 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    const { firebase, userbase, user, dispatch } = this.props
+    const { isSignedIn, auth, userInfo } = this.props
 
-    const getFeed = async () => {
-      const postsCollection = await firebase.doInterestsPostsGet(
-        user.info.interests
-      )
-      const newPosts = []
-      postsCollection.forEach((postRef) => {
-        const post = postRef.data()
-        newPosts.push(post)
-      })
-
-      const uniqueUsers = [...new Set(newPosts.map((post) => post.userId))]
-      uniqueUsers.forEach((userId) => {
-        const shouldFetchUserData =
-          userId !== user.auth.uid ||
-          !userbase[userId] ||
-          !userbase[userId].lastFetchedAt ||
-          Date.now() - userbase[userId].lastFetchedAt > 1800000
-
-        if (shouldFetchUserData) {
-          logger('fetching userbase info')
-          firebase.doUserInfoGet(userId).then((userInfo) => {
-            dispatch(
-              setUserbaseInfo(userId, {
-                ...userInfo.data(),
-                lastFetchedAt: Date.now(),
-              })
-            )
-          })
-        }
-      })
-
-      this.setState(() => ({
-        posts: newPosts,
-        loadingPosts: false,
-      }))
-    }
     const shouldFetchFeed =
-      user.isSignedIn &&
-      user.auth.uid &&
-      user.info.interests &&
-      user.info.interests.length > 0
+      isSignedIn &&
+      auth.uid &&
+      userInfo.interests &&
+      userInfo.interests.length > 0
 
-    if (shouldFetchFeed) getFeed()
+    if (shouldFetchFeed) this.getFeed()
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isSignedIn, auth, userInfo } = this.props
+
+    const shouldFetchFeed =
+      userInfo &&
+      userInfo.username !== prevProps.userInfo.username &&
+      isSignedIn &&
+      auth.uid &&
+      userInfo.interests &&
+      userInfo.interests.length > 0
+
+    if (shouldFetchFeed) this.getFeed()
+  }
+
+  getFeed = async () => {
+    logger('fetching feed')
+    const { firebase, userbase, auth, userInfo, dispatch } = this.props
+
+    const postsCollection = await firebase.doInterestsPostsGet(
+      userInfo.interests
+    )
+    const newPosts = []
+    postsCollection.forEach((postRef) => {
+      const post = postRef.data()
+      newPosts.push(post)
+    })
+
+    const uniqueUsers = [...new Set(newPosts.map((post) => post.userId))]
+    uniqueUsers.forEach((userId) => {
+      const shouldFetchUserData =
+        userId !== auth.uid ||
+        !userbase[userId] ||
+        !userbase[userId].lastFetchedAt ||
+        Date.now() - userbase[userId].lastFetchedAt > 1800000
+
+      if (shouldFetchUserData) {
+        firebase.doUserInfoGet(userId).then((otherUser) => {
+          dispatch(
+            setUserbaseInfo(userId, {
+              ...otherUser.data(),
+              lastFetchedAt: Date.now(),
+            })
+          )
+        })
+      }
+    })
+
+    this.setState(() => ({
+      posts: newPosts,
+      loadingPosts: false,
+    }))
   }
 
   render() {
     const { posts, loadingPosts } = this.state
-    const { user, userbase } = this.props
+    const { auth, isSignedIn, userInfo, userbase } = this.props
 
-    if (!user.isSignedIn) {
+    if (!isSignedIn) {
       return (
         <div className="the-fold columns">
           <div className="fold-text column">
@@ -86,14 +103,12 @@ class Home extends React.Component {
       )
     }
 
-    const userData = user && user.info
-
     const postsComponents = posts.map(({ content, userId, createdAt }) => {
-      let userInfo = {}
-      if (userId === user.auth.uid) {
-        userInfo = user.info
+      let userData = {}
+      if (userId === auth.uid) {
+        userData = userInfo
       } else {
-        userInfo = userbase[userId] || {
+        userData = userbase[userId] || {
           name: 'Loading User',
           username: 'loading',
         }
@@ -101,9 +116,9 @@ class Home extends React.Component {
 
       return (
         <Post
-          key={`${userInfo.username}_${createdAt}`}
-          userFullName={userInfo.name}
-          username={userInfo.username}
+          key={`${userData.username}_${createdAt}`}
+          userFullName={userData.name}
+          username={userData.username}
           userId={userId}
           content={content}
           createdAt={createdAt}
@@ -111,7 +126,7 @@ class Home extends React.Component {
       )
     })
 
-    if (userData) {
+    if (userInfo) {
       return (
         <div className="Feed">
           <PostForm />
@@ -125,7 +140,9 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  isSignedIn: state.user.isSignedIn,
+  auth: state.user.auth,
+  userInfo: state.user.info,
   userbase: state.userbase,
 })
 
