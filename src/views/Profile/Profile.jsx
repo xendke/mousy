@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Post, Loading, Avatar } from '~/components'
+import { Post, Loading, Avatar, Empty } from '~/components'
+import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
 
 import './Profile.scss'
@@ -57,6 +58,18 @@ const Profile = ({ user, firebase, match }) => {
 
   const isOwnProfile = params.userId === user.auth.uid || !params.userId
 
+  const getContent = () => {
+    if (loadingPosts) return <Loading />
+    if (postsComponents.length > 0) return postsComponents
+    const emptyActions = [<Action key="Feed" link="/" label="Feed" />]
+    return (
+      <Empty
+        message="No posts yet. Try heading to the Feed to post your thoughts!"
+        actions={emptyActions}
+      />
+    )
+  }
+
   return (
     <section className="Profile container columns is-desktop">
       <div className="column is-one-quarter-desktop user-info">
@@ -88,9 +101,7 @@ const Profile = ({ user, firebase, match }) => {
         )}
       </div>
 
-      <div className="column">
-        {loadingPosts ? <Loading /> : postsComponents}
-      </div>
+      <div className="column">{getContent()}</div>
     </section>
   )
 }
