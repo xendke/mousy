@@ -4,40 +4,44 @@
   margin: 0;
 }
 
-.the-fold {
+.Landing {
   min-height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  .fold-text {
-    color: $white;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-
-    @media screen and (min-width: 1023px) {
-      text-align: left;
-      padding-left: 70px;
-    }
-
-    h1 {
-      font-weight: 600;
-      font-size: 50px;
-    }
-    p {
-      font-size: 25px;
-    }
-  }
   .fold-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: none;
+    max-width: 500px;
+    margin: 2rem;
 
     @media screen and (min-width: 1023px) {
-      padding-right: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     img {
       border-radius: 50%;
+    }
+  }
+
+  .right {
+    margin: 2rem;
+
+    .logo {
+      max-width: 160px;
+    }
+    .card {
+      border-radius: 6px;
+      max-width: 500px;
+      .title {
+        font-size: 1.5rem;
+
+        @media screen and (min-width: 1023px) {
+          font-size: 2rem;
+        }
+      }
     }
   }
 }

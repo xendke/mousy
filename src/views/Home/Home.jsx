@@ -4,8 +4,8 @@ import { Loading, Post, PostForm, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
 import { setUserbaseInfo } from '~/redux/actions/userbase'
-import personImage from '~/assets/person.png'
 import { logger } from '~/utils'
+import Landing from './Landing'
 
 import './Home.scss'
 
@@ -88,20 +88,7 @@ class Home extends React.Component {
     const { auth, isSignedIn, userInfo, userbase } = this.props
 
     if (!isSignedIn) {
-      return (
-        <div className="the-fold columns">
-          <div className="fold-text column">
-            <h1>Don&apos;t Be Shy!</h1>
-            <p>Connect with people like you.</p>
-          </div>
-          <div className="fold-image column">
-            <img
-              src={personImage}
-              alt="Digitally rendered human sitting with pets."
-            />
-          </div>
-        </div>
-      )
+      return <Landing />
     }
 
     const postsComponents = posts.map(({ content, userId, createdAt }) => {
