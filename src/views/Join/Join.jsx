@@ -14,16 +14,16 @@ class Join extends React.Component {
     const { firebase } = this.props
     if (isValidUsername) {
       firebase.doUsernameExistsCheck(username).then((res) => {
-        this.setState({
+        this.setState(() => ({
           usernameIsAvailable: !res.exists,
           checkingUsernameExists: false,
-        })
+        }))
       })
     } else {
-      this.setState({
+      this.setState(() => ({
         usernameIsAvailable: false,
         checkingUsernameExists: false,
-      })
+      }))
     }
   }, 2000)
 
@@ -56,7 +56,9 @@ class Join extends React.Component {
         [name]: value,
         ...(isValidUsername && { checkingUsernameExists: true }),
       }),
-      () => this.checkIfUsernameExists(isValidUsername)
+      () => {
+        if (isValidUsername) this.checkIfUsernameExists(isValidUsername)
+      }
     )
   }
 
