@@ -28,7 +28,7 @@ class App extends Component {
           <TopNav />
           <Route path="/" exact component={Home} />
           <Route path="/me" exact component={Profile} />
-          <Route path="/account" exact component={Account} />
+          <Route path="/account/:tab" exact component={Account} />
           <Route path="/shy/:userId" component={Profile} />
           <Route path="/login" exact component={Login} />
           <Route path="/join" exact component={Join} />

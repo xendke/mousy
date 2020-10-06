@@ -8,17 +8,21 @@ import InterestsTab from './components/InterestsTab'
 
 import './Account.scss'
 
-const Account = ({ user }) => {
-  const [currentTab, setCurrentTab] = useState('avatar')
-
-  if (!user.isSignedIn) {
-    return <Redirect to="/login" />
-  }
-
+const Account = ({ user, match, history }) => {
+  const { params } = match
   const tabContents = {
     avatar: <AvatarTab />,
     info: <InfoTab />,
     interests: <InterestsTab />,
+  }
+
+  let currentTab = 'avatar'
+  if (Object.keys(tabContents).includes(params.tab)) currentTab = params.tab
+
+  const setCurrentTab = (tab) => history.push(`/account/${tab}`)
+
+  if (!user.isSignedIn) {
+    return <Redirect to="/login" />
   }
 
   return (

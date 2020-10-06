@@ -117,7 +117,9 @@ class Home extends React.Component {
     const getContent = () => {
       if (loadingPosts) return <Loading />
       if (postsComponents.length > 0) return postsComponents
-      const actions = [<Action key="Account" link="/account" label="Account" />]
+      const actions = [
+        <Action key="Account" link="/account/interests" label="Account" />,
+      ]
       return (
         <Empty
           message="No posts here. Try adding more of your interests!"

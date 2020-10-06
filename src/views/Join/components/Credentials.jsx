@@ -19,6 +19,7 @@ const Credentials = ({
           <label htmlFor="email" className="label">
             Email
             <input
+              autoComplete="off"
               className="input"
               id="email"
               type="text"
@@ -35,6 +36,7 @@ const Credentials = ({
           <label htmlFor="password" className="label">
             Password
             <input
+              autoComplete="off"
               className="input"
               id="password"
               type="password"

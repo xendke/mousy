@@ -97,7 +97,7 @@ class Join extends React.Component {
               if (formatInterests(interests).length < 2) {
                 return this.setError('Must have at least two interests.')
               }
-              return this.setState(() => ({ step: 'credentials' }))
+              return this.setState(() => ({ step: 'credentials', error: null }))
             }}
           >
             Continue

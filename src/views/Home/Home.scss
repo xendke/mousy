@@ -5,10 +5,14 @@
 }
 
 .Landing {
-  min-height: 85vh;
+  min-height: 75vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+
+  @media screen and (min-width: 1023px) {
+    min-height: 85vh;
+  }
 
   .fold-image {
     display: none;
