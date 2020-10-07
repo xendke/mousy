@@ -6,7 +6,7 @@ import { setInfo } from '~/redux/actions/user'
 import './InfoTab.scss'
 
 const InfoTab = ({ user, firebase, dispatch }) => {
-  const [name, setName] = useState('')
+  const [name, setName] = useState(user.info.name || '')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 

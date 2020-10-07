@@ -4,7 +4,6 @@ import { Loading, Post, PostForm, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
 import { setUserbaseInfo } from '~/redux/actions/userbase'
-import { logger } from '~/utils'
 import Landing from './Landing'
 
 import './Home.scss'
@@ -45,7 +44,6 @@ class Home extends React.Component {
   }
 
   getFeed = async () => {
-    logger('fetching feed')
     const { firebase, userbase, auth, userInfo, dispatch } = this.props
 
     const postsCollection = await firebase.doInterestsPostsGet(
@@ -59,11 +57,10 @@ class Home extends React.Component {
 
     const uniqueUsers = [...new Set(newPosts.map((post) => post.userId))]
     uniqueUsers.forEach((userId) => {
+      const cacheExists = userbase[userId] && userbase[userId].lastFetchedAt
       const shouldFetchUserData =
         userId !== auth.uid ||
-        !userbase[userId] ||
-        !userbase[userId].lastFetchedAt ||
-        Date.now() - userbase[userId].lastFetchedAt > 1800000
+        (cacheExists && Date.now() - userbase[userId].lastFetchedAt > 1800000)
 
       if (shouldFetchUserData) {
         firebase.doUserInfoGet(userId).then((otherUser) => {
@@ -94,7 +91,7 @@ class Home extends React.Component {
     const postsComponents = posts.map(({ content, userId, createdAt }) => {
       let userData = {}
       if (userId === auth.uid) {
-        userData = userInfo
+        userData = { ...userInfo }
       } else {
         userData = userbase[userId] || {
           name: 'Loading User',
