@@ -5,6 +5,7 @@ import { formatInterests } from '~/utils'
 const Credentials = ({
   handleChange,
   email,
+  emailConfirmation,
   password,
   name,
   username,
@@ -19,7 +20,6 @@ const Credentials = ({
           <label htmlFor="email" className="label">
             Email
             <input
-              autoComplete="off"
               className="input"
               id="email"
               type="text"
@@ -33,10 +33,25 @@ const Credentials = ({
 
       <div className="field">
         <div className="control">
+          <label htmlFor="emailConfirmation" className="label">
+            Confirm Email
+            <input
+              className="input"
+              id="emailConfirmation"
+              type="text"
+              name="emailConfirmation"
+              value={emailConfirmation}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+      </div>
+
+      <div className="field">
+        <div className="control">
           <label htmlFor="password" className="label">
             Password
             <input
-              autoComplete="off"
               className="input"
               id="password"
               type="password"
@@ -67,8 +82,8 @@ const Credentials = ({
           onClick={async (event) => {
             event.preventDefault()
             try {
-              if (username.length < 4) {
-                throw Error('Username must be at least 4 characters.')
+              if (email !== emailConfirmation) {
+                throw Error('Emails do not match.')
               }
 
               const formattedInterests = formatInterests(interests)

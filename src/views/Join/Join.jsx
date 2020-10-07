@@ -33,6 +33,7 @@ class Join extends React.Component {
       name: '',
       username: '',
       email: '',
+      emailConfirmation: '',
       password: '',
       interests: '',
       error: null,
@@ -70,6 +71,7 @@ class Join extends React.Component {
       name,
       username,
       email,
+      emailConfirmation,
       password,
       interests,
       error,
@@ -133,6 +135,7 @@ class Join extends React.Component {
           <Credentials
             handleChange={this.handleChange}
             email={email}
+            emailConfirmation={emailConfirmation}
             password={password}
             name={name}
             username={username}
