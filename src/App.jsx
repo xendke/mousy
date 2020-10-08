@@ -6,6 +6,7 @@ import { withFirebase } from '~/components/firebase'
 import { Home, Profile, Account, Join, Login } from '~/views'
 import { TopNav, Footer } from '~/components'
 
+jhjhjhj
 class App extends Component {
   componentDidMount() {
     const { firebase, dispatch } = this.props

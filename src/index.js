@@ -10,6 +10,8 @@ import 'normalize.css'
 import './index.scss'
 import 'bulma/css/bulma.css'
 
+kjkjkjkj
+
 ReactDOM.render(
   <Provider store={store}>
     <FirebaseContext.Provider value={new Firebase()}>

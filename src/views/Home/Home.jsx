@@ -124,12 +124,14 @@ class Home extends React.Component {
         />
       )
     }
+    gshsghsgshgshsghsghsshgshgsgs
 
     if (userInfo) {
       return (
         <div className="Feed">
           <PostForm />
           <h1 className="title is-medium">Feed</h1>
+          <a onClick={() => true}>helo</a>svgssgfsfsgsfgsfs
           {getContent()}
         </div>
       )
