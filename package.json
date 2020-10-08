@@ -25,12 +25,17 @@
     "clean": "rm -rf ./build",
     "predeploy": "npm run clean && npm run build",
     "deploy": "firebase deploy",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint . --ext js,jsx",
+    "lint:fix": "eslint . --fix --ext js,jsx",
+    "lint:ci": "eslint . --fix --max-warnings 0 --ext js,jsx",
     "precommit": "lint-staged"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run lint:fix",
+      "pre-push": "yarn run lint:ci",
+      "post-receive": "yarn deploy"
+    }
   },
   "browserslist": [
     ">0.2%",
