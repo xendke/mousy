@@ -32,8 +32,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "yarn run lint:ci",
-      "post-receive": "yarn deploy"
+      "pre-push": "yarn run lint:ci"
     }
   },
   "browserslist": [
