@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Loading, Post, PostForm, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
