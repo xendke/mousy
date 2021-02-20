@@ -34,4 +34,5 @@ export const formatInterests = (interests) =>
     .split(',')
     .map((s) => s.trim())
 
-export const compose = (...all) => original => all.reduceRight((current, f) => f(current), original)
+export const compose = (...all) => (original) =>
+  all.reduceRight((current, f) => f(current), original)

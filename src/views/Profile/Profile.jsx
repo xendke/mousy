@@ -3,15 +3,22 @@ import xs from 'xstream'
 import sampleCombine from 'xstream/extra/sampleCombine'
 import { withEffects, toProps } from 'refract-xstream'
 import { connect } from 'react-redux'
-import { compose, logger } from '~/utils'
 import { Link } from 'react-router-dom'
+import { compose, logger } from '~/utils'
 import { Post, Loading, Avatar, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
 
 import './Profile.scss'
 
-const Profile = ({ user, isOwnProfile, userId, userData, posts, loadingPosts }) => {
+const Profile = ({
+  user,
+  isOwnProfile,
+  userId,
+  userData,
+  posts,
+  loadingPosts,
+}) => {
   const [_, setPosts] = useState([])
   const [__, setLoadingPosts] = useState(true)
   // useEffect(() => {
@@ -101,20 +108,28 @@ const mapStateToProps = (state) => {
 }
 
 const aperture = (component, { firebase, user }) => {
-  const userIdParam = () => component.observe('match', ({ params }) => params.userId)
+  const userIdParam = () =>
+    component.observe('match', ({ params }) => params.userId)
 
   const loadOtherUserInfo$ = userIdParam()
     .filter((param) => param)
-    .map((userId) => xs.fromPromise(firebase.doUserInfoGet(userId).then((res) => res.data())))
+    .map((userId) =>
+      xs.fromPromise(firebase.doUserInfoGet(userId).then((res) => res.data()))
+    )
     .flatten()
-    .compose(sampleCombine(component.observe('match', ({ params }) => params.userId)))
+    .compose(
+      sampleCombine(component.observe('match', ({ params }) => params.userId))
+    )
     .map(([userData, userId]) => ({ userData, isOwnProfile: false, userId }))
 
   const noUserIdParam$ = userIdParam()
     .filter((param) => !param)
     .mapTo({ userData: user.info, isOwnProfile: true, userId: user.auth.uid })
 
-  return xs.merge(noUserIdParam$, loadOtherUserInfo$).startWith({posts: [], loadingPosts: true}).map(toProps)
+  return xs
+    .merge(noUserIdParam$, loadOtherUserInfo$)
+    .startWith({ posts: [], loadingPosts: true })
+    .map(toProps)
 }
 
 export default compose(
