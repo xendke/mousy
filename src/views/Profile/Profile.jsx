@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import xs from 'xstream'
 import sampleCombine from 'xstream/extra/sampleCombine'
 import { withEffects, toProps } from 'refract-xstream'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { compose, logger } from '~/utils'
+import { compose } from '~/utils'
 import { Post, Loading, Avatar, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
@@ -19,8 +19,8 @@ const Profile = ({
   posts,
   loadingPosts,
 }) => {
-  const [_, setPosts] = useState([])
-  const [__, setLoadingPosts] = useState(true)
+  // const [, setPosts] = useState([])
+  // const [, setLoadingPosts] = useState(true)
   // useEffect(() => {
   //   const iife = async () => {
   //     const postsCollection = await firebase.doUserPostsGet(
