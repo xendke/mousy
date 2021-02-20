@@ -70,6 +70,9 @@ class Firebase {
       .orderBy('createdAt', 'desc')
       .limit(20)
       .get()
+
+  doUserLikedPostsGet = (postId, uid) =>
+    this.db.collection('users').doc(uid).collection('liked_posts').get()
 }
 
 export default Firebase

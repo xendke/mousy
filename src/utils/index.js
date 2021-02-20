@@ -33,3 +33,5 @@ export const formatInterests = (interests) =>
     .toLowerCase()
     .split(',')
     .map((s) => s.trim())
+
+export const compose = (...all) => original => all.reduceRight((current, f) => f(current), original)
