@@ -87,12 +87,6 @@ const Profile = ({
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  }
-}
-
 const aperture = (component, { firebase, user }) => {
   const userIdParam = () =>
     component.observe('match', ({ params }) => params.userId)
@@ -140,7 +134,7 @@ const aperture = (component, { firebase, user }) => {
 }
 
 export default compose(
-  connect(mapStateToProps),
+  connect((state) => ({ user: state.user })),
   withFirebase,
   withEffects(aperture, { mergeProps: true })
 )(Profile)
