@@ -1,12 +1,9 @@
 import React from 'react'
 
-const styles = {
-  margin: '5px 0px 25px',
-  textAlign: 'center',
-}
+import './Footer.scss'
 
 const Footer = () => (
-  <footer style={styles}>
+  <footer className="Footer">
     Made with ♥ by&nbsp;
     <a href="https://twitter.com/xendke" className="has-text-black-ter">
       @xendke

@@ -44,7 +44,7 @@ const Post = ({
                     className="button is-small is-text has-text-primary"
                   >
                     <span className="icon">
-                      <i className="fas fa-comment-dots" />
+                      <i className="fas fa-retweet" />
                     </span>
                   </button>
                 </p>
@@ -54,7 +54,7 @@ const Post = ({
                     className="button is-small is-text has-text-primary"
                   >
                     <span className="icon">
-                      <i className="fas fa-retweet" />
+                      <i className="fas fa-comment" />
                     </span>
                   </button>
                 </p>
