@@ -1,15 +1,17 @@
 import React from 'react'
+import { Link, Redirect } from 'react-router-dom'
 import xs from 'xstream'
 import sampleCombine from 'xstream/extra/sampleCombine'
 import { withEffects, toProps } from 'refract-xstream'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { compose } from '~/utils'
 import { Post, Loading, Avatar, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
 
 import './Profile.scss'
+
+const shouldRedirectToLogin = (auth, userData = {}) => !auth || userData.error
 
 const Profile = ({
   user,
@@ -19,29 +21,13 @@ const Profile = ({
   posts,
   loadingPosts,
 }) => {
-  // const [, setPosts] = useState([])
-  // const [, setLoadingPosts] = useState(true)
-  // useEffect(() => {
-  //   const iife = async () => {
-  //     const postsCollection = await firebase.doUserPostsGet(
-  //       params.userId || user.auth.uid
-  //     )
-  //     const newPosts = []
-  //
-  //     postsCollection.forEach((post) => {
-  //       newPosts.push(post.data())
-  //     })
-  //     setPosts(newPosts)
-  //     setLoadingPosts(false)
-  //   }
-  //   iife()
-  // }, [user.auth, params.userId, firebase])
-
-  if (!user.auth) {
-    return <Loading />
+  if(shouldRedirectToLogin(user.auth, userData)) {
+    return <Redirect to="/login" />
   }
 
-  if (!userData) return <Loading />
+  if (!user.auth || !userData) {
+    return <Loading />
+  }
 
   const postsComponents = posts.map(({ content, createdAt }) => (
     <Post
@@ -114,7 +100,7 @@ const aperture = (component, { firebase, user }) => {
   const loadOtherUserInfo$ = userIdParam()
     .filter((param) => param)
     .map((userId) =>
-      xs.fromPromise(firebase.doUserInfoGet(userId).then((res) => res.data()))
+      xs.fromPromise(firebase.doUserInfoGet(userId).then((res) => res.data()).catch(() => ({ error: true })))
     )
     .flatten()
     .compose(
@@ -122,12 +108,27 @@ const aperture = (component, { firebase, user }) => {
     )
     .map(([userData, userId]) => ({ userData, isOwnProfile: false, userId }))
 
-  const noUserIdParam$ = userIdParam()
+  const useOwnUserInfo$ = userIdParam()
     .filter((param) => !param)
-    .mapTo({ userData: user.info, isOwnProfile: true, userId: user.auth.uid })
+    .mapTo({ userData: user.info, isOwnProfile: true, userId: user.auth && user.auth.uid })
+
+  const loadPosts$ = userIdParam()
+    .map((param) => param ? param : user.auth.uid)
+    .map((userId) =>
+      xs.fromPromise(firebase.doUserPostsGet(userId))
+    )
+    .flatten()
+    .map((postsCollection) => {
+      const posts = []
+      postsCollection.forEach((post) => {
+        posts.push(post.data())
+      })
+      return { loadingPosts: false, posts }
+    })
+
 
   return xs
-    .merge(noUserIdParam$, loadOtherUserInfo$)
+    .merge(useOwnUserInfo$, loadOtherUserInfo$, loadPosts$)
     .startWith({ posts: [], loadingPosts: true })
     .map(toProps)
 }
