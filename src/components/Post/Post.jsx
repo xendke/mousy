@@ -4,7 +4,14 @@ import { formatDistanceToNowStrict } from 'date-fns'
 
 import './Post.scss'
 
-const Post = ({ userFullName, username, userId, content, createdAt }) => {
+const Post = ({
+  userFullName,
+  username,
+  userId,
+  content,
+  createdAt,
+  likeCount,
+}) => {
   const timePosted = formatDistanceToNowStrict(createdAt)
   const userRoute = `/shy/${userId}`
   const author = (
@@ -30,33 +37,39 @@ const Post = ({ userFullName, username, userId, content, createdAt }) => {
           </div>
           <nav className="level is-mobile">
             <div className="level-left">
-              <a
-                className="level-item"
-                aria-label="reply"
-                href="https://google.com"
-              >
-                <span className="icon is-small has-text-primary">
-                  <i className="fas fa-reply" aria-hidden="true" />
-                </span>
-              </a>
-              <a
-                className="level-item"
-                aria-label="retweet"
-                href="https://google.com"
-              >
-                <span className="icon is-small has-text-primary">
-                  <i className="fas fa-retweet" aria-hidden="true" />
-                </span>
-              </a>
-              <a
-                className="level-item"
-                aria-label="like"
-                href="https://google.com"
-              >
-                <span className="icon is-small has-text-primary">
-                  <i className="fas fa-heart" aria-hidden="true" />
-                </span>
-              </a>
+              <div className="field has-addons">
+                <p className="control">
+                  <button
+                    type="button"
+                    className="button is-small is-text has-text-primary"
+                  >
+                    <span className="icon">
+                      <i className="fas fa-comment-dots" />
+                    </span>
+                  </button>
+                </p>
+                <p className="control">
+                  <button
+                    type="button"
+                    className="button is-small is-text has-text-primary"
+                  >
+                    <span className="icon">
+                      <i className="fas fa-retweet" />
+                    </span>
+                  </button>
+                </p>
+                <p className="control">
+                  <button
+                    type="button"
+                    className="button is-small is-text has-text-primary"
+                  >
+                    <span className="icon">
+                      <i className="fas fa-heart" />
+                    </span>
+                    <span>{likeCount || 0}</span>
+                  </button>
+                </p>
+              </div>
             </div>
           </nav>
         </div>

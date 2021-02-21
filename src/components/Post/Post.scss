@@ -1,4 +1,10 @@
 .Post.box {
   margin: 10px 0;
   margin-bottom: 1.5rem;
+  .media .content {
+    margin-bottom: 0.5rem;
+  }
+  .button {
+      text-decoration: none;
+  }
 }

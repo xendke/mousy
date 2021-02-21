@@ -88,28 +88,31 @@ class Home extends React.Component {
       return <Landing />
     }
 
-    const postsComponents = posts.map(({ content, userId, createdAt }) => {
-      let userData = {}
-      if (userId === auth.uid) {
-        userData = { ...userInfo }
-      } else {
-        userData = userbase[userId] || {
-          name: 'Loading User',
-          username: 'loading',
+    const postsComponents = posts.map(
+      ({ content, userId, createdAt, likeCount }) => {
+        let userData = {}
+        if (userId === auth.uid) {
+          userData = { ...userInfo }
+        } else {
+          userData = userbase[userId] || {
+            name: 'Loading User',
+            username: 'loading',
+          }
         }
-      }
 
-      return (
-        <Post
-          key={`${userData.username}_${createdAt}`}
-          userFullName={userData.name}
-          username={userData.username}
-          userId={userId}
-          content={content}
-          createdAt={createdAt}
-        />
-      )
-    })
+        return (
+          <Post
+            key={`${userData.username}_${createdAt}`}
+            userFullName={userData.name}
+            username={userData.username}
+            userId={userId}
+            content={content}
+            createdAt={createdAt}
+            likeCount={likeCount}
+          />
+        )
+      }
+    )
 
     const getContent = () => {
       if (loadingPosts) return <Loading />

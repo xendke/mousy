@@ -29,13 +29,14 @@ const Profile = ({
     return <Loading />
   }
 
-  const postsComponents = posts.map(({ content, createdAt }) => (
+  const postsComponents = posts.map(({ content, createdAt, likeCount }) => (
     <Post
       key={`${userData.username}_${createdAt}`}
       userFullName={userData.name}
       username={userData.username}
       content={content}
       createdAt={createdAt}
+      likeCount={likeCount}
     />
   ))
 
