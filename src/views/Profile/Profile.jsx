@@ -21,7 +21,7 @@ const Profile = ({
   posts,
   loadingPosts,
 }) => {
-  if(shouldRedirectToLogin(user.auth, userData)) {
+  if (shouldRedirectToLogin(user.auth, userData)) {
     return <Redirect to="/login" />
   }
 
@@ -100,7 +100,12 @@ const aperture = (component, { firebase, user }) => {
   const loadOtherUserInfo$ = userIdParam()
     .filter((param) => param)
     .map((userId) =>
-      xs.fromPromise(firebase.doUserInfoGet(userId).then((res) => res.data()).catch(() => ({ error: true })))
+      xs.fromPromise(
+        firebase
+          .doUserInfoGet(userId)
+          .then((res) => res.data())
+          .catch(() => ({ error: true }))
+      )
     )
     .flatten()
     .compose(
@@ -110,13 +115,15 @@ const aperture = (component, { firebase, user }) => {
 
   const useOwnUserInfo$ = userIdParam()
     .filter((param) => !param)
-    .mapTo({ userData: user.info, isOwnProfile: true, userId: user.auth && user.auth.uid })
+    .mapTo({
+      userData: user.info,
+      isOwnProfile: true,
+      userId: user.auth && user.auth.uid,
+    })
 
   const loadPosts$ = userIdParam()
-    .map((param) => param ? param : user.auth.uid)
-    .map((userId) =>
-      xs.fromPromise(firebase.doUserPostsGet(userId))
-    )
+    .map((param) => param || user.auth.uid)
+    .map((userId) => xs.fromPromise(firebase.doUserPostsGet(userId)))
     .flatten()
     .map((postsCollection) => {
       const posts = []
@@ -125,7 +132,6 @@ const aperture = (component, { firebase, user }) => {
       })
       return { loadingPosts: false, posts }
     })
-
 
   return xs
     .merge(useOwnUserInfo$, loadOtherUserInfo$, loadPosts$)
