@@ -29,9 +29,10 @@ const Profile = ({
     return <Loading />
   }
 
-  const postsComponents = posts.map(({ content, createdAt, likeCount }) => (
+  const postsComponents = posts.map(({ id, content, createdAt, likeCount }) => (
     <Post
-      key={`${userData.username}_${createdAt}`}
+      key={id}
+      postId={id}
       userFullName={userData.name}
       username={userData.username}
       content={content}
@@ -120,11 +121,8 @@ const aperture = (component, { firebase, user }) => {
     .map((param) => param || user.auth.uid)
     .map((userId) => xs.fromPromise(firebase.doUserPostsGet(userId)))
     .flatten()
-    .map((postsCollection) => {
-      const posts = []
-      postsCollection.forEach((post) => {
-        posts.push(post.data())
-      })
+    .debug('posts')
+    .map((posts) => {
       return { loadingPosts: false, posts }
     })
 

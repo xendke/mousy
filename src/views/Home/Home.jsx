@@ -46,14 +46,7 @@ class Home extends React.Component {
   getFeed = async () => {
     const { firebase, userbase, auth, userInfo, dispatch } = this.props
 
-    const postsCollection = await firebase.doInterestsPostsGet(
-      userInfo.interests
-    )
-    const newPosts = []
-    postsCollection.forEach((postRef) => {
-      const post = postRef.data()
-      newPosts.push(post)
-    })
+    const newPosts = await firebase.doInterestsPostsGet(userInfo.interests)
 
     const uniqueUsers = [...new Set(newPosts.map((post) => post.userId))]
     uniqueUsers.forEach((userId) => {
@@ -89,7 +82,7 @@ class Home extends React.Component {
     }
 
     const postsComponents = posts.map(
-      ({ content, userId, createdAt, likeCount }) => {
+      ({ id, content, userId, createdAt, likeCount }) => {
         let userData = {}
         if (userId === auth.uid) {
           userData = { ...userInfo }
@@ -102,7 +95,8 @@ class Home extends React.Component {
 
         return (
           <Post
-            key={`${userData.username}_${createdAt}`}
+            key={id}
+            postId={id}
             userFullName={userData.name}
             username={userData.username}
             userId={userId}

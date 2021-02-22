@@ -4,6 +4,15 @@ import 'firebase/firestore'
 import 'firebase/storage'
 import config from './firebase-auth'
 
+const getCollectionData = (collectionRef) => {
+  const data = []
+  collectionRef.forEach((documentRef) => {
+    const document = documentRef.data()
+    data.push({ id: documentRef.id, ...document })
+  })
+  return data
+}
+
 class Firebase {
   constructor() {
     if (!app.apps.length) {
@@ -60,6 +69,7 @@ class Firebase {
       .where('userId', '==', uid)
       .orderBy('createdAt', 'desc')
       .get()
+      .then(getCollectionData)
 
   doUserPostsAdd = (newPost) => this.db.collection('posts').add(newPost)
 
@@ -70,6 +80,15 @@ class Firebase {
       .orderBy('createdAt', 'desc')
       .limit(20)
       .get()
+      .then(getCollectionData)
+
+  doUserPostLike = (postId) =>
+    this.db
+      .collection('posts')
+      .doc(postId)
+      .update({
+        likeCount: app.firestore.FieldValue.increment(1),
+      })
 
   doUserLikedPostsGet = (postId, uid) =>
     this.db.collection('users').doc(uid).collection('liked_posts').get()

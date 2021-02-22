@@ -1,6 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { withEffects, toProps } from 'refract-xstream'
 import { formatDistanceToNowStrict } from 'date-fns'
+import xs from 'xstream'
+import { connect } from 'react-redux'
+import { compose } from '~/utils'
+import { withFirebase } from '~/components/firebase'
 
 import './Post.scss'
 
@@ -11,6 +16,8 @@ const Post = ({
   content,
   createdAt,
   likeCount,
+  onLike,
+  liked,
 }) => {
   const timePosted = formatDistanceToNowStrict(createdAt)
   const userRoute = `/shy/${userId}`
@@ -22,6 +29,11 @@ const Post = ({
       <small className="has-text-grey-dark"> @{username}</small>
     </>
   )
+
+  const getLikes = () => {
+    const selfCount = liked ? 1 : 0
+    return likeCount ? likeCount + selfCount : selfCount
+  }
 
   return (
     <div className="Post box">
@@ -61,12 +73,13 @@ const Post = ({
                 <p className="control">
                   <button
                     type="button"
+                    onClick={() => onLike(true)}
                     className="button is-small is-text has-text-primary"
                   >
                     <span className="icon">
                       <i className="fas fa-heart" />
                     </span>
-                    <span>{likeCount || 0}</span>
+                    <span>{getLikes()}</span>
                   </button>
                 </p>
               </div>
@@ -78,4 +91,26 @@ const Post = ({
   )
 }
 
-export default Post
+const aperture = (component, { firebase, postId }) => {
+  const [postLiked$, onLike] = component.useEvent('likePost')
+
+  return xs
+    .merge(
+      postLiked$
+        .filter((value) => value && postId)
+        .take(1)
+        .map(() => xs.fromPromise(firebase.doUserPostLike(postId)))
+        .flatten()
+        .mapTo({ liked: true }),
+      postLiked$.mapTo({
+        onLike,
+      })
+    )
+    .map(toProps)
+}
+
+export default compose(
+  connect((state) => ({ user: state.user })),
+  withFirebase,
+  withEffects(aperture, { mergeProps: true })
+)(Post)
