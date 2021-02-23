@@ -1,22 +1,24 @@
 service cloud.firestore {
   match /databases/{database}/documents {
     match /posts/{postId} {
-    	allow create: if request.auth != null;
-      allow update: if request.auth != null && request.auth.uid == resource.data.userId;
-    	allow read;
-      allow delete: if false;
+		allow create: if request.auth != null;
+		allow update: 
+			if (request.auth != null && request.auth.uid == resource.data.userId) 
+				|| (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount']));
+		allow read;
+		allow delete: if false;
     }
     match /users/{userId} {
-      allow update: if request.auth != null && request.auth.uid == userId;
-    	allow read: if request.auth != null;
-      allow create;
-      allow delete: if false;
+		allow update: if request.auth != null && request.auth.uid == userId;
+		allow read: if request.auth != null;
+		allow create;
+		allow delete: if false;
     }
     match /usernames/{username} {
-    	allow delete: if false;
-      allow update: if false;
-      allow create;
-    	allow read;
+		allow delete: if false;
+		allow update: if false;
+		allow create;
+		allow read;
     }
   }
 }
