@@ -102,6 +102,7 @@ const Credentials = ({
                   name,
                   username,
                   email,
+                  likedPosts: [],
                   interests: formattedInterests,
                 })
                 await firebase.doUsernameRegister(username, authUser.user.uid)

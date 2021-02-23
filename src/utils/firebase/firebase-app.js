@@ -82,13 +82,29 @@ class Firebase {
       .get()
       .then(getCollectionData)
 
-  doUserPostLike = (postId) =>
-    this.db
+  doPostLikeToggle = async (postId, uid) => {
+    const doc = await this.db.collection('users').doc(uid)
+    const self = (await doc.get()).data()
+
+    const currentlyLikedPosts = self.likedPosts || []
+    const likingPost = !currentlyLikedPosts.includes(postId)
+    const newLikedPosts = likingPost
+      ? currentlyLikedPosts.concat([postId])
+      : currentlyLikedPosts.filter((id) => postId !== id)
+
+    await doc
+      .update({ likedPosts: newLikedPosts })
+      .catch(() => ({ liked: !likingPost }))
+
+    return this.db
       .collection('posts')
       .doc(postId)
       .update({
-        likeCount: app.firestore.FieldValue.increment(1),
+        likeCount: app.firestore.FieldValue.increment(likingPost ? 1 : -1),
       })
+      .then(() => ({ liked: likingPost }))
+      .catch(() => ({ liked: !likingPost }))
+  }
 
   doUserLikedPostsGet = (postId, uid) =>
     this.db.collection('users').doc(uid).collection('liked_posts').get()

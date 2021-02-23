@@ -74,7 +74,9 @@ const Post = ({
                   <button
                     type="button"
                     onClick={() => onLike(true)}
-                    className="button is-small is-text has-text-primary"
+                    className={`button is-small is-text ${
+                      liked ? 'has-text-danger' : 'has-text-primary'
+                    }`}
                   >
                     <span className="icon">
                       <i className="fas fa-heart" />
@@ -91,17 +93,16 @@ const Post = ({
   )
 }
 
-const aperture = (component, { firebase, postId }) => {
+const aperture = (component, { firebase, postId, user }) => {
   const [postLiked$, onLike] = component.useEvent('likePost')
+  const { uid } = user.auth
 
   return xs
     .merge(
       postLiked$
         .filter((value) => value && postId)
-        .take(1)
-        .map(() => xs.fromPromise(firebase.doUserPostLike(postId)))
-        .flatten()
-        .mapTo({ liked: true }),
+        .map(() => xs.fromPromise(firebase.doPostLikeToggle(postId, uid)))
+        .flatten(),
       postLiked$.mapTo({
         onLike,
       })

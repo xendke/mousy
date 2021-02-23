@@ -93,6 +93,8 @@ class Home extends React.Component {
           }
         }
 
+        const likedPosts = userInfo.likedPosts || []
+
         return (
           <Post
             key={id}
@@ -103,6 +105,7 @@ class Home extends React.Component {
             content={content}
             createdAt={createdAt}
             likeCount={likeCount}
+            liked={likedPosts.includes(id)}
           />
         )
       }
