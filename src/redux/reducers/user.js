@@ -1,4 +1,10 @@
-import { SIGN_IN, SIGN_OUT, SET_AUTH, SET_INFO } from '../actions/user'
+import {
+  SIGN_IN,
+  SIGN_OUT,
+  SET_AUTH,
+  SET_INFO,
+  SET_LIKED_POSTS,
+} from '../actions/user'
 
 const defaultState = {
   isSignedIn: false,
@@ -24,6 +30,11 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         info: action.info,
+      }
+    case SET_LIKED_POSTS:
+      return {
+        ...state,
+        info: { ...state.info, likedPosts: action.likedPosts },
       }
     default:
       return state

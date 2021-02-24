@@ -94,7 +94,7 @@ class Firebase {
 
     await doc
       .update({ likedPosts: newLikedPosts })
-      .catch(() => ({ liked: !likingPost }))
+      .catch(() => ({ liked: !likingPost, likedPosts: currentlyLikedPosts }))
 
     return this.db
       .collection('posts')
@@ -102,12 +102,12 @@ class Firebase {
       .update({
         likeCount: app.firestore.FieldValue.increment(likingPost ? 1 : -1),
       })
-      .then(() => ({ liked: likingPost }))
-      .catch(() => ({ liked: !likingPost }))
+      .then(() => ({ liked: likingPost, likedPosts: newLikedPosts }))
+      .catch(() => ({ liked: !likingPost, likedPosts: currentlyLikedPosts }))
   }
 
   doUserLikedPostsGet = (postId, uid) =>
-    this.db.collection('users').doc(uid).collection('liked_posts').get()
+    this.db.collection('users').doc(uid).get()
 }
 
 export default Firebase

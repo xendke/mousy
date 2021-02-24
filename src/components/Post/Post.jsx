@@ -6,6 +6,7 @@ import xs from 'xstream'
 import { connect } from 'react-redux'
 import { compose } from '~/utils'
 import { withFirebase } from '~/components/firebase'
+import { setLikedPosts } from '~/redux/actions/user'
 
 import './Post.scss'
 
@@ -18,6 +19,7 @@ const Post = ({
   likeCount,
   onLike,
   liked,
+  didLikeAction = 0,
 }) => {
   const timePosted = formatDistanceToNowStrict(createdAt)
   const userRoute = `/shy/${userId}`
@@ -29,11 +31,6 @@ const Post = ({
       <small className="has-text-grey-dark"> @{username}</small>
     </>
   )
-
-  const getLikes = () => {
-    const selfCount = liked ? 1 : 0
-    return likeCount ? likeCount + selfCount : selfCount
-  }
 
   return (
     <div className="Post box">
@@ -81,7 +78,7 @@ const Post = ({
                     <span className="icon">
                       <i className="fas fa-heart" />
                     </span>
-                    <span>{getLikes()}</span>
+                    <span>{likeCount + didLikeAction}</span>
                   </button>
                 </p>
               </div>
@@ -93,7 +90,16 @@ const Post = ({
   )
 }
 
-const aperture = (component, { firebase, postId, user }) => {
+// const directions = {
+//   INCREASE: 1,
+//   DECREASE: -1,
+//   NONE: 0,
+// }
+
+const aperture = (
+  component,
+  { likeCount, firebase, postId, user, dispatch }
+) => {
   const [postLiked$, onLike] = component.useEvent('likePost')
   const { uid } = user.auth
 
@@ -102,15 +108,30 @@ const aperture = (component, { firebase, postId, user }) => {
       postLiked$
         .filter((value) => value && postId)
         .map(() => xs.fromPromise(firebase.doPostLikeToggle(postId, uid)))
-        .flatten(),
+        .flatten()
+        .debug('compose')
+        .map(({ liked, likedPosts }) => {
+          dispatch(setLikedPosts(likedPosts))
+          return { liked }
+        })
+        .fold(
+          (next, liked) => ({
+            likeCount: liked ? next.likeCount + 1 : next.likeCount - 1,
+            liked,
+          }),
+          likeCount
+        )
+        .debug(),
       postLiked$.mapTo({
         onLike,
+        likeCount,
       })
     )
     .map(toProps)
 }
 
 export default compose(
+  // withState(0),
   connect((state) => ({ user: state.user })),
   withFirebase,
   withEffects(aperture, { mergeProps: true })
