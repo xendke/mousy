@@ -77,7 +77,7 @@ const Post = ({
                     <span className="icon">
                       <i className="fas fa-heart" />
                     </span>
-                    <span>{likeCount || 0}</span>
+                    <span>{likeCount}</span>
                   </button>
                 </p>
               </div>
@@ -111,7 +111,7 @@ const aperture = (
             likeCount: liked ? previous.likeCount + 1 : previous.likeCount - 1,
             liked,
           }),
-          { likeCount }
+          { likeCount: likeCount || 0 }
         ),
       postLiked$.mapTo({
         onLike,
