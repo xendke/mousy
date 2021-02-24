@@ -19,7 +19,6 @@ const Post = ({
   likeCount,
   onLike,
   liked,
-  didLikeAction = 0,
 }) => {
   const timePosted = formatDistanceToNowStrict(createdAt)
   const userRoute = `/shy/${userId}`
@@ -78,7 +77,7 @@ const Post = ({
                     <span className="icon">
                       <i className="fas fa-heart" />
                     </span>
-                    <span>{likeCount + didLikeAction}</span>
+                    <span>{likeCount || 0}</span>
                   </button>
                 </p>
               </div>
@@ -89,12 +88,6 @@ const Post = ({
     </div>
   )
 }
-
-// const directions = {
-//   INCREASE: 1,
-//   DECREASE: -1,
-//   NONE: 0,
-// }
 
 const aperture = (
   component,
@@ -109,29 +102,25 @@ const aperture = (
         .filter((value) => value && postId)
         .map(() => xs.fromPromise(firebase.doPostLikeToggle(postId, uid)))
         .flatten()
-        .debug('compose')
         .map(({ liked, likedPosts }) => {
           dispatch(setLikedPosts(likedPosts))
-          return { liked }
+          return liked
         })
         .fold(
-          (next, liked) => ({
-            likeCount: liked ? next.likeCount + 1 : next.likeCount - 1,
+          (previous, liked) => ({
+            likeCount: liked ? previous.likeCount + 1 : previous.likeCount - 1,
             liked,
           }),
-          likeCount
-        )
-        .debug(),
+          { likeCount }
+        ),
       postLiked$.mapTo({
         onLike,
-        likeCount,
       })
     )
     .map(toProps)
 }
 
 export default compose(
-  // withState(0),
   connect((state) => ({ user: state.user })),
   withFirebase,
   withEffects(aperture, { mergeProps: true })
