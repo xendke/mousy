@@ -6,7 +6,7 @@ import { withFirebase } from '~/components/firebase'
 
 import './PostForm.scss'
 
-const PostForm = ({ user, firebase }) => {
+const PostForm = ({ user, firebase, getFeed }) => {
   const [content, setContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -21,9 +21,11 @@ const PostForm = ({ user, firebase }) => {
         createdAt: Date.now(),
         content,
         interests: user.info.interests,
+        likeCount: 0,
       })
       setContent('')
       setSuccess(true)
+      getFeed()
     } catch (e) {
       setError(e)
     }

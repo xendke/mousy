@@ -4,6 +4,7 @@ import { Loading, Post, PostForm, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
 import { setUserbaseInfo } from '~/redux/actions/userbase'
+import { setInterestsPosts } from '~/redux/actions/posts'
 import Landing from './Landing'
 
 import './Home.scss'
@@ -12,7 +13,6 @@ class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      posts: [],
       loadingPosts: true,
     }
   }
@@ -67,14 +67,15 @@ class Home extends React.Component {
       }
     })
 
+    dispatch(setInterestsPosts(newPosts))
     this.setState(() => ({
-      posts: newPosts,
       loadingPosts: false,
     }))
   }
 
   render() {
-    const { posts, loadingPosts } = this.state
+    const { loadingPosts } = this.state
+    const { posts } = this.props
     const { auth, isSignedIn, userInfo, userbase } = this.props
 
     if (!isSignedIn) {
@@ -128,7 +129,7 @@ class Home extends React.Component {
     if (userInfo) {
       return (
         <div className="Feed">
-          <PostForm />
+          <PostForm getFeed={this.getFeed} />
           <h1 className="title is-medium">Feed</h1>
           {getContent()}
         </div>
@@ -143,6 +144,7 @@ const mapStateToProps = (state) => ({
   auth: state.user.auth,
   userInfo: state.user.info,
   userbase: state.userbase,
+  posts: state.posts.fromInterests,
 })
 
 export default connect(mapStateToProps)(withFirebase(Home))
