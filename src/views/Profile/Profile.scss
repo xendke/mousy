@@ -30,6 +30,14 @@
       }
     }
 
+    a + .box {
+      margin: 20px 0px 0px;
+    }
+    .box {
+      margin: 5px 0px 0px;
+
+    }
+
     @media screen and (min-width: 1024px) {
       height: 100%;
       position: sticky;

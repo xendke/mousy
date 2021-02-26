@@ -86,6 +86,22 @@ const Profile = ({
             </button>
           </Link>
         )}
+        <div className="box">
+          <div className="buttons has-addons is-centered is-expanded">
+            <button type="button" className="button is-primary is-selected">
+              <span className="icon is-small">
+                <i className="fas fa-comment" />
+              </span>
+              <span>Posts</span>
+            </button>
+            <button type="button" className="button">
+              <span className="icon is-small">
+                <i className="fas fa-heart" />
+              </span>
+              <span>Likes</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="column">{getContent()}</div>
