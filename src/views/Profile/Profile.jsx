@@ -18,8 +18,11 @@ const Profile = ({
   isOwnProfile,
   userId,
   userData,
+  userbase,
   posts,
   loadingPosts,
+  showingLikes,
+  showLikes,
 }) => {
   if (shouldRedirectToLogin(user.auth, userData)) {
     return <Redirect to="/login" />
@@ -32,18 +35,23 @@ const Profile = ({
   const likedPosts =
     user.info && user.info.likedPosts ? user.info.likedPosts : []
 
-  const postsComponents = posts.map(({ id, content, createdAt, likeCount }) => (
-    <Post
-      key={id}
-      postId={id}
-      userFullName={userData.name}
-      username={userData.username}
-      content={content}
-      createdAt={createdAt}
-      likeCount={likeCount}
-      liked={likedPosts.includes(id)}
-    />
-  ))
+  const postsComponents = posts.map(
+    ({ id, content, createdAt, likeCount, userId: authorId }) => {
+      const author = userbase[authorId] || userData
+      return (
+        <Post
+          key={id}
+          postId={id}
+          userFullName={author.name}
+          username={author.username}
+          content={content}
+          createdAt={createdAt}
+          likeCount={likeCount}
+          liked={likedPosts.includes(id)}
+        />
+      )
+    }
+  )
 
   const getContent = () => {
     if (loadingPosts) return <Loading />
@@ -74,34 +82,49 @@ const Profile = ({
           # {userData.interests.join(', ')}
         </h2>
         {isOwnProfile && (
-          <Link to="/account">
-            <button
-              type="button"
-              className="button is-small is-primary is-inverted is-outlined"
-            >
-              <span className="icon is-small">
-                <i className="fas fa-cog" />
-              </span>
-              <span>Edit</span>
-            </button>
-          </Link>
+          <>
+            <Link to="/account">
+              <button
+                type="button"
+                className="button is-small is-primary is-inverted is-outlined"
+              >
+                <span className="icon is-small">
+                  <i className="fas fa-cog" />
+                </span>
+                <span>Edit</span>
+              </button>
+            </Link>
+
+            <div className="box">
+              <div className="buttons has-addons is-centered is-expanded">
+                <button
+                  type="button"
+                  className={`button ${
+                    !showingLikes ? 'is-primary is-selected' : ''
+                  }`}
+                  onClick={() => showLikes(false)}
+                >
+                  <span className="icon is-small">
+                    <i className="fas fa-comment" />
+                  </span>
+                  <span>Posts</span>
+                </button>
+                <button
+                  type="button"
+                  className={`button ${
+                    showingLikes ? 'is-primary is-selected' : ''
+                  }`}
+                  onClick={() => showLikes(true)}
+                >
+                  <span className="icon is-small">
+                    <i className="fas fa-heart" />
+                  </span>
+                  <span>Likes</span>
+                </button>
+              </div>
+            </div>
+          </>
         )}
-        <div className="box">
-          <div className="buttons has-addons is-centered is-expanded">
-            <button type="button" className="button is-primary is-selected">
-              <span className="icon is-small">
-                <i className="fas fa-comment" />
-              </span>
-              <span>Posts</span>
-            </button>
-            <button type="button" className="button">
-              <span className="icon is-small">
-                <i className="fas fa-heart" />
-              </span>
-              <span>Likes</span>
-            </button>
-          </div>
-        </div>
       </div>
 
       <div className="column">{getContent()}</div>
@@ -110,8 +133,11 @@ const Profile = ({
 }
 
 const aperture = (component, { firebase, user }) => {
+  const [showLikes$, showLikes] = component.useEvent(false)
   const userIdParam = () =>
     component.observe('match', ({ params }) => params.userId)
+
+  const { likedPosts } = user.info
 
   const loadOtherUserInfo$ = userIdParam()
     .filter((param) => param)
@@ -124,9 +150,7 @@ const aperture = (component, { firebase, user }) => {
       )
     )
     .flatten()
-    .compose(
-      sampleCombine(component.observe('match', ({ params }) => params.userId))
-    )
+    .compose(sampleCombine(userIdParam()))
     .map(([userData, userId]) => ({ userData, isOwnProfile: false, userId }))
 
   const useOwnUserInfo$ = userIdParam()
@@ -137,22 +161,42 @@ const aperture = (component, { firebase, user }) => {
       userId: user.auth && user.auth.uid,
     })
 
-  const loadPosts$ = userIdParam()
-    .map((param) => param || user.auth.uid)
-    .map((userId) => xs.fromPromise(firebase.doUserPostsGet(userId)))
+  const loadPosts$ = showLikes$
+    .compose(sampleCombine(userIdParam()))
+    .map(([fetchLikedPosts, param]) => [
+      fetchLikedPosts,
+      param || user.auth.uid,
+    ])
+    .map(([fetchLikedPosts, userId]) =>
+      fetchLikedPosts
+        ? xs.fromPromise(firebase.doLikedPostsGet(likedPosts))
+        : xs.fromPromise(firebase.doUserPostsGet(userId))
+    )
     .flatten()
-    .map((posts) => {
-      return { loadingPosts: false, posts }
+    .compose(sampleCombine(showLikes$))
+    .map(([posts, showingLikes]) => {
+      return { loadingPosts: false, posts, showingLikes }
     })
 
   return xs
-    .merge(useOwnUserInfo$, loadOtherUserInfo$, loadPosts$)
+    .merge(
+      useOwnUserInfo$,
+      loadOtherUserInfo$,
+      loadPosts$,
+      showLikes$.map((showingLikes) => ({
+        showingLikes,
+        showLikes,
+        loadingPosts: true,
+      }))
+    )
     .startWith({ posts: [], loadingPosts: true })
     .map(toProps)
 }
 
 export default compose(
-  connect((state) => ({ user: state.user })),
+  connect((state) => ({ user: state.user, userbase: state.userbase })),
   withFirebase,
-  withEffects(aperture, { mergeProps: true })
+  withEffects(aperture, {
+    mergeProps: true,
+  })
 )(Profile)
