@@ -8,6 +8,16 @@ import { Info, Credentials } from './components'
 
 import './Join.scss'
 
+const getRandomInterests = () => {
+  const interests = [
+    ['walking', 'napping', 'traveling'],
+    ['tv', 'sports', 'tech'],
+    ['video games', 'cosplay', 'art'],
+  ]
+  const randomIndex = Math.floor(Math.random() * interests.length)
+  return interests[randomIndex].join(', ')
+}
+
 class Join extends React.Component {
   checkIfUsernameExists = debounce((isValidUsername) => {
     const { username } = this.state
@@ -35,7 +45,7 @@ class Join extends React.Component {
       email: '',
       emailConfirmation: '',
       password: '',
-      interests: '',
+      interests: getRandomInterests(),
       error: null,
       step: 'info',
     }
