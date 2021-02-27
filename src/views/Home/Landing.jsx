@@ -18,7 +18,7 @@ const Landing = () => (
         <div className="card-content">
           <p className="title">
             In a world of algorithms, hashtags, and followers, know the true
-            importance of human connections
+            importance of human connections.
           </p>
           <p className="subtitle">Find people like you!</p>
         </div>
