@@ -1,4 +1,5 @@
 import { SET_INTERESTS_POSTS, SET_OWN_POSTS } from '../actions/posts'
+import { SIGN_OUT } from '../actions/user'
 
 const defaultState = {
   fromInterests: [],
@@ -7,6 +8,8 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
   switch (action.type) {
+    case SIGN_OUT:
+      return defaultState
     case SET_INTERESTS_POSTS:
       return {
         ...state,

@@ -15,6 +15,7 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
     case SIGN_OUT:
+      return defaultState
     case SIGN_IN:
       return {
         ...state,
