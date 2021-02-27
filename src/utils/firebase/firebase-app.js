@@ -69,18 +69,20 @@ class Firebase {
   doUsernameRegister = (username, uid) =>
     this.db.collection('usernames').doc(username).set({ uid })
 
-  doLikedPostsGet = (likedPosts) =>
-    this.db
-      .collection('posts')
-      .where(
-        app.firestore.FieldPath.documentId(),
-        'in',
-        likedPosts.slice().reverse().slice(0, 10)
-      )
-      .get()
-      .then(getCollectionData)
-      .then(sortBy('createdAt'))
-      .catch(() => [])
+  doLikedPostsGet = (likedPosts = []) =>
+    likedPosts.length > 0
+      ? this.db
+          .collection('posts')
+          .where(
+            app.firestore.FieldPath.documentId(),
+            'in',
+            likedPosts.slice().reverse().slice(0, 10)
+          )
+          .get()
+          .then(getCollectionData)
+          .then(sortBy('createdAt'))
+          .catch(() => [])
+      : new Promise((resolve) => resolve([]))
 
   doUserPostsGet = (uid) =>
     this.db
