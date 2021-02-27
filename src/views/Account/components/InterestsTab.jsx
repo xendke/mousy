@@ -7,7 +7,9 @@ import { formatInterests } from '~/utils'
 import './InterestsTab.scss'
 
 const InterestsTab = ({ user, firebase, dispatch }) => {
-  const [interests, setInterests] = useState(user.info.interests || '')
+  const [interests, setInterests] = useState(
+    user.info.interests?.join(', ') || ''
+  )
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 

@@ -6,4 +6,7 @@ module.exports = {
       '~': path.resolve(__dirname, 'src/'),
     },
   },
+  babel: {
+    plugins: ['@babel/plugin-proposal-optional-chaining'],
+  },
 }
