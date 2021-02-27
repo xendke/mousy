@@ -12,6 +12,12 @@ const getCollectionData = (collectionRef) => {
   })
   return data
 }
+const sortBy = (key) => (data) => {
+  if (Array.isArray(data)) {
+    return data.sort((a, b) => a[key] < b[key])
+  }
+  return []
+}
 
 class Firebase {
   constructor() {
@@ -69,10 +75,11 @@ class Firebase {
       .where(
         app.firestore.FieldPath.documentId(),
         'in',
-        likedPosts.slice(0, 10)
+        likedPosts.slice().reverse().slice(0, 10)
       )
       .get()
       .then(getCollectionData)
+      .then(sortBy('createdAt'))
       .catch(() => [])
 
   doUserPostsGet = (uid) =>

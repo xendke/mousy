@@ -57,12 +57,10 @@ const Profile = ({
     if (loadingPosts) return <Loading />
     if (postsComponents.length > 0) return postsComponents
     const emptyActions = [<Action key="Feed" link="/" label="Feed" />]
-    return (
-      <Empty
-        message="No posts yet. Try heading to the Feed to post your thoughts!"
-        actions={emptyActions}
-      />
-    )
+    const message = showingLikes
+      ? 'No posts here. Try heading to the Feed to like some posts!'
+      : 'No posts yet. Try heading to the Feed to post your thoughts!'
+    return <Empty message={message} actions={emptyActions} />
   }
 
   return (
