@@ -32,8 +32,7 @@ const Profile = ({
     return <Loading />
   }
 
-  const likedPosts =
-    user.info && user.info.likedPosts ? user.info.likedPosts : []
+  const likedPosts = user.info?.likedPosts ? user.info.likedPosts : []
 
   const postsComponents = posts.map(
     ({ id, content, createdAt, likeCount, userId: authorId }) => {
@@ -156,7 +155,7 @@ const aperture = (component, { firebase, user }) => {
     .mapTo({
       userData: user.info,
       isOwnProfile: true,
-      userId: user.auth && user.auth.uid,
+      userId: user.auth?.uid,
     })
 
   const loadPosts$ = showLikes$

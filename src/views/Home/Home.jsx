@@ -50,7 +50,7 @@ class Home extends React.Component {
 
     const uniqueUsers = [...new Set(newPosts.map((post) => post.userId))]
     uniqueUsers.forEach((userId) => {
-      const cacheExists = userbase[userId] && userbase[userId].lastFetchedAt
+      const cacheExists = userbase[userId]?.lastFetchedAt
       const shouldFetchUserData =
         userId !== auth.uid ||
         (cacheExists && Date.now() - userbase[userId].lastFetchedAt > 1800000)
