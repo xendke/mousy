@@ -20,6 +20,7 @@ const Post = ({
   likeCount,
   onLike,
   liked,
+  hideCommentIcon,
 }) => {
   const timePosted = formatDistanceToNowStrict(createdAt)
   const userRoute = `/shy/${userId}`
@@ -47,18 +48,20 @@ const Post = ({
           <nav className="level is-mobile">
             <div className="level-left">
               <div className="field has-addons">
-                <p className="control">
-                  <Link to={`/post/${postId}`}>
-                    <button
-                      type="button"
-                      className="button is-small is-text has-text-primary"
-                    >
-                      <span className="icon">
-                        <i className="fas fa-comment" />
-                      </span>
-                    </button>
-                  </Link>
-                </p>
+                {!hideCommentIcon && (
+                  <p className="control">
+                    <Link to={`/post/${postId}`}>
+                      <button
+                        type="button"
+                        className="button is-small is-text has-text-primary"
+                      >
+                        <span className="icon">
+                          <i className="fas fa-comment" />
+                        </span>
+                      </button>
+                    </Link>
+                  </p>
+                )}
                 <p className="control">
                   <button
                     type="button"

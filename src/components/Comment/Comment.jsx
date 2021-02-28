@@ -1,35 +1,42 @@
 import React from 'react'
-// import xs from 'xstream'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-// import { withEffects, toProps } from 'refract-xstream'
-// import { withFirebase } from '~/components/firebase'
+import { formatDistanceToNowStrict } from 'date-fns'
 import { compose } from '~/utils'
-// import { Post, Loading } from '~/components'
+import Avatar from '~/components/Avatar/Avatar'
 
-// import './PostDiscussion.scss'
+const Comment = ({ content, authorId, userbase, createdAt, user }) => {
+  const authorData = userbase[authorId] || user.info
+  const timePosted = formatDistanceToNowStrict(createdAt)
+  const author = (
+    <>
+      <strong className="is-capitalized has-text-grey-darker">
+        {authorData.name}
+      </strong>
+      <small className="has-text-grey-dark"> @{authorData.username}</small>
+    </>
+  )
 
-const Comment = () => {
-  // const { id, content, createdAt, likeCount, userId: authorId } = post
-  // const author = userbase[authorId] || user.info
   return (
-    <div className="box">
+    <div className="box" style={{ margin: 0 }}>
       <article className="media">
         <div className="media-left">
-          <figure className="image is-64x64">
-            {/* <img
-              src="https://bulma.io/images/placeholders/128x128.png"
-              alt="Image"
-            /> */}
+          <figure className="image is-48x48">
+            <Link className="image" to="/me">
+              <Avatar userId={authorId} />
+            </Link>
           </figure>
         </div>
         <div className="media-content">
           <div className="content">
             <p>
-              <strong>John Smith</strong> <small>@johnsmith</small>{' '}
-              <small>31m</small>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-              efficitur sit amet massa fringilla egestas. Nullam condimentum
-              luctus turpis.
+              {authorId ? (
+                <Link to={`/shy/${authorId}`}>{author}</Link>
+              ) : (
+                author
+              )}
+              <small className="has-text-grey-light"> {timePosted} ago</small>
+              <p>{content}</p>
             </p>
           </div>
         </div>
@@ -43,19 +50,4 @@ const mapStateToProps = (state) => ({
   userbase: state.userbase,
 })
 
-export default compose(
-  connect(mapStateToProps)
-  // withFirebase,
-  // withEffects(
-  //   (component, { firebase, match }) => {
-  //     const { params } = match
-  //     return component.mount
-  //       .mapTo(xs.fromPromise(firebase.doPostGet(params.postId)))
-  //       .flatten()
-  //       .map((post) => toProps({ post }))
-  //   },
-  //   {
-  //     errorHandler: () => (e) => console.log(e),
-  //   }
-  // )
-)(Comment)
+export default compose(connect(mapStateToProps))(Comment)

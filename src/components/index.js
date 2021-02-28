@@ -7,6 +7,7 @@ import Footer from './Footer/Footer'
 import ImageCropper from './ImageCropper/ImageCropper'
 import Empty from './Empty/Empty'
 import Comment from './Comment/Comment'
+import CommentForm from './CommentForm/CommentForm'
 
 export {
   Avatar,
@@ -18,4 +19,5 @@ export {
   ImageCropper,
   Empty,
   Comment,
+  CommentForm,
 }

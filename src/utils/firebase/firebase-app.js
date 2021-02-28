@@ -94,6 +94,17 @@ class Firebase {
 
   doUserPostsAdd = (newPost) => this.db.collection('posts').add(newPost)
 
+  doPostCommentAdd = (newComment) =>
+    this.db.collection('comments').add(newComment)
+
+  doCommentsGet = (postId) =>
+    this.db
+      .collection('comments')
+      .where('postId', '==', postId)
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then(getCollectionData)
+
   doPostGet = (postId) =>
     this.db
       .collection('posts')

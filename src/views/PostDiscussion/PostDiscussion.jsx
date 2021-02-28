@@ -4,16 +4,26 @@ import { connect } from 'react-redux'
 import { withEffects, toProps } from 'refract-xstream'
 import { withFirebase } from '~/components/firebase'
 import { compose } from '~/utils'
-import { Post, Loading, Comment } from '~/components'
+import { Post, Loading, Comment, CommentForm } from '~/components'
 
 import './PostDiscussion.scss'
 
-const PostDiscussion = ({ user, post, userbase }) => {
+const Comments = ({ comments = [] }) =>
+  comments.map(({ id, content, userId, createdAt }) => (
+    <Comment
+      key={id}
+      authorId={userId}
+      content={content}
+      createdAt={createdAt}
+    />
+  ))
+
+const PostDiscussion = ({ user, post, userbase, comments }) => {
   if (!post) return <Loading />
   const { id, content, createdAt, likeCount, userId: authorId } = post
   const author = userbase[authorId] || user.info
   return (
-    <div className="PostDiscussion">
+    <div className="PostDiscussion column">
       <h1 className="title is-medium">Post</h1>
       <Post
         postId={id}
@@ -23,8 +33,10 @@ const PostDiscussion = ({ user, post, userbase }) => {
         createdAt={createdAt}
         likeCount={likeCount}
         liked={user.info?.likedPosts?.includes(id)}
+        hideCommentIcon
       />
-      <Comment />
+      <CommentForm postId={id} />
+      <Comments comments={comments} />
     </div>
   )
 }
@@ -40,13 +52,21 @@ export default compose(
   withEffects(
     (component, { firebase, match }) => {
       const { params } = match
-      return component.mount
+      const loadPost$ = component.mount
         .mapTo(xs.fromPromise(firebase.doPostGet(params.postId)))
         .flatten()
         .map((post) => toProps({ post }))
+
+      const loadComments$ = component.mount
+        .mapTo(xs.fromPromise(firebase.doCommentsGet(params.postId)))
+        .flatten()
+        .debug()
+        .map((comments) => toProps({ comments }))
+
+      return xs.merge(loadPost$, loadComments$)
     },
     {
-      errorHandler: () => (e) => console.log(e),
+      mergeProps: true,
     }
   )
 )(PostDiscussion)

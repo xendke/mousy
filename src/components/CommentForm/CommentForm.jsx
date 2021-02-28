@@ -1,49 +1,53 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
+import { compose } from '~/utils'
 import InputForm from '~/components/shared/InputForm'
 
-const PostForm = ({ user, firebase, getFeed }) => {
-  const [content, setContent] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState(false)
+import './CommentForm.scss'
 
-  const submitPost = async () => {
+const CommentForm = ({ user, firebase, postId }) => {
+  const [content, setContent] = useState('')
+  const [error, setError] = useState()
+  const [success, setSuccess] = useState()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const submitComment = async () => {
+    if (content.length === 0) {
+      setError('Comment cannot be empty.')
+      return
+    }
     setIsLoading(true)
     try {
-      if (content.length === 0) throw new Error('Post content cannot be empty.')
-      await firebase.doUserPostsAdd({
+      await firebase.doPostCommentAdd({
         userId: user.auth.uid,
         createdAt: Date.now(),
+        postId,
         content,
-        interests: user.info.interests,
-        likeCount: 0,
       })
       setContent('')
       setSuccess(true)
-      getFeed()
     } catch (e) {
       setError(e)
     }
     setIsLoading(false)
   }
-
   return (
     <InputForm
-      className="PostForm"
+      className="CommentForm"
       user={user}
       content={content}
       setContent={(e) => {
         const { value } = e.target
         if (value.length <= 120) setContent(e.target.value)
       }}
-      submit={submitPost}
+      submit={submitComment}
       error={error}
       setError={setError}
       success={success}
       setSuccess={setSuccess}
       isLoading={isLoading}
+      isForCommenting
     />
   )
 }
@@ -54,4 +58,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(withFirebase(PostForm))
+export default compose(connect(mapStateToProps), withFirebase)(CommentForm)
