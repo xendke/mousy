@@ -6,5 +6,16 @@ import TopNav from './TopNav/TopNav'
 import Footer from './Footer/Footer'
 import ImageCropper from './ImageCropper/ImageCropper'
 import Empty from './Empty/Empty'
+import Comment from './Comment/Comment'
 
-export { Avatar, Loading, Post, PostForm, TopNav, Footer, ImageCropper, Empty }
+export {
+  Avatar,
+  Loading,
+  Post,
+  PostForm,
+  TopNav,
+  Footer,
+  ImageCropper,
+  Empty,
+  Comment,
+}

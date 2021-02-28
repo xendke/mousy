@@ -11,6 +11,7 @@ import { setLikedPosts } from '~/redux/actions/user'
 import './Post.scss'
 
 const Post = ({
+  postId,
   userFullName,
   username,
   userId,
@@ -47,24 +48,16 @@ const Post = ({
             <div className="level-left">
               <div className="field has-addons">
                 <p className="control">
-                  <button
-                    type="button"
-                    className="button is-small is-text has-text-primary"
-                  >
-                    <span className="icon">
-                      <i className="fas fa-retweet" />
-                    </span>
-                  </button>
-                </p>
-                <p className="control">
-                  <button
-                    type="button"
-                    className="button is-small is-text has-text-primary"
-                  >
-                    <span className="icon">
-                      <i className="fas fa-comment" />
-                    </span>
-                  </button>
+                  <Link to={`/post/${postId}`}>
+                    <button
+                      type="button"
+                      className="button is-small is-text has-text-primary"
+                    >
+                      <span className="icon">
+                        <i className="fas fa-comment" />
+                      </span>
+                    </button>
+                  </Link>
                 </p>
                 <p className="control">
                   <button

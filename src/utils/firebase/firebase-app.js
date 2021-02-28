@@ -94,6 +94,13 @@ class Firebase {
 
   doUserPostsAdd = (newPost) => this.db.collection('posts').add(newPost)
 
+  doPostGet = (postId) =>
+    this.db
+      .collection('posts')
+      .doc(postId)
+      .get()
+      .then((postRef) => ({ id: postId, ...postRef.data() }))
+
   doInterestsPostsGet = (interests) =>
     this.db
       .collection('posts')
@@ -126,9 +133,6 @@ class Firebase {
       .then(() => ({ liked: likingPost, likedPosts: newLikedPosts }))
       .catch(() => ({ liked: !likingPost, likedPosts: currentlyLikedPosts }))
   }
-
-  doUserLikedPostsGet = (postId, uid) =>
-    this.db.collection('users').doc(uid).get()
 }
 
 export default Firebase
