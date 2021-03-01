@@ -64,7 +64,6 @@ export default compose(
       const loadComments$ = component.mount
         .mapTo(xs.fromPromise(firebase.doCommentsGet(params.postId)))
         .flatten()
-        .debug()
         .map((comments) => toProps({ comments }))
 
       return xs.merge(loadPost$, loadComments$)
