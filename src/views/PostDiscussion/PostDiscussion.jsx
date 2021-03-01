@@ -24,7 +24,7 @@ const PostDiscussion = ({ user, post, userbase, comments }) => {
   const author = userbase[authorId] || user.info
   return (
     <div className="PostDiscussion column">
-      <h1 className="title is-medium">Post</h1>
+      <h1 className="title is-medium">Comments</h1>
       <Post
         postId={id}
         userFullName={author?.name}

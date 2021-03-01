@@ -18,11 +18,11 @@ const Comment = ({ content, authorId, userbase, createdAt, user }) => {
   )
 
   return (
-    <div className="box" style={{ margin: 0 }}>
+    <div className="box" style={{ margin: 0, marginBottom: 15 }}>
       <article className="media">
         <div className="media-left">
           <figure className="image is-48x48">
-            <Link className="image" to="/me">
+            <Link className="image" to={`/shy/${authorId}`}>
               <Avatar userId={authorId} />
             </Link>
           </figure>
@@ -36,7 +36,8 @@ const Comment = ({ content, authorId, userbase, createdAt, user }) => {
                 author
               )}
               <small className="has-text-grey-light"> {timePosted} ago</small>
-              <p>{content}</p>
+              <br />
+              {content}
             </p>
           </div>
         </div>
