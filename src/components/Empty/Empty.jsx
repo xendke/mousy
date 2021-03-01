@@ -14,7 +14,7 @@ const Empty = ({ message, actions }) => (
     <div className="card-content">
       <div className="content">{message}</div>
     </div>
-    <footer className="card-footer">{actions}</footer>
+    {actions && <footer className="card-footer">{actions}</footer>}
   </div>
 )
 

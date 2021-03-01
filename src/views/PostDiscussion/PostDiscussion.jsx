@@ -4,19 +4,23 @@ import { connect } from 'react-redux'
 import { withEffects, toProps } from 'refract-xstream'
 import { withFirebase } from '~/components/firebase'
 import { compose } from '~/utils'
-import { Post, Loading, Comment, CommentForm } from '~/components'
+import { Post, Loading, Comment, CommentForm, Empty } from '~/components'
 
 import './PostDiscussion.scss'
 
 const Comments = ({ comments = [] }) =>
-  comments.map(({ id, content, userId, createdAt }) => (
-    <Comment
-      key={id}
-      authorId={userId}
-      content={content}
-      createdAt={createdAt}
-    />
-  ))
+  comments.length > 0 ? (
+    comments.map(({ id, content, userId, createdAt }) => (
+      <Comment
+        key={id}
+        authorId={userId}
+        content={content}
+        createdAt={createdAt}
+      />
+    ))
+  ) : (
+    <Empty message="No comments yet!" />
+  )
 
 const PostDiscussion = ({ user, post, userbase, comments }) => {
   if (!post) return <Loading />
