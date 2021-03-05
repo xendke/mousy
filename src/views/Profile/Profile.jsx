@@ -76,7 +76,7 @@ const Profile = ({
           {userData.name}
         </h1>
         <h2 className="subtitle has-text-centered">
-          # {userData.interests.join(', ')}
+          # {userData.interests?.join(', ')}
         </h2>
         {isOwnProfile && (
           <>
