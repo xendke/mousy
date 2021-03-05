@@ -6,7 +6,7 @@ import { ReactComponent as People } from '~/assets/people.svg'
 const Landing = () => (
   <div className="Landing">
     <div className="fold-image column">
-      <People height={600} />
+      <People height={500} />
     </div>
     <div className="right">
       <img src={logoImage} alt="ShyApp Logo" className="logo" />
