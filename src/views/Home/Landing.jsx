@@ -1,15 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import logoImage from '~/assets/logo.png'
-import personImage from '~/assets/person.png'
+import { ReactComponent as People } from '~/assets/people.svg'
 
 const Landing = () => (
   <div className="Landing">
     <div className="fold-image column">
-      <img
-        src={personImage}
-        alt="Digitally rendered human sitting with pets."
-      />
+      <People height={600} />
     </div>
     <div className="right">
       <img src={logoImage} alt="ShyApp Logo" className="logo" />
