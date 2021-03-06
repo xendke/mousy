@@ -5,6 +5,7 @@ import { withEffects, toProps } from 'refract-xstream'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from '~/utils'
+import { setInfo } from '~/redux/actions/user'
 import { Post, Loading, Avatar, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
@@ -32,7 +33,7 @@ const Profile = ({
     return <Loading />
   }
 
-  const likedPosts = user.info?.likedPosts ? user.info.likedPosts : []
+  const likedPosts = userData.likedPosts ? userData.likedPosts : []
 
   const postsComponents = posts.map(
     ({ id, content, createdAt, likeCount, userId: authorId }) => {
@@ -129,12 +130,12 @@ const Profile = ({
   )
 }
 
-const aperture = (component, { firebase, user }) => {
+const aperture = (component, { firebase, user, dispatch }) => {
   const [showLikes$, showLikes] = component.useEvent(false)
   const userIdParam = () =>
     component.observe('match', ({ params }) => params.userId)
 
-  const { likedPosts } = user.info
+  const likedPosts = user.info?.likedPosts || []
 
   const loadOtherUserInfo$ = userIdParam()
     .filter((param) => param)
@@ -151,12 +152,35 @@ const aperture = (component, { firebase, user }) => {
     .map(([userData, userId]) => ({ userData, isOwnProfile: false, userId }))
 
   const useOwnUserInfo$ = userIdParam()
-    .filter((param) => !param)
+    .filter((param) => !param && user.info && user.info.name)
     .mapTo({
       userData: user.info,
       isOwnProfile: true,
       userId: user.auth?.uid,
     })
+
+  const loadOwnUserInfo$ = userIdParam()
+    .filter((param) => !param && user.info && !user.info.name)
+    .map(() =>
+      xs.fromPromise(
+        firebase
+          .doUserInfoGet(user.auth.uid)
+          .then((res) => res.data())
+          .catch(() => ({ error: true }))
+      )
+    )
+    .flatten()
+    .map((userData) => {
+      if (!userData.error) {
+        dispatch(setInfo(userData))
+      }
+      return userData
+    })
+    .map((userData) => ({
+      userData,
+      isOwnProfile: true,
+      userId: user.auth.uid,
+    }))
 
   const loadPosts$ = showLikes$
     .compose(sampleCombine(userIdParam()))
@@ -178,6 +202,7 @@ const aperture = (component, { firebase, user }) => {
   return xs
     .merge(
       useOwnUserInfo$,
+      loadOwnUserInfo$,
       loadOtherUserInfo$,
       loadPosts$,
       showLikes$.map((showingLikes) => ({
