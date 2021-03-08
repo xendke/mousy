@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
+import iconImage from '~/assets/icon.png'
 import logoImage from '~/assets/logo.png'
 
 import './TopNav.scss'
@@ -46,6 +47,7 @@ const TopNav = ({ user, history, firebase }) => {
     >
       <div className="navbar-brand">
         <Link className="navbar-item" to="/">
+          <img src={iconImage} alt="ShyApp Icon" className="navbar-icon" />
           <img src={logoImage} alt="ShyApp Logo" className="navbar-logo" />
         </Link>
 

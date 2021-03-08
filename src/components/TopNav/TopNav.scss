@@ -11,8 +11,16 @@ nav.navbar {
     &:hover {
       color: $white;
     }
+    .navbar-icon {
+      max-height: 1.5rem;
+    }
     .navbar-logo {
+      display: none;
       max-height: 2rem;
+
+      @media screen and (min-width: 1023px) {
+        display: inline-block;
+      }
     }
   }
 
