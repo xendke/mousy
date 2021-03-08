@@ -36,7 +36,10 @@ const Profile = ({
 
   const postsComponents = posts.map(
     ({ id, content, createdAt, likeCount, userId: authorId }) => {
-      const author = userbase[authorId] || userData
+      const { userNotAvailable } = userData
+      const author = userNotAvailable
+        ? { name: 'Deleted', username: 'deleted' }
+        : userbase[authorId] || userData
       return (
         <Post
           key={id}
@@ -62,6 +65,8 @@ const Profile = ({
     return <Empty message={message} actions={emptyActions} />
   }
 
+  const { userNotAvailable, name, interests } = userData
+
   return (
     <section className="Profile container columns is-desktop">
       <div className="column is-one-quarter-desktop user-info">
@@ -73,10 +78,12 @@ const Profile = ({
           </div>
         </div>
         <h1 className="title has-text-centered is-capitalized">
-          {userData.name}
+          {userNotAvailable ? 'Deleted User' : name}
         </h1>
         <h2 className="subtitle has-text-centered">
-          # {userData.interests?.join(', ')}
+          {interests && interests.length > 0
+            ? `# ${interests.join(', ')}`
+            : null}
         </h2>
         {isOwnProfile && (
           <>
@@ -142,12 +149,15 @@ const aperture = (component, { firebase, user }) => {
       xs.fromPromise(
         firebase
           .doUserInfoGet(userId)
-          .then((res) => res.data())
+          .then((res) => res.data() || { userNotAvailable: true })
           .catch(() => ({ error: true }))
       )
     )
+    .debug()
     .flatten()
+    .debug('flat')
     .compose(sampleCombine(userIdParam()))
+    .debug('info')
     .map(([userData, userId]) => ({ userData, isOwnProfile: false, userId }))
 
   const useOwnUserInfo$ = userIdParam()
@@ -195,5 +205,6 @@ export default compose(
   withFirebase,
   withEffects(aperture, {
     mergeProps: true,
+    errorHandler: () => (e) => console.log(e),
   })
 )(Profile)

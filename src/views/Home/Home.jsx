@@ -100,8 +100,8 @@ class Home extends React.Component {
           <Post
             key={id}
             postId={id}
-            userFullName={userData.name}
-            username={userData.username}
+            userFullName={userData.name || 'Unavailable'}
+            username={userData.username || 'deleted'}
             userId={userId}
             content={content}
             createdAt={createdAt}
