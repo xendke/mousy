@@ -1,4 +1,6 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { withEffects, toProps } from 'refract-xstream'
 import { formatDistanceToNowStrict } from 'date-fns'
@@ -56,7 +58,7 @@ const Post = ({
                         className="button is-small is-text has-text-primary"
                       >
                         <span className="icon">
-                          <i className="fas fa-comment" />
+                          <FontAwesomeIcon icon={faComment} />
                         </span>
                       </button>
                     </Link>
@@ -71,7 +73,7 @@ const Post = ({
                     }`}
                   >
                     <span className="icon">
-                      <i className="fas fa-heart" />
+                      <FontAwesomeIcon icon={faHeart} />
                     </span>
                     <span>{likeCount}</span>
                   </button>

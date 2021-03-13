@@ -1,5 +1,7 @@
 import React from 'react'
 import xs from 'xstream'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faComment, faHeart, faCog } from '@fortawesome/free-solid-svg-icons'
 import sampleCombine from 'xstream/extra/sampleCombine'
 import { withEffects, toProps } from 'refract-xstream'
 import { Link, Redirect } from 'react-router-dom'
@@ -94,7 +96,7 @@ const Profile = ({
                 className="button is-small is-primary is-inverted is-outlined"
               >
                 <span className="icon is-small">
-                  <i className="fas fa-cog" />
+                  <FontAwesomeIcon icon={faCog} />
                 </span>
                 <span>Edit</span>
               </button>
@@ -110,7 +112,7 @@ const Profile = ({
                   onClick={() => showLikes(false)}
                 >
                   <span className="icon is-small">
-                    <i className="fas fa-comment" />
+                    <FontAwesomeIcon icon={faComment} />
                   </span>
                   <span>Posts</span>
                 </button>
@@ -122,7 +124,7 @@ const Profile = ({
                   onClick={() => showLikes(true)}
                 >
                   <span className="icon is-small">
-                    <i className="fas fa-heart" />
+                    <FontAwesomeIcon icon={faHeart} />
                   </span>
                   <span>Likes</span>
                 </button>

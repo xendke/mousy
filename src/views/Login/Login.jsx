@@ -1,6 +1,14 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faEye,
+  faEyeSlash,
+  faKey,
+  faEnvelope,
+} from '@fortawesome/free-solid-svg-icons'
+
 import { withFirebase } from '~/components/firebase'
 import isValidEmail from '~/utils/validation'
 import './Login.scss'
@@ -12,6 +20,9 @@ const Login = ({ user, firebase }) => {
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState(undefined)
   const [errorMessage, setErrorMessage] = useState(undefined)
+
+  const eyeIcon = <FontAwesomeIcon icon={faEye} />
+  const eyeSlashIcon = <FontAwesomeIcon icon={faEyeSlash} />
 
   return (
     <>
@@ -36,7 +47,7 @@ const Login = ({ user, firebase }) => {
                 }}
               />
               <span className="icon is-small is-left">
-                <i className="fas fa-envelope" />
+                <FontAwesomeIcon icon={faEnvelope} />
               </span>
             </div>
             {emailError && <p className="help is-danger">{emailError}</p>}
@@ -60,7 +71,7 @@ const Login = ({ user, firebase }) => {
                 }}
               />
               <span className="icon is-small is-left">
-                <i className="fas fa-key" />
+                <FontAwesomeIcon icon={faKey} />
               </span>
               {password?.length > 0 && (
                 <span
@@ -72,9 +83,7 @@ const Login = ({ user, firebase }) => {
                     key === 'Enter' && setIsPasswordHidden(!isPasswordHidden)
                   }
                 >
-                  <i
-                    className={`fas fa-eye${isPasswordHidden ? '' : '-slash'}`}
-                  />
+                  {isPasswordHidden ? eyeIcon : eyeSlashIcon}
                 </span>
               )}
             </div>
