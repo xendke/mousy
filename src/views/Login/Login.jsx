@@ -8,6 +8,7 @@ import './Login.scss'
 const Login = ({ user, firebase }) => {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState(undefined)
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true)
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState(undefined)
   const [errorMessage, setErrorMessage] = useState(undefined)
@@ -21,7 +22,7 @@ const Login = ({ user, firebase }) => {
         <div className="field">
           <label htmlFor="email" className="label">
             Email
-            <div className="control has-icons-left has-icons-right">
+            <div className="control has-icons-left">
               <input
                 className={`input ${emailError ? 'is-danger' : ''}`}
                 id="email"
@@ -37,11 +38,6 @@ const Login = ({ user, firebase }) => {
               <span className="icon is-small is-left">
                 <i className="fas fa-envelope" />
               </span>
-              {emailError && (
-                <span className="icon is-small is-right">
-                  <i className="fas fa-exclamation-triangle" />
-                </span>
-              )}
             </div>
             {emailError && <p className="help is-danger">{emailError}</p>}
           </label>
@@ -54,7 +50,7 @@ const Login = ({ user, firebase }) => {
               <input
                 className={`input ${passwordError ? 'is-danger' : ''}`}
                 id="password"
-                type="password"
+                type={`${isPasswordHidden ? 'password' : 'text'}`}
                 value={password}
                 onChange={(e) => {
                   const val = e.target.value
@@ -66,9 +62,19 @@ const Login = ({ user, firebase }) => {
               <span className="icon is-small is-left">
                 <i className="fas fa-key" />
               </span>
-              {passwordError && (
-                <span className="icon is-small is-right">
-                  <i className="fas fa-exclamation-triangle" />
+              {password?.length > 0 && (
+                <span
+                  className="icon is-small is-right"
+                  tabIndex={0}
+                  role="button"
+                  onClick={() => setIsPasswordHidden(!isPasswordHidden)}
+                  onKeyDown={({ key }) =>
+                    key === 'Enter' && setIsPasswordHidden(!isPasswordHidden)
+                  }
+                >
+                  <i
+                    className={`fas fa-eye${isPasswordHidden ? '' : '-slash'}`}
+                  />
                 </span>
               )}
             </div>
