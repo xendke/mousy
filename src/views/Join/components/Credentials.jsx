@@ -1,6 +1,5 @@
 import React from 'react'
 import { withFirebase } from '~/components/firebase'
-import { formatInterests } from '~/utils'
 
 const Credentials = ({
   handleChange,
@@ -86,9 +85,7 @@ const Credentials = ({
                 throw Error('Emails do not match.')
               }
 
-              const formattedInterests = formatInterests(interests)
-
-              if (formattedInterests.length < 2) {
+              if (interests.length < 2) {
                 throw Error('You should have at least two interests.')
               }
 
@@ -103,7 +100,7 @@ const Credentials = ({
                   username,
                   email,
                   likedPosts: [],
-                  interests: formattedInterests,
+                  interests,
                 })
                 await firebase.doUsernameRegister(username, authUser.user.uid)
                 await firebase.doSignInWithEmailAndPassword(email, password)

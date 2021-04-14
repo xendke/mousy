@@ -1,4 +1,5 @@
 import React from 'react'
+import { InterestsSelect } from '~/components'
 
 const Info = ({
   handleChange,
@@ -62,12 +63,14 @@ const Info = ({
         <div className="control">
           <label htmlFor="interests" className="label">
             Interests
-            <textarea
-              className="textarea"
+            <InterestsSelect
               id="interests"
-              name="interests"
-              value={interests}
-              onChange={handleChange}
+              defaultInterests={interests}
+              getInterests={(value) =>
+                handleChange({
+                  target: { name: 'interests', value },
+                })
+              }
             />
           </label>
         </div>

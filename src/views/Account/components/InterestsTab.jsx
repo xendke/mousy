@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
+import { InterestsSelect } from '~/components'
 import { setInfo } from '~/redux/actions/user'
-import { formatInterests } from '~/utils'
 
 import './InterestsTab.scss'
 
 const InterestsTab = ({ user, firebase, dispatch }) => {
-  const [interests, setInterests] = useState(
-    user.info.interests?.join(', ') || ''
-  )
+  const [interests, setInterests] = useState(user.info.interests || [])
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
@@ -17,15 +15,16 @@ const InterestsTab = ({ user, firebase, dispatch }) => {
     e.preventDefault()
     setLoading(true)
     const { auth, info } = user
-    const interestsArray = formatInterests(interests)
-    firebase
-      .doUserInfoEdit(auth.uid, { ...info, interests: interestsArray })
-      .then(() => {
-        setLoading(false)
-        setSuccess(true)
-        setInterests('')
-        dispatch(setInfo({ ...info, interests: interestsArray }))
-      })
+    console.log('interests', interests)
+    firebase.doUserInfoEdit(auth.uid, { ...info, interests }).then(() => {
+      setLoading(false)
+      setSuccess(true)
+      dispatch(setInfo({ ...info, interests }))
+    })
+  }
+
+  const getInterests = (newInterests) => {
+    setInterests(newInterests)
   }
 
   return (
@@ -39,13 +38,10 @@ const InterestsTab = ({ user, firebase, dispatch }) => {
         <div className="control">
           <label htmlFor="interests" className="label">
             Interests
-            <textarea
-              className="input"
+            <InterestsSelect
               id="interests"
-              type="text"
-              name="interests"
-              value={interests}
-              onChange={({ target }) => setInterests(target.value)}
+              defaultInterests={user.info.interests}
+              getInterests={getInterests}
             />
           </label>
         </div>

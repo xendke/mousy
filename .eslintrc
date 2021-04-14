@@ -32,6 +32,11 @@
         "extensions": [".js", ".jsx"]
       }
     ],
+    "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/label-has-associated-control": [ 2, {
+      "controlComponents": ["InterestsSelect"],
+      "depth": 3,
+    }],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-console": "off",

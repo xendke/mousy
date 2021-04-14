@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
-import { debounce, formatInterests } from '~/utils'
+import { debounce } from '~/utils'
 
 import { Info, Credentials } from './components'
 
@@ -15,7 +15,7 @@ const getRandomInterests = () => {
     ['video games', 'cosplay', 'art'],
   ]
   const randomIndex = Math.floor(Math.random() * interests.length)
-  return interests[randomIndex].join(', ')
+  return interests[randomIndex]
 }
 
 class Join extends React.Component {
@@ -106,7 +106,7 @@ class Join extends React.Component {
               if (!usernameIsAvailable) {
                 return this.setError('Username is not available.')
               }
-              if (formatInterests(interests).length < 2) {
+              if (interests.length < 2) {
                 return this.setError('Must have at least two interests.')
               }
               return this.setState(() => ({ step: 'credentials', error: null }))
