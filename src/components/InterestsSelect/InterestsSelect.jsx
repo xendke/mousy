@@ -77,7 +77,8 @@ export default class InterestsSelect extends Component<*, State> {
         inputId={inputId}
         isClearable
         isMulti
-        menuIsOpen={false}
+        formatCreateLabel={(label) => `Add '${label}'`}
+        menuIsOpen={inputValue?.length > 0}
         onChange={this.handleChange}
         onInputChange={this.handleInputChange}
         onKeyDown={this.handleKeyDown}

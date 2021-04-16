@@ -74,7 +74,6 @@ const Info = ({
             />
           </label>
         </div>
-        <p className="help">Comma-separated list of interests.</p>
       </div>
 
       {action}
