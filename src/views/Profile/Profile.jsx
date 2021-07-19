@@ -46,6 +46,7 @@ const Profile = ({
       return (
         <Post
           key={id}
+          userId={authorId}
           postId={id}
           userFullName={author.name}
           username={author.username}
@@ -156,11 +157,8 @@ const aperture = (component, { firebase, user, dispatch }) => {
           .catch(() => ({ error: true }))
       )
     )
-    .debug()
     .flatten()
-    .debug('flat')
     .compose(sampleCombine(userIdParam()))
-    .debug('info')
     .map(([userData, userId]) => ({ userData, isOwnProfile: false, userId }))
 
   const useOwnUserInfo$ = userIdParam()

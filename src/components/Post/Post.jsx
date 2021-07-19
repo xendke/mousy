@@ -23,9 +23,10 @@ const Post = ({
   onLike,
   liked,
   hideCommentIcon,
+  uid,
 }) => {
   const timePosted = formatDistanceToNowStrict(createdAt)
-  const userRoute = `/shy/${userId}`
+  const userRoute = uid === userId ? '/me' : `/shy/${userId}`
   const author = (
     <>
       <strong className="is-capitalized has-text-grey-darker">
@@ -113,6 +114,7 @@ const aperture = (
         ),
       postLiked$.mapTo({
         onLike,
+        uid,
       })
     )
     .map(toProps)
