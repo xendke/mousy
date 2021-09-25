@@ -5,6 +5,11 @@ import userReducer from './reducers/user'
 import userbaseReducer from './reducers/userbase'
 import postsReducer from './reducers/posts'
 
+const devtools =
+  // window && window.__REDUX_DEVTOOLS_EXTENSION__
+  //   ? window.__REDUX_DEVTOOLS_EXTENSION__()
+  () => {}
+
 const store = createStore(
   combineReducers({
     user: userReducer,
@@ -12,7 +17,7 @@ const store = createStore(
     posts: postsReducer,
   }),
   loadState(),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  devtools()
 )
 
 store.subscribe(throttle(() => saveState(store.getState()), 1000))

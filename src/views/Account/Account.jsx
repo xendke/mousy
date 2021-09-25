@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
+import Router from 'next/router'
 import AvatarTab from './components/AvatarTab'
 import InfoTab from './components/InfoTab'
 import InterestsTab from './components/InterestsTab'
 
-import './Account.scss'
+import styles from './Account.module.scss'
 
 const Account = ({ user, match, history }) => {
   const { params } = match
@@ -22,7 +23,7 @@ const Account = ({ user, match, history }) => {
   const setCurrentTab = (tab) => history.push(`/account/${tab}`)
 
   if (!user.isSignedIn) {
-    return <Redirect to="/login" />
+    return Router.push('/login')
   }
 
   return (

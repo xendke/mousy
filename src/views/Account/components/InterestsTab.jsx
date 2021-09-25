@@ -4,7 +4,7 @@ import { withFirebase } from '~/components/firebase'
 import { InterestsSelect } from '~/components'
 import { setInfo } from '~/redux/actions/user'
 
-import './InterestsTab.scss'
+import styles from './InterestsTab.module.scss'
 
 const InterestsTab = ({ user, firebase, dispatch }) => {
   const [interests, setInterests] = useState(user.info.interests || [])

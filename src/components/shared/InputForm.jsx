@@ -1,8 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import Avatar from '~/components/Avatar/Avatar'
 
-import './InputForm.scss'
+import styles from './InputForm.module.scss'
 
 const InputForm = ({
   className = '',
@@ -19,7 +19,7 @@ const InputForm = ({
 }) => (
   <div className={`InputForm box ${className}`}>
     <form className="field is-grouped">
-      <Link className="image" to="/me">
+      <Link className="image" href="/me">
         <Avatar userId={user.auth.uid} />
       </Link>
       <p className="control is-expanded">

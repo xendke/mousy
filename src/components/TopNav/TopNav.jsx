@@ -1,19 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import cn from 'classnames'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import Image from 'next/image'
+
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
 import iconImage from '~/assets/icon.png'
 import logoImage from '~/assets/logo.png'
 
-import './TopNav.scss'
+import styles from './TopNav.module.scss'
 
-const TopNav = ({ user, history, firebase }) => {
+const TopNav = ({ user, firebase }) => {
   const [isNavbarOpened, setIsNavbarOpened] = useState(false)
   const nodeRef = useRef()
+  const router = useRouter()
 
   const closeNavbarAndGo = (path) => () => {
     setIsNavbarOpened(false)
-    history.push(path)
+    router.push(path)
   }
 
   const toggleNavbar = () => {
@@ -41,21 +46,36 @@ const TopNav = ({ user, history, firebase }) => {
   return (
     <nav
       ref={nodeRef}
-      className="navbar"
+      className={cn(styles.TopNav, 'navbar')}
       role="navigation"
       aria-label="main navigation"
     >
       <div className="navbar-brand">
-        <Link className="navbar-item" to="/">
-          <img src={iconImage} alt="ShyApp Icon" className="navbar-icon" />
-          <img src={logoImage} alt="ShyApp Logo" className="navbar-logo" />
-        </Link>
+        <div className={cn(styles.navbarItem, 'navbar-item')}>
+          <Link href="/">
+            <>
+              <Image
+                src={iconImage}
+                alt="ShyApp Icon"
+                className={cn(styles.navbarIcon, 'navbar-icon')}
+              />
+              <Image
+                src={logoImage}
+                alt="ShyApp Logo"
+                className={cn(styles.navbarLogo, 'navbar-logo')}
+              />
+            </>
+          </Link>
+        </div>
 
         <button
           type="button"
-          className={`navbar-burger burger ${
-            isNavbarOpened ? 'is-active' : ''
-          }`}
+          className={cn(
+            styles.navbarBurger,
+            'navbar-burger',
+            'burger',
+            isNavbarOpened && 'is-active'
+          )}
           aria-label="menu"
           aria-expanded="false"
           data-target="navbarButtons"
@@ -69,14 +89,19 @@ const TopNav = ({ user, history, firebase }) => {
 
       <div
         id="navbarButtons"
-        className={`navbar-menu ${isNavbarOpened ? 'is-active' : ''}`}
+        className={cn(
+          styles.navbarMenu,
+          isNavbarOpened && styles.isActive,
+          'navbar-menu',
+          isNavbarOpened && 'is-active'
+        )}
       >
         <div className="navbar-end">
-          <div className="navbar-item">
+          <div className={cn(styles.navbarItem, 'navbar-item')}>
             <div className="buttons">
               {user.isSignedIn && (
                 <>
-                  {!history.location.pathname.includes('/me') && (
+                  {!router.pathname.includes('/me') && (
                     <button
                       type="button"
                       className="button is-primary is-inverted is-outlined"
@@ -93,7 +118,7 @@ const TopNav = ({ user, history, firebase }) => {
                       firebase
                         .doSignOut() // success handled by onAuthChanged
                         .then(() => {
-                          history.push('/')
+                          router.push('/')
                         })
                     }}
                   >
@@ -133,4 +158,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(withFirebase(TopNav)))
+export default connect(mapStateToProps)(withFirebase(TopNav))

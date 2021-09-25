@@ -4,7 +4,7 @@ import { withFirebase } from '~/components/firebase'
 import { compose } from '~/utils'
 import InputForm from '~/components/shared/InputForm'
 
-import './CommentForm.scss'
+import styles from './CommentForm.module.scss'
 
 const CommentForm = ({ user, firebase, postId }) => {
   const [content, setContent] = useState('')
@@ -34,7 +34,7 @@ const CommentForm = ({ user, firebase, postId }) => {
   }
   return (
     <InputForm
-      className="CommentForm"
+      className={styles.CommentForm}
       user={user}
       content={content}
       setContent={(e) => {

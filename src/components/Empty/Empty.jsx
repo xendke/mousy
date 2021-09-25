@@ -1,16 +1,16 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
-import './Empty.scss'
+import styles from './Empty.module.scss'
 
 const Action = ({ link, label }) => (
-  <Link to={link} className="card-footer-item">
+  <Link href={link} className="card-footer-item">
     {label}
   </Link>
 )
 
 const Empty = ({ message, actions }) => (
-  <div className="Empty card">
+  <div className={`${styles.Empty} ${styles.card}`}>
     <div className="card-content">
       <div className="content">{message}</div>
     </div>

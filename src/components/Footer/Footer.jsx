@@ -1,9 +1,9 @@
 import React from 'react'
 
-import './Footer.scss'
+import styles from './Footer.module.scss'
 
 const Footer = () => (
-  <footer className="Footer">
+  <footer className={styles.Footer}>
     Made with ♥ by&nbsp;
     <a href="https://twitter.com/xendke" className="has-text-black-ter">
       @xendke

@@ -1,9 +1,9 @@
 import React from 'react'
-import './Loading.scss'
+import styles from './Loading.module.scss'
 
 const Loading = () => (
-  <div className="Loading">
-    <div className="box">
+  <div className={styles.Loading}>
+    <div className={styles.box}>
       <progress
         className="progress is-small is-primary is-inverted"
         max="100"

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+// import { Redirect } from 'react-router-dom'
+import Router from 'next/router'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -11,7 +12,8 @@ import {
 
 import { withFirebase } from '~/components/firebase'
 import isValidEmail from '~/utils/validation'
-import './Login.scss'
+
+import styles from './Login.module.scss'
 
 const Login = ({ user, firebase }) => {
   const [email, setEmail] = useState('')
@@ -24,9 +26,17 @@ const Login = ({ user, firebase }) => {
   const eyeIcon = <FontAwesomeIcon icon={faEye} />
   const eyeSlashIcon = <FontAwesomeIcon icon={faEyeSlash} />
 
+  console.log(user)
+  useEffect(() => {
+    // console.log(user)
+    if (user.isSignedIn) {
+      Router.push('/')
+    }
+  }, [user.isSignedIn])
+
   return (
     <>
-      {user.isSignedIn && <Redirect to="/" />}
+      {/* {user.isSignedIn && <Redirect to="/" />} */}
       <form className="Login section">
         <h1>Hi there!</h1>
 

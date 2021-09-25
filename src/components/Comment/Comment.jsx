@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { connect } from 'react-redux'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { compose } from '~/utils'
@@ -22,7 +22,7 @@ const Comment = ({ content, authorId, userbase, createdAt, user }) => {
       <article className="media">
         <div className="media-left">
           <figure className="image is-48x48">
-            <Link className="image" to={`/shy/${authorId}`}>
+            <Link className="image" href={`/shy/${authorId}`}>
               <Avatar userId={authorId} />
             </Link>
           </figure>
@@ -31,7 +31,7 @@ const Comment = ({ content, authorId, userbase, createdAt, user }) => {
           <div className="content">
             <p>
               {authorId ? (
-                <Link to={`/shy/${authorId}`}>{author}</Link>
+                <Link href={`/shy/${authorId}`}>{author}</Link>
               ) : (
                 author
               )}

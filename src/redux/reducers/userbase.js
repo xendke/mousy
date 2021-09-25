@@ -3,7 +3,7 @@ import { SIGN_OUT } from '../actions/user'
 
 const defaultState = {}
 
-export default (state = defaultState, action) => {
+const userbaseReducer = (state = defaultState, action) => {
   switch (action.type) {
     case SIGN_OUT:
       return defaultState
@@ -16,3 +16,5 @@ export default (state = defaultState, action) => {
       return state
   }
 }
+
+export default userbaseReducer

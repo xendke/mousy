@@ -6,7 +6,7 @@ import { withFirebase } from '~/components/firebase'
 import { compose } from '~/utils'
 import { Post, Loading, Comment, CommentForm, Empty } from '~/components'
 
-import './PostDiscussion.scss'
+import styles from './PostDiscussion.module.scss'
 
 const Comments = ({ comments = [] }) =>
   comments.length > 0 ? (

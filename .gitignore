@@ -4,6 +4,7 @@
 firebase-auth.js
 
 # dependencies
+/.next
 /node_modules
 /.pnp
 .pnp.js

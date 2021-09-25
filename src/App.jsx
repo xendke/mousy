@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import { signIn, signOut, setInfo } from '~/redux/actions/user'
 import { withFirebase } from '~/components/firebase'
 import {
-  Home,
-  Profile,
+  // Home,
+  // Profile,
   Account,
   Join,
-  Login,
+  // Login,
   PostDiscussion,
-  ScrollToTop,
+  // ScrollToTop,
 } from '~/views'
 import { TopNav, Footer } from '~/components'
 
@@ -34,10 +34,10 @@ class App extends Component {
     return (
       <Router>
         <>
-          <ScrollToTop />
-          <TopNav />
-          <Route path="/" exact component={Home} />
-          <Route path="/me" exact component={Profile} />
+          {/* <ScrollToTop />
+          <TopNav /> */}
+          {/* <Route path="/" exact component={Home} /> */}
+          {/* <Route path="/me" exact component={Profile} /> */}
           <Route path="/account/:tab?" exact component={Account} />
           <Route path="/post/:postId?" exact component={PostDiscussion} />
           <Route
@@ -50,9 +50,9 @@ class App extends Component {
               )
             }
           />
-          <Route path="/login" exact component={Login} />
+          {/* <Route path="/login" exact component={Login} /> */}
           <Route path="/join" exact component={Join} />
-          <Footer />
+          {/* <Footer /> */}
         </>
       </Router>
     )

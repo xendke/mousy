@@ -7,7 +7,7 @@ import { setUserbaseInfo } from '~/redux/actions/userbase'
 import { setInterestsPosts } from '~/redux/actions/posts'
 import Landing from './Landing'
 
-import './Home.scss'
+import styles from './Home.module.scss'
 
 class Home extends React.Component {
   constructor(props) {

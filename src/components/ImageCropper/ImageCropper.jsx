@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Cropper from 'react-easy-crop'
 import Loading from '~/components/Loading/Loading'
 
-import './ImageCropper.scss'
+import styles from './ImageCropper.module.scss'
 
 const ImageCropper = ({ src, getCrop, loading }) => {
   const [crop, setCrop] = useState({
@@ -13,14 +13,14 @@ const ImageCropper = ({ src, getCrop, loading }) => {
 
   if (loading) {
     return (
-      <div className="ImageCropper">
+      <div className={styles.ImageCropper}>
         <Loading />
       </div>
     )
   }
 
   return (
-    <div className="ImageCropper cropper-container">
+    <div className={`${styles.ImageCropper} ${styles.cropperContainer}`}>
       <Cropper
         image={src}
         crop={crop}

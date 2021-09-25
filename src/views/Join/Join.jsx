@@ -1,12 +1,13 @@
 import React from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import Link from 'next/link'
+import Router from 'next/router'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
 import { debounce } from '~/utils'
 
 import { Info, Credentials } from './components'
 
-import './Join.scss'
+import styles from './Join.module.scss'
 
 const getRandomInterests = () => {
   const interests = [
@@ -75,7 +76,7 @@ class Join extends React.Component {
 
   render() {
     const { user } = this.props
-    if (user.isSignedIn) return <Redirect to="/me" />
+    if (user.isSignedIn) return Router.push('/me')
 
     const {
       name,
@@ -117,7 +118,7 @@ class Join extends React.Component {
         </div>
 
         <div className="control to-login">
-          <Link to="/login" className="is-text">
+          <Link href="/login" className="is-text">
             Already have an account?
           </Link>
         </div>

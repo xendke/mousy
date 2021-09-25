@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { withEffects, toProps } from 'refract-xstream'
 import { formatDistanceToNowStrict } from 'date-fns'
 import xs from 'xstream'
@@ -10,7 +10,7 @@ import { compose } from '~/utils'
 import { withFirebase } from '~/components/firebase'
 import { setLikedPosts } from '~/redux/actions/user'
 
-import './Post.scss'
+import styles from './Post.module.scss'
 
 const Post = ({
   postId,
@@ -37,12 +37,12 @@ const Post = ({
   )
 
   return (
-    <div className="Post box">
+    <div className={`${styles.Post} box`}>
       <article className="media">
         <div className="media-content">
           <div className="content">
             <p>
-              {userId ? <Link to={userRoute}>{author}</Link> : author}
+              {userId ? <Link href={userRoute}>{author}</Link> : author}
               <small className="has-text-grey-light"> {timePosted} ago</small>
               <br />
               {content}
@@ -53,7 +53,7 @@ const Post = ({
               <div className="field has-addons">
                 {!hideCommentIcon && (
                   <p className="control">
-                    <Link to={`/post/${postId}`}>
+                    <Link href={`/post/${postId}`}>
                       <button
                         type="button"
                         className="button is-small is-text has-text-primary"

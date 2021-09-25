@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
 import { setInfo } from '~/redux/actions/user'
 
-import './InfoTab.scss'
+import styles from './InfoTab.module.scss'
 
 const InfoTab = ({ user, firebase, dispatch }) => {
   const [name, setName] = useState(user.info.name || '')

@@ -12,7 +12,7 @@ const defaultState = {
   info: {},
 }
 
-export default (state = defaultState, action) => {
+const userReducer = (state = defaultState, action) => {
   switch (action.type) {
     case SIGN_OUT:
       return defaultState
@@ -41,3 +41,5 @@ export default (state = defaultState, action) => {
       return state
   }
 }
+
+export default userReducer

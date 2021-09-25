@@ -1,9 +1,9 @@
 @import 'src/styles.scss';
 
-nav.navbar {
+.TopNav {
   background-color: transparent;
 
-  .navbar-item {
+  .navbarItem {
     font-size: 25px;
     font-weight: 600;
     color: $white;
@@ -11,10 +11,12 @@ nav.navbar {
     &:hover {
       color: $white;
     }
-    .navbar-icon {
+    .navbarIcon {
+      padding-top: 10px;
       max-height: 1.5rem;
+      width: auto;
     }
-    .navbar-logo {
+    .navbarLogo {
       display: none;
       max-height: 2rem;
 
@@ -24,16 +26,16 @@ nav.navbar {
     }
   }
 
-  .navbar-burger {
+  .navbarBurger {
     color: $white;
     background: none;
     border: none;
   }
-  .navbar-burger:focus {
+  .navbarBurger:focus {
     outline: thin dotted;
   }
 
-  .navbar-menu {
+  .navbarMenu {
     background-color: $primary-color;
 
     @media screen and (max-width: 1023px) {
@@ -47,7 +49,7 @@ nav.navbar {
       transition: height 0.2s ease-in-out, opacity 0.2s ease-in-out,
         box-shadow 0.2s ease-in-out;
 
-      &.is-active {
+      &.isActive {
         display: block;
         height: 70px;
         opacity: 1;

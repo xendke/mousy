@@ -4,7 +4,7 @@ import { Avatar, ImageCropper } from '~/components'
 import { withFirebase } from '~/components/firebase'
 import getCroppedImg from '~/components/ImageCropper/helpers'
 
-import './AvatarTab.scss'
+import styles from './AvatarTab.module.scss'
 
 const AvatarTab = ({ user, firebase }) => {
   const [inputFile, setInputFile] = useState(null)

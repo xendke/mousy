@@ -1,10 +1,12 @@
 import React from 'react'
 import xs from 'xstream'
+import Link from 'next/link'
+import Router from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faHeart, faCog } from '@fortawesome/free-solid-svg-icons'
 import sampleCombine from 'xstream/extra/sampleCombine'
 import { withEffects, toProps } from 'refract-xstream'
-import { Link, Redirect } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from '~/utils'
 import { setInfo } from '~/redux/actions/user'
@@ -12,7 +14,7 @@ import { Post, Loading, Avatar, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
 
-import './Profile.scss'
+import styles from './Profile.module.scss'
 
 const shouldRedirectToLogin = (auth, userData = {}) => !auth || userData.error
 
@@ -28,7 +30,7 @@ const Profile = ({
   showLikes,
 }) => {
   if (shouldRedirectToLogin(user.auth, userData)) {
-    return <Redirect to="/login" />
+    return Router.push('/login')
   }
 
   if (!user.auth || !userData) {
@@ -91,7 +93,7 @@ const Profile = ({
         </h2>
         {isOwnProfile && (
           <>
-            <Link to="/account">
+            <Link href="/account">
               <button
                 type="button"
                 className="button is-small is-primary is-inverted is-outlined"
