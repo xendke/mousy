@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import xs from 'xstream'
 import Link from 'next/link'
 import Router from 'next/router'
@@ -29,9 +29,11 @@ const Profile = ({
   showingLikes,
   showLikes,
 }) => {
-  if (shouldRedirectToLogin(user.auth, userData)) {
-    return Router.push('/login')
-  }
+  useEffect(() => {
+    // if (shouldRedirectToLogin(user.auth, userData)) {
+    //   return Router.push('/login')
+    // }
+  }, [])
 
   if (!user.auth || !userData) {
     return <Loading />

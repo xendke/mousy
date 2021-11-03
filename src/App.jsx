@@ -7,7 +7,7 @@ import {
   // Home,
   // Profile,
   Account,
-  Join,
+  // Join,
   // Login,
   PostDiscussion,
   // ScrollToTop,
@@ -51,7 +51,7 @@ class App extends Component {
             }
           />
           {/* <Route path="/login" exact component={Login} /> */}
-          <Route path="/join" exact component={Join} />
+          {/* <Route path="/join" exact component={Join} /> */}
           {/* <Footer /> */}
         </>
       </Router>
