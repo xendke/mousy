@@ -15,20 +15,6 @@ import {
 import { TopNav, Footer } from '~/components'
 
 class App extends Component {
-  componentDidMount() {
-    const { firebase, dispatch } = this.props
-
-    firebase.auth.onAuthStateChanged(async (authUser) => {
-      if (authUser) {
-        dispatch(signIn(authUser))
-        const userInfo = await firebase.doUserInfoGet(authUser.uid)
-        dispatch(setInfo(userInfo.data()))
-      } else {
-        dispatch(signOut())
-      }
-    })
-  }
-
   render() {
     const { user } = this.props
     return (
@@ -38,6 +24,8 @@ class App extends Component {
           <TopNav /> */}
           {/* <Route path="/" exact component={Home} /> */}
           {/* <Route path="/me" exact component={Profile} /> */}
+
+          {/* TOOOODOOOO: */}
           <Route path="/account/:tab?" exact component={Account} />
           <Route path="/post/:postId?" exact component={PostDiscussion} />
           <Route
