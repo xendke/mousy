@@ -28,7 +28,7 @@ class App extends Component {
           {/* TOOOODOOOO: */}
           <Route path="/account/:tab?" exact component={Account} />
           <Route path="/post/:postId?" exact component={PostDiscussion} />
-          <Route
+          {/* <Route
             path="/shy/:userId"
             component={({ match, ...props }) =>
               user.auth.uid === match.params.userId ? (
@@ -37,7 +37,7 @@ class App extends Component {
                 <Profile match={match} {...props} />
               )
             }
-          />
+          /> */}
           {/* <Route path="/login" exact component={Login} /> */}
           {/* <Route path="/join" exact component={Join} /> */}
           {/* <Footer /> */}

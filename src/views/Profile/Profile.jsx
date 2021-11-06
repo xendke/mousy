@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import xs from 'xstream'
 import Link from 'next/link'
-import Router from 'next/router'
+import { withRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faHeart, faCog } from '@fortawesome/free-solid-svg-icons'
 import sampleCombine from 'xstream/extra/sampleCombine'
 import { withEffects, toProps } from 'refract-xstream'
-// import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from '~/utils'
 import { setInfo } from '~/redux/actions/user'
@@ -28,6 +27,7 @@ const Profile = ({
   loadingPosts,
   showingLikes,
   showLikes,
+  router,
 }) => {
   useEffect(() => {
     // if (shouldRedirectToLogin(user.auth, userData)) {
@@ -147,7 +147,7 @@ const Profile = ({
 const aperture = (component, { firebase, user, dispatch }) => {
   const [showLikes$, showLikes] = component.useEvent(false)
   const userIdParam = () =>
-    component.observe('match', ({ params }) => params.userId)
+    component.observe('router', ({ query }) => query.userId)
 
   const likedPosts = user.info?.likedPosts || []
 
@@ -231,6 +231,7 @@ const aperture = (component, { firebase, user, dispatch }) => {
 
 export default compose(
   connect((state) => ({ user: state.user, userbase: state.userbase })),
+  withRouter,
   withFirebase,
   withEffects(aperture, {
     mergeProps: true,

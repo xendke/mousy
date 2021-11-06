@@ -28,12 +28,12 @@ const Post = ({
   const timePosted = formatDistanceToNowStrict(createdAt)
   const userRoute = uid === userId ? '/me' : `/shy/${userId}`
   const author = (
-    <>
+    <a>
       <strong className="is-capitalized has-text-grey-darker">
         {userFullName}
       </strong>
       <small className="has-text-grey-dark"> @{username}</small>
-    </>
+    </a>
   )
 
   return (
