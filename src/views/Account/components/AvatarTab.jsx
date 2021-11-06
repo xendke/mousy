@@ -37,6 +37,8 @@ const AvatarTab = ({ user, firebase }) => {
     setCrop(cropInfo)
   }
 
+  if (!user.auth) return null
+
   return (
     <div className="AvatarTab">
       {successCount > 0 && (

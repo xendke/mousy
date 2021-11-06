@@ -1,16 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-// import { Redirect } from 'react-router-dom'
-import Router from 'next/router'
+
+import { withRouter } from 'next/router'
+import { compose } from '~/utils'
 import AvatarTab from './components/AvatarTab'
 import InfoTab from './components/InfoTab'
 import InterestsTab from './components/InterestsTab'
 
 import styles from './Account.module.scss'
 
-const Account = ({ user, match, history }) => {
-  const { params } = match
+const Account = ({ user, router }) => {
+  const { query } = router
+  const tab = query.tab ? query.tab[0] : ''
   const tabContents = {
     avatar: <AvatarTab />,
     info: <InfoTab />,
@@ -18,13 +20,15 @@ const Account = ({ user, match, history }) => {
   }
 
   let currentTab = 'avatar'
-  if (Object.keys(tabContents).includes(params.tab)) currentTab = params.tab
+  if (Object.keys(tabContents).includes(tab)) currentTab = tab
 
-  const setCurrentTab = (tab) => history.push(`/account/${tab}`)
+  const setCurrentTab = (tab) => router.push(`/account/${tab}`)
 
-  if (!user.isSignedIn) {
-    return Router.push('/login')
-  }
+  useEffect(() => {
+    if (!user.isSignedIn) {
+      return router.push('/login')
+    }
+  }, [])
 
   return (
     <div className="Account container section">
@@ -79,4 +83,4 @@ const mapStateToProps = (state) => ({
   user: state.user,
 })
 
-export default connect(mapStateToProps)(Account)
+export default compose(connect(mapStateToProps), withRouter)(Account)

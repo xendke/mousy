@@ -26,7 +26,7 @@ class App extends Component {
           {/* <Route path="/me" exact component={Profile} /> */}
 
           {/* TOOOODOOOO: */}
-          <Route path="/account/:tab?" exact component={Account} />
+          {/* <Route path="/account/:tab?" exact component={Account} /> */}
           <Route path="/post/:postId?" exact component={PostDiscussion} />
           {/* <Route
             path="/shy/:userId"
