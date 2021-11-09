@@ -145,6 +145,7 @@ const Profile = ({
 }
 
 const aperture = (component, { firebase, user, dispatch }) => {
+  console.log('Profile.jsx > aperture:user', user)
   const [showLikes$, showLikes] = component.useEvent(false)
   const userIdParam = () =>
     component.observe('router', ({ query }) => query.userId)
@@ -178,7 +179,7 @@ const aperture = (component, { firebase, user, dispatch }) => {
     .map(() =>
       xs.fromPromise(
         firebase
-          .doUserInfoGet(user.auth.uid)
+          .doUserInfoGet(user.auth?.uid)
           .then((res) => res.data())
           .catch(() => ({ error: true }))
       )
@@ -193,14 +194,14 @@ const aperture = (component, { firebase, user, dispatch }) => {
     .map((userData) => ({
       userData,
       isOwnProfile: true,
-      userId: user.auth.uid,
+      userId: user.auth?.uid,
     }))
 
   const loadPosts$ = showLikes$
     .compose(sampleCombine(userIdParam()))
     .map(([fetchLikedPosts, param]) => [
       fetchLikedPosts,
-      param || user.auth.uid,
+      param || user.auth?.uid,
     ])
     .map(([fetchLikedPosts, userId]) =>
       fetchLikedPosts

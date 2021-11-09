@@ -11,12 +11,11 @@ const makeStore = (context) => {
 
   const reducer = (state, action) => {
     if (action.type === HYDRATE) {
-      const nextState = {
+      console.log('HYDRATE', action.payload)
+      return {
         ...state,
         ...action.payload,
       }
-      if (state.count) nextState.count = state.count
-      return nextState
     } else {
       return combineReducers({
         user: userReducer,
@@ -38,6 +37,4 @@ const makeStore = (context) => {
   return store
 }
 
-// export default makeStore
-
-export const wrapper = createWrapper(makeStore, { debug: true })
+export const wrapper = createWrapper(makeStore)

@@ -7,6 +7,7 @@ import { compose } from '~/utils'
 import { Post, Loading, Comment, CommentForm, Empty } from '~/components'
 
 import styles from './PostDiscussion.module.scss'
+import { withRouter } from 'next/router'
 
 const Comments = ({ comments = [] }) =>
   comments.length > 0 ? (
@@ -53,16 +54,22 @@ const mapStateToProps = (state) => ({
 export default compose(
   connect(mapStateToProps),
   withFirebase,
+  withRouter,
   withEffects(
-    (component, { firebase, match }) => {
-      const { params } = match
-      const loadPost$ = component.mount
-        .mapTo(xs.fromPromise(firebase.doPostGet(params.postId)))
+    (component, { firebase }) => {
+      const getPostId = () =>
+        component
+          .observe('router', ({ query: { postId } }) => postId)
+          .filter(Boolean)
+          .take(1)
+
+      const loadPost$ = getPostId()
+        .map((postId) => xs.fromPromise(firebase.doPostGet(postId)))
         .flatten()
         .map((post) => toProps({ post }))
 
-      const loadComments$ = component.mount
-        .mapTo(xs.fromPromise(firebase.doCommentsGet(params.postId)))
+      const loadComments$ = getPostId()
+        .map((postId) => xs.fromPromise(firebase.doCommentsGet(postId)))
         .flatten()
         .map((comments) => toProps({ comments }))
 

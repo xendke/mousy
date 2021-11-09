@@ -20,7 +20,9 @@ const InputForm = ({
   <div className={`InputForm box ${className}`}>
     <form className="field is-grouped">
       <Link className="image" href="/me">
-        <Avatar userId={user.auth.uid} />
+        <a>
+          <Avatar userId={user.auth.uid} />
+        </a>
       </Link>
       <p className="control is-expanded">
         <input

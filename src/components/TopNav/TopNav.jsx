@@ -13,7 +13,6 @@ import logoImage from '~/assets/logo.png'
 import styles from './TopNav.module.scss'
 
 const TopNav = ({ user, firebase }) => {
-  console.log('firebase', firebase)
   const [isNavbarOpened, setIsNavbarOpened] = useState(false)
   const nodeRef = useRef()
   const router = useRouter()
@@ -46,21 +45,21 @@ const TopNav = ({ user, firebase }) => {
     }
   }, [isNavbarOpened])
 
-  useEffect(() => {
-    if (!firebase) return
+  // useEffect(() => {
+  //   if (!firebase) return
 
-    const unsubscribe = firebase.auth.onAuthStateChanged(async (authUser) => {
-      if (authUser) {
-        dispatch(signIn(authUser))
-        const userInfo = await firebase.doUserInfoGet(authUser.uid)
-        dispatch(setInfo(userInfo.data()))
-      } else {
-        dispatch(signOut())
-      }
-    })
+  //   const unsubscribe = firebase.auth.onAuthStateChanged(async (authUser) => {
+  //     if (authUser) {
+  //       dispatch(signIn(authUser))
+  //       const userInfo = await firebase.doUserInfoGet(authUser.uid)
+  //       dispatch(setInfo(userInfo.data()))
+  //     } else {
+  //       dispatch(signOut())
+  //     }
+  //   })
 
-    return () => unsubscribe()
-  }, [firebase])
+  //   return () => unsubscribe()
+  // }, [firebase])
 
   return (
     <nav
@@ -72,7 +71,7 @@ const TopNav = ({ user, firebase }) => {
       <div className="navbar-brand">
         <div className={cn(styles.navbarItem, 'navbar-item')}>
           <Link href="/">
-            <>
+            <a>
               <Image
                 src={iconImage}
                 alt="ShyApp Icon"
@@ -83,7 +82,7 @@ const TopNav = ({ user, firebase }) => {
                 alt="ShyApp Logo"
                 className={cn(styles.navbarLogo, 'navbar-logo')}
               />
-            </>
+            </a>
           </Link>
         </div>
 
