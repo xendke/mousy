@@ -59,7 +59,7 @@ export default compose(
     (component, { firebase }) => {
       const getPostId = () =>
         component
-          .observe('router', ({ query: { postId } }) => postId)
+          .observe('router', ({ query }) => query.postId)
           .filter(Boolean)
           .take(1)
 

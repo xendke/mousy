@@ -144,17 +144,22 @@ const Profile = ({
   )
 }
 
-const aperture = (component, { firebase, user, dispatch }) => {
-  console.log('Profile.jsx > aperture:user', user)
+const aperture = (component, { firebase, dispatch }) => {
   const [showLikes$, showLikes] = component.useEvent(false)
   const userIdParam = () =>
     component.observe('router', ({ query }) => query.userId)
 
-  const likedPosts = user.info?.likedPosts || []
+  const userAuth = () =>
+    component
+      .observe('user')
+      .filter(({ auth, info }) => auth && info)
+      .take(1)
 
-  const loadOtherUserInfo$ = userIdParam()
-    .filter((param) => param)
-    .map((userId) =>
+  const ready$ = () => xs.combine(userIdParam(), userAuth())
+
+  const loadOtherUserInfo$ = ready$()
+    .filter(([param]) => param)
+    .map(([userId]) =>
       xs.fromPromise(
         firebase
           .doUserInfoGet(userId)
@@ -163,47 +168,51 @@ const aperture = (component, { firebase, user, dispatch }) => {
       )
     )
     .flatten()
-    .compose(sampleCombine(userIdParam()))
-    .map(([userData, userId]) => ({ userData, isOwnProfile: false, userId }))
+    .compose(sampleCombine(ready$()))
+    .map(([userData, [userId]]) => ({ userData, isOwnProfile: false, userId }))
 
-  const useOwnUserInfo$ = userIdParam()
-    .filter((param) => !param && user.info && user.info.name)
-    .mapTo({
+  const useOwnUserInfo$ = ready$()
+    .debug('ready$()')
+    .filter(([param, user]) => !param && user.info && user.info.name)
+    .map(([param, user]) => ({
       userData: user.info,
-      isOwnProfile: true,
-      userId: user.auth?.uid,
-    })
-
-  const loadOwnUserInfo$ = userIdParam()
-    .filter((param) => !param && user.info && !user.info.name)
-    .map(() =>
-      xs.fromPromise(
-        firebase
-          .doUserInfoGet(user.auth?.uid)
-          .then((res) => res.data())
-          .catch(() => ({ error: true }))
-      )
-    )
-    .flatten()
-    .map((userData) => {
-      if (!userData.error) {
-        dispatch(setInfo(userData))
-      }
-      return userData
-    })
-    .map((userData) => ({
-      userData,
       isOwnProfile: true,
       userId: user.auth?.uid,
     }))
 
-  const loadPosts$ = showLikes$
-    .compose(sampleCombine(userIdParam()))
-    .map(([fetchLikedPosts, param]) => [
+  const loadOwnUserInfo$ = ready$()
+    .filter(([param, user]) => !param && user.info && !user.info.name)
+    .map(([, user]) =>
+      xs.fromPromise(
+        firebase
+          .doUserInfoGet(user.auth?.uid)
+          .then((res) => [res.data(), user.auth?.uid])
+          .catch(() => ({ error: true }))
+      )
+    )
+    .flatten()
+    .map(([userData, userId]) => {
+      if (!userData.error) {
+        dispatch(setInfo(userData))
+      }
+      return [userData, userId]
+    })
+    .debug('userData')
+    .map(([userData, userId]) => ({
+      userData,
+      isOwnProfile: true,
+      userId,
+    }))
+
+  const loadPosts$ = ready$()
+    .compose(sampleCombine(showLikes$)) // showLikes is not the source stream anymore so the toggle doesnt fetch likedPosts
+    .map(([[param, user], fetchLikedPosts]) => [
       fetchLikedPosts,
       param || user.auth?.uid,
+      user.info.likedPosts,
     ])
-    .map(([fetchLikedPosts, userId]) =>
+    .debug('loadPosts$ likes')
+    .map(([fetchLikedPosts, userId, likedPosts]) =>
       fetchLikedPosts
         ? xs.fromPromise(firebase.doLikedPostsGet(likedPosts))
         : xs.fromPromise(firebase.doUserPostsGet(userId))
@@ -239,3 +248,12 @@ export default compose(
     errorHandler: () => (e) => console.log(e),
   })
 )(Profile)
+
+// TODO: rewrite so that there are two parent components
+// OwnProfile, UserProfile
+// both render Profile but they fetch the correct info and pass down correct props
+// maybe use a custom hook? RIP refract
+
+// problem: Figure out how to render OwnProfile vs UserProfile
+// maybe, if userId avail render UserProfile
+// maybe a prop passed by me.js
