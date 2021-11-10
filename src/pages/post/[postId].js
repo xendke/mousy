@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic'
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import('~/views/PostDiscussion/PostDiscussion.jsx'),
+  () => import('~/views/PostDiscussion/PostDiscussion'),
   {
     ssr: false,
   }

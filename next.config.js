@@ -7,4 +7,8 @@ module.exports = {
 
     return config
   },
+  images: {
+    // used for default avatar. TODO: find new 1 and self host
+    domains: ['encrypted-tbn0.gstatic.com', 'firebasestorage.googleapis.com'],
+  },
 }

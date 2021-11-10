@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Avatar from '~/components/Avatar/Avatar'
 
-import styles from './InputForm.module.scss'
+// import styles from './InputForm.module.scss'
 
 const InputForm = ({
   className = '',
@@ -19,8 +19,8 @@ const InputForm = ({
 }) => (
   <div className={`InputForm box ${className}`}>
     <form className="field is-grouped">
-      <Link className="image" href="/me">
-        <a>
+      <Link className="image" href="/me" passHref>
+        <a href="wow">
           <Avatar userId={user.auth.uid} />
         </a>
       </Link>

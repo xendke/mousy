@@ -28,12 +28,12 @@ const Post = ({
   const timePosted = formatDistanceToNowStrict(createdAt)
   const userRoute = uid === userId ? '/me' : `/shy/${userId}`
   const author = (
-    <a>
+    <>
       <strong className="is-capitalized has-text-grey-darker">
         {userFullName}
       </strong>
       <small className="has-text-grey-dark"> @{username}</small>
-    </a>
+    </>
   )
 
   return (
@@ -42,7 +42,13 @@ const Post = ({
         <div className="media-content">
           <div className="content">
             <p>
-              {userId ? <Link href={userRoute}>{author}</Link> : author}
+              {userId ? (
+                <Link href={userRoute} passHref>
+                  <a href="wow">{author}</a>
+                </Link>
+              ) : (
+                author
+              )}
               <small className="has-text-grey-light"> {timePosted} ago</small>
               <br />
               {content}
@@ -53,7 +59,7 @@ const Post = ({
               <div className="field has-addons">
                 {!hideCommentIcon && (
                   <p className="control">
-                    <Link href={`/post/${postId}`}>
+                    <Link href={`/post/${postId}`} passHref>
                       <button
                         type="button"
                         className="button is-small is-text has-text-primary"

@@ -22,8 +22,8 @@ const Comment = ({ content, authorId, userbase, createdAt, user }) => {
       <article className="media">
         <div className="media-left">
           <figure className="image is-48x48">
-            <Link className="image" href={`/shy/${authorId}`}>
-              <a>
+            <Link className="image" href={`/shy/${authorId}`} passHref>
+              <a href="wow">
                 <Avatar userId={authorId} />
               </a>
             </Link>

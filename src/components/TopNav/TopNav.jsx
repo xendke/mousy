@@ -3,9 +3,8 @@ import cn from 'classnames'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
-import { connect, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 
-import { signIn, signOut, setInfo } from '~/redux/actions/user'
 import { withFirebase } from '~/components/firebase'
 import iconImage from '~/assets/icon.png'
 import logoImage from '~/assets/logo.png'
@@ -16,7 +15,6 @@ const TopNav = ({ user, firebase }) => {
   const [isNavbarOpened, setIsNavbarOpened] = useState(false)
   const nodeRef = useRef()
   const router = useRouter()
-  const dispatch = useDispatch()
 
   const closeNavbarAndGo = (path) => () => {
     setIsNavbarOpened(false)
@@ -45,22 +43,6 @@ const TopNav = ({ user, firebase }) => {
     }
   }, [isNavbarOpened])
 
-  // useEffect(() => {
-  //   if (!firebase) return
-
-  //   const unsubscribe = firebase.auth.onAuthStateChanged(async (authUser) => {
-  //     if (authUser) {
-  //       dispatch(signIn(authUser))
-  //       const userInfo = await firebase.doUserInfoGet(authUser.uid)
-  //       dispatch(setInfo(userInfo.data()))
-  //     } else {
-  //       dispatch(signOut())
-  //     }
-  //   })
-
-  //   return () => unsubscribe()
-  // }, [firebase])
-
   return (
     <nav
       ref={nodeRef}
@@ -70,8 +52,8 @@ const TopNav = ({ user, firebase }) => {
     >
       <div className="navbar-brand">
         <div className={cn(styles.navbarItem, 'navbar-item')}>
-          <Link href="/">
-            <a>
+          <Link href="/" passHref>
+            <a href="wow">
               <Image
                 src={iconImage}
                 alt="ShyApp Icon"

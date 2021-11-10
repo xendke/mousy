@@ -8,11 +8,12 @@ import { Footer, TopNav } from '~/components'
 import Firebase, { FirebaseContext, withFirebase } from '~/components/firebase'
 import { wrapper } from '~/redux/store'
 import { signIn, signOut, setInfo } from '~/redux/actions/user'
-import { compose } from '~/utils'
+import { compose, noop } from '~/utils'
 
 const AuthListener = ({ children, firebase, dispatch }) => {
   useEffect(() => {
-    if (!firebase) return
+    if (!firebase) return noop
+
     const unsubscribe = firebase.auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
         dispatch(signIn(authUser))
@@ -23,7 +24,7 @@ const AuthListener = ({ children, firebase, dispatch }) => {
       }
     })
 
-    return () => unsubscribe()
+    return unsubscribe
   })
 
   return children
@@ -34,7 +35,7 @@ const AuthListenerWrapper = compose(
   withFirebase
 )(AuthListener)
 
-function MyApp({ Component, pageProps, ...rest }) {
+function MyApp({ Component, pageProps }) {
   const [firebase, setFirebase] = useState(null)
 
   useEffect(() => {

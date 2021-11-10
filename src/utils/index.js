@@ -2,6 +2,8 @@ export const logger = (...args) => {
   console.log(...args)
 }
 
+export const noop = () => undefined
+
 export const throttle = (callback, limit) => {
   let waiting = false
   return (...args) => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+// import Image from 'next/image'
 import { withFirebase } from '~/components/firebase'
 
 const DEFAULT_AVATAR =
@@ -21,7 +22,12 @@ const Avatar = ({ userId, refresh, firebase }) => {
 
   return (
     <figure className="Avatar image">
-      <img className="is-rounded" src={avatarUrl} alt="User Avatar" />
+      <img
+        className="is-rounded"
+        src={avatarUrl}
+        alt="User Avatar"
+        // layout="fill"
+      />
     </figure>
   )
 }
