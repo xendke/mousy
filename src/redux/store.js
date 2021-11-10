@@ -1,10 +1,10 @@
 import { createStore, combineReducers } from 'redux'
 // import { loadState, saveState } from './localStorage'
 // import { throttle } from 'utils'
+import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 import userReducer from './reducers/user'
 import userbaseReducer from './reducers/userbase'
 import postsReducer from './reducers/posts'
-import { createWrapper, HYDRATE } from 'next-redux-wrapper'
 
 const makeStore = (context) => {
   const isServer = typeof window === 'undefined'
@@ -15,13 +15,12 @@ const makeStore = (context) => {
         ...state,
         ...action.payload,
       }
-    } else {
-      return combineReducers({
-        user: userReducer,
-        userbase: userbaseReducer,
-        posts: postsReducer,
-      })(state, action)
     }
+    return combineReducers({
+      user: userReducer,
+      userbase: userbaseReducer,
+      posts: postsReducer,
+    })(state, action)
   }
 
   const store = createStore(

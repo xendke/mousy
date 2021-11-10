@@ -91,10 +91,11 @@ const Credentials = ({
 
               const { exists } = await firebase.doUsernameExistsCheck(username)
               if (!exists) {
-                const authUser = await firebase.doCreateUserWithEmailAndPassword(
-                  email,
-                  password
-                )
+                const authUser =
+                  await firebase.doCreateUserWithEmailAndPassword(
+                    email,
+                    password
+                  )
                 await firebase.doUserInfoEdit(authUser.user.uid, {
                   name,
                   username,

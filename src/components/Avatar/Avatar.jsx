@@ -12,7 +12,7 @@ const Avatar = ({ userId, refresh, firebase }) => {
       try {
         const url = await firebase.doAvatarUrlGet(userId)
         if (url) setAvatarUrl(url)
-      } catch {
+      } catch (e) {
         setAvatarUrl(DEFAULT_AVATAR)
       }
     }

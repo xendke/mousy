@@ -30,9 +30,10 @@
     "clean": "rm -rf ./build",
     "predeploy": "npm run clean && npm run build",
     "deploy": "firebase deploy",
-    "lint": "eslint . --ext js,jsx",
-    "lint:fix": "eslint . --fix --ext js,jsx",
-    "lint:ci": "eslint . --fix --max-warnings 0 --ext js,jsx",
+    "lint:old": "eslint . --ext js,jsx",
+    "lint": "next lint",
+    "lint:fix": "next lint . --fix",
+    "lint:ci": "next lint . --fix --max-warnings 0",
     "precommit": "lint-staged"
   },
   "husky": {
@@ -51,6 +52,7 @@
     "@svgr/webpack": "^5.5.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-next": "12.0.3",
     "eslint-config-prettier": "^6.11.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.22.0",

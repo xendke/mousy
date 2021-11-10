@@ -3,13 +3,12 @@ import 'normalize.css'
 import '~/assets/index.scss'
 
 import { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 import { Footer, TopNav } from '~/components'
-import Firebase, { FirebaseContext } from '~/components/firebase'
+import Firebase, { FirebaseContext, withFirebase } from '~/components/firebase'
 import { wrapper } from '~/redux/store'
 import { signIn, signOut, setInfo } from '~/redux/actions/user'
 import { compose } from '~/utils'
-import { connect } from 'react-redux'
-import { withFirebase } from '~/components/firebase'
 
 const AuthListener = ({ children, firebase, dispatch }) => {
   useEffect(() => {
