@@ -14,12 +14,16 @@ const getCollectionData = (collectionRef) => {
 }
 const sortBy = (key) => (data) => {
   if (Array.isArray(data)) {
-    return data.sort((a, b) => a[key] < b[key])
+    return data.sort((a, b) => a[key] - b[key])
   }
   return []
 }
 
 class Firebase {
+  auth: app.auth.Auth
+  db: app.firestore.Firestore
+  storage: app.storage.Storage
+
   constructor() {
     if (!app.apps.length) {
       app.initializeApp(config)

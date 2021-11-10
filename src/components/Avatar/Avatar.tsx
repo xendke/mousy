@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react'
-// import Image from 'next/image'
+import Image from 'next/image'
 import { withFirebase } from '~/components/firebase'
 
 const DEFAULT_AVATAR =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCoxWc5ukrkkaNHBArZt7YJq15_xWWDb4NdQ&usqp=CAU'
 
-const Avatar = ({ userId, refresh, firebase }) => {
+interface AvatarProps {
+  userId: string
+  refresh: number
+  firebase: any
+}
+
+const Avatar: React.FC<AvatarProps> = ({ userId, refresh, firebase }) => {
   const [avatarUrl, setAvatarUrl] = useState(DEFAULT_AVATAR)
 
   useEffect(() => {
@@ -22,11 +28,12 @@ const Avatar = ({ userId, refresh, firebase }) => {
 
   return (
     <figure className="Avatar image">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         className="is-rounded"
         src={avatarUrl}
         alt="User Avatar"
+        width={100}
+        height={100}
         // layout="fill"
       />
     </figure>
