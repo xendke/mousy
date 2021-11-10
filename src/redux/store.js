@@ -11,7 +11,6 @@ const makeStore = (context) => {
 
   const reducer = (state, action) => {
     if (action.type === HYDRATE) {
-      console.log('HYDRATE', action.payload)
       return {
         ...state,
         ...action.payload,
