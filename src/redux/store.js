@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux'
 // import { loadState, saveState } from './localStorage'
-// import { throttle } from '~/utils'
+// import { throttle } from 'utils'
 import userReducer from './reducers/user'
 import userbaseReducer from './reducers/userbase'
 import postsReducer from './reducers/posts'
@@ -28,6 +28,7 @@ const makeStore = (context) => {
   const store = createStore(
     reducer,
     undefined,
+    // loadState(),
     !isServer
       ? window.__REDUX_DEVTOOLS_EXTENSION__ &&
           window.__REDUX_DEVTOOLS_EXTENSION__()

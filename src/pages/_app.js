@@ -1,14 +1,13 @@
 import 'bulma/css/bulma.css'
 import 'normalize.css'
+import '~/assets/index.scss'
+
 import { useEffect, useState } from 'react'
 import { Footer, TopNav } from '~/components'
 import Firebase, { FirebaseContext } from '~/components/firebase'
 import { wrapper } from '~/redux/store'
-import { ScrollToTop } from '~/views'
 import { signIn, signOut, setInfo } from '~/redux/actions/user'
 import { compose } from '~/utils'
-
-import '../index.scss'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
 
