@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FC } from 'react'
 import Image from 'next/image'
 import { withFirebase } from '~/components/firebase'
+import { Firebase } from '~/types'
 
 const DEFAULT_AVATAR =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQCoxWc5ukrkkaNHBArZt7YJq15_xWWDb4NdQ&usqp=CAU'
@@ -8,7 +9,7 @@ const DEFAULT_AVATAR =
 interface AvatarProps {
   userId: string
   refresh: number
-  firebase: any
+  firebase: Firebase
 }
 
 const Avatar: FC<AvatarProps> = ({ userId, refresh, firebase }) => {
