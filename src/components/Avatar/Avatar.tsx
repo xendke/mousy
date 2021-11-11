@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import Image from 'next/image'
 import { withFirebase } from '~/components/firebase'
 
@@ -11,7 +11,7 @@ interface AvatarProps {
   firebase: any
 }
 
-const Avatar: React.FC<AvatarProps> = ({ userId, refresh, firebase }) => {
+const Avatar: FC<AvatarProps> = ({ userId, refresh, firebase }) => {
   const [avatarUrl, setAvatarUrl] = useState(DEFAULT_AVATAR)
 
   useEffect(() => {

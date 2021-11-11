@@ -28,7 +28,18 @@
     "react/jsx-filename-extension": [
       1,
       {
-        "extensions": [".js", ".jsx"]
+        "extensions": [".js", ".jsx", ".tsx"]
+      }
+    ],
+
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
       }
     ],
     "jsx-a11y/label-has-for": "off",
@@ -64,7 +75,7 @@
     "import/resolver": {
       "alias": {
         "map": [["~", "./src"]],
-        "extensions": [".ts", ".js", ".jsx", ".json"]
+        "extensions": [".ts", ".tsx", ".js", ".jsx", ".json"]
       }
     }
   }
