@@ -39,41 +39,43 @@ class Firebase {
 
   // *** Storage API ***
 
-  doAvatarUrlGet = (userId) =>
+  doAvatarUrlGet = (userId: string) =>
     this.storage.ref(`avatars/${userId}`).getDownloadURL()
 
-  doUploadUserAvatar = (userId, file) =>
+  doUploadUserAvatar = (userId: string, file: Blob) =>
     this.storage.ref(`avatars/${userId}`).put(file, { contentType: file.type })
 
   // *** Auth API ***
 
-  doCreateUserWithEmailAndPassword = (email, password) =>
+  doCreateUserWithEmailAndPassword = (email: string, password: string) =>
     this.auth.createUserWithEmailAndPassword(email, password)
 
-  doSignInWithEmailAndPassword = (email, password) =>
+  doSignInWithEmailAndPassword = (email: string, password: string) =>
     this.auth.signInWithEmailAndPassword(email, password)
 
   doSignOut = () => this.auth.signOut()
 
-  doPasswordReset = (email) => this.auth.sendPasswordResetEmail(email)
+  doPasswordReset = (email: string) => this.auth.sendPasswordResetEmail(email)
 
-  doPasswordUpdate = (password) =>
+  doPasswordUpdate = (password: string) =>
     this.auth.currentUser.updatePassword(password)
 
   // *** Firestore API ***
 
-  doUsernameExistsCheck = (username) =>
+  doUsernameExistsCheck = (username: string) =>
     this.db.collection('usernames').doc(username).get()
 
-  doUserInfoEdit = (uid, information) =>
-    this.db.collection('users').doc(uid).set(information)
+  doUserInfoEdit = (
+    uid: string,
+    information // make interface for userInfo
+  ) => this.db.collection('users').doc(uid).set(information)
 
-  doUserInfoGet = (uid) => this.db.collection('users').doc(uid).get()
+  doUserInfoGet = (uid: string) => this.db.collection('users').doc(uid).get()
 
-  doUsernameRegister = (username, uid) =>
+  doUsernameRegister = (username: string, uid: string) =>
     this.db.collection('usernames').doc(username).set({ uid })
 
-  doLikedPostsGet = (likedPosts = []) =>
+  doLikedPostsGet = (likedPosts: string[] = []) =>
     likedPosts.length > 0
       ? this.db
           .collection('posts')
@@ -101,7 +103,7 @@ class Firebase {
   doPostCommentAdd = (newComment) =>
     this.db.collection('comments').add(newComment)
 
-  doCommentsGet = (postId) =>
+  doCommentsGet = (postId: string) =>
     this.db
       .collection('comments')
       .where('postId', '==', postId)
@@ -109,14 +111,14 @@ class Firebase {
       .get()
       .then(getCollectionData)
 
-  doPostGet = (postId) =>
+  doPostGet = (postId: string) =>
     this.db
       .collection('posts')
       .doc(postId)
       .get()
       .then((postRef) => ({ id: postId, ...postRef.data() }))
 
-  doInterestsPostsGet = (interests) =>
+  doInterestsPostsGet = (interests: any[]) =>
     this.db
       .collection('posts')
       .where('interests', 'array-contains-any', interests)
@@ -125,7 +127,7 @@ class Firebase {
       .get()
       .then(getCollectionData)
 
-  doPostLikeToggle = async (postId, uid) => {
+  doPostLikeToggle = async (postId: string, uid: string) => {
     const doc = await this.db.collection('users').doc(uid)
     const self = (await doc.get()).data()
 
