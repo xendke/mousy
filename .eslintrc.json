@@ -7,7 +7,6 @@
   },
   "extends": [
     "next/core-web-vitals",
-    "airbnb",
     "plugin:react/recommended",
     "plugin:jsx-a11y/strict",
     "plugin:prettier/recommended",
