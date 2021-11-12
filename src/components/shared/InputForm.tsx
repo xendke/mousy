@@ -1,11 +1,26 @@
-import React from 'react'
+import React, { ChangeEventHandler } from 'react'
 import Link from 'next/link'
+import cn from 'classnames'
 import Avatar from '~/components/Avatar/Avatar'
 
-// import styles from './InputForm.module.scss'
+import styles from './InputForm.module.scss'
+import { User } from '~/types'
 
-const InputForm = ({
-  className = '',
+interface InputFormProps {
+  user: User
+  content: string
+  setContent: ChangeEventHandler<HTMLInputElement>
+  isLoading: boolean
+  submit: () => void
+  success: boolean
+  setSuccess: (s: boolean) => void
+  error: Error | undefined
+  setError: (e?: Error) => void
+  isForCommenting?: boolean
+  className?: string
+}
+
+const InputForm: React.FC<InputFormProps> = ({
   user,
   content,
   setContent,
@@ -16,11 +31,12 @@ const InputForm = ({
   error,
   setError,
   isForCommenting,
+  className,
 }) => (
-  <div className={`InputForm box ${className}`}>
-    <form className="field is-grouped">
-      <Link className="image" href="/me" passHref>
-        <a href="wow">
+  <div className={cn('InputForm', 'box', className)}>
+    <form className={cn('field', 'is-grouped', styles.group)}>
+      <Link href="/me" passHref>
+        <a href="wow" className={cn('image', styles.avatar)}>
           <Avatar userId={user.auth.uid} />
         </a>
       </Link>
@@ -56,15 +72,16 @@ const InputForm = ({
     )}
     {error && error.message && (
       <div className="notification is-danger is-light">
-        <button
-          type="button"
-          className="delete"
-          onClick={() => setError(false)}
-        />
+        <button type="button" className="delete" onClick={() => setError()} />
         {error.message}
       </div>
     )}
   </div>
 )
+
+InputForm.defaultProps = {
+  className: '',
+  isForCommenting: false,
+}
 
 export default InputForm

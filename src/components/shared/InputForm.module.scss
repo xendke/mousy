@@ -1,13 +1,9 @@
-.InputForm.box {
-	margin: 0 auto;
-	margin-bottom: 1.5rem;
+.group {
+  align-items: center;
+}
 
-	a.image {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 40px;
-		height: auto;
-		margin-right: 15px;
-	}
+.avatar {
+  margin-right: 15px;
+  width: 40px;
+  height: 40px;
 }

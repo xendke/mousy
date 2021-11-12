@@ -1,53 +1,56 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
-import { compose } from '~/utils'
 import InputForm from '~/components/shared/InputForm'
+import { Firebase, User } from '~/types'
 
-import styles from './CommentForm.module.scss'
+interface PostFormProps {
+  user: User
+  firebase: Firebase
+  getFeed: () => void
+}
 
-const CommentForm = ({ user, firebase, postId }) => {
+const PostForm: React.FC<PostFormProps> = ({ user, firebase, getFeed }) => {
   const [content, setContent] = useState('')
-  const [error, setError] = useState()
-  const [success, setSuccess] = useState()
   const [isLoading, setIsLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState<Error>()
 
-  const submitComment = async () => {
-    if (content.length === 0) {
-      setError('Comment cannot be empty.')
-      return
-    }
+  const submitPost = async () => {
     setIsLoading(true)
     try {
-      await firebase.doPostCommentAdd({
+      if (content.length === 0) throw new Error('Post content cannot be empty.')
+      await firebase.doUserPostsAdd({
         userId: user.auth.uid,
         createdAt: Date.now(),
-        postId,
         content,
+        interests: user.info.interests,
+        likeCount: 0,
       })
       setContent('')
       setSuccess(true)
+      getFeed()
     } catch (e) {
       setError(e)
     }
     setIsLoading(false)
   }
+
   return (
     <InputForm
-      className={styles.CommentForm}
+      className="PostForm"
       user={user}
       content={content}
       setContent={(e) => {
         const { value } = e.target
         if (value.length <= 120) setContent(e.target.value)
       }}
-      submit={submitComment}
+      submit={submitPost}
       error={error}
       setError={setError}
       success={success}
       setSuccess={setSuccess}
       isLoading={isLoading}
-      isForCommenting
     />
   )
 }
@@ -58,4 +61,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default compose(connect(mapStateToProps), withFirebase)(CommentForm)
+export default connect(mapStateToProps)(withFirebase(PostForm))

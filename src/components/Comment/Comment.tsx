@@ -5,7 +5,23 @@ import { formatDistanceToNowStrict } from 'date-fns'
 import { compose } from '~/utils'
 import Avatar from '~/components/Avatar/Avatar'
 
-const Comment = ({ content, authorId, userbase, createdAt, user }) => {
+import { User, Userbase } from '~/types'
+
+interface CommentProps {
+  content: string
+  authorId: string
+  userbase: Userbase
+  createdAt: number
+  user: User
+}
+
+const Comment: React.FC<CommentProps> = ({
+  content,
+  authorId,
+  userbase,
+  createdAt,
+  user,
+}) => {
   const authorData = userbase[authorId] || user.info
   const timePosted = formatDistanceToNowStrict(createdAt)
   const author = (
@@ -22,7 +38,7 @@ const Comment = ({ content, authorId, userbase, createdAt, user }) => {
       <article className="media">
         <div className="media-left">
           <figure className="image is-48x48">
-            <Link className="image" href={`/shy/${authorId}`} passHref>
+            <Link href={`/shy/${authorId}`} passHref>
               <a href="wow">
                 <Avatar userId={authorId} />
               </a>

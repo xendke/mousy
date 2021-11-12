@@ -6,13 +6,28 @@ import { withEffects, toProps } from 'refract-xstream'
 import { formatDistanceToNowStrict } from 'date-fns'
 import xs from 'xstream'
 import { connect } from 'react-redux'
+import cn from 'classnames'
 import { compose } from '~/utils'
 import { withFirebase } from '~/components/firebase'
 import { setLikedPosts } from '~/redux/actions/user'
 
 import styles from './Post.module.scss'
 
-const Post = ({
+interface PostProps {
+  postId: string
+  userFullName: string
+  username: string
+  userId: string
+  content: string
+  createdAt: number
+  likeCount: number
+  onLike: (l: boolean) => void
+  liked: boolean
+  hideCommentIcon: boolean
+  uid: string
+}
+
+const Post: React.FC<PostProps> = ({
   postId,
   userFullName,
   username,
@@ -37,10 +52,10 @@ const Post = ({
   )
 
   return (
-    <div className={`${styles.Post} box`}>
-      <article className="media">
+    <div className={cn(styles.Post, 'box')}>
+      <article className={cn(styles.media, 'media')}>
         <div className="media-content">
-          <div className="content">
+          <div className={cn(styles.content, 'content')}>
             <p>
               {userId ? (
                 <Link href={userRoute} passHref>
@@ -62,7 +77,10 @@ const Post = ({
                     <Link href={`/post/${postId}`} passHref>
                       <button
                         type="button"
-                        className="button is-small is-text has-text-primary"
+                        className={cn(
+                          styles.button,
+                          'button is-small is-text has-text-primary'
+                        )}
                       >
                         <span className="icon">
                           <FontAwesomeIcon icon={faComment} />
@@ -75,9 +93,11 @@ const Post = ({
                   <button
                     type="button"
                     onClick={() => onLike(true)}
-                    className={`button is-small is-text ${
+                    className={cn(
+                      styles.button,
+                      'button is-small is-text',
                       liked ? 'has-text-danger' : 'has-text-primary'
-                    }`}
+                    )}
                   >
                     <span className="icon">
                       <FontAwesomeIcon icon={faHeart} />
@@ -126,8 +146,14 @@ const aperture = (
     .map(toProps)
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  }
+}
+
 export default compose(
-  connect((state) => ({ user: state.user })),
+  connect(mapStateToProps),
   withFirebase,
   withEffects(aperture, { mergeProps: true })
 )(Post)

@@ -20,24 +20,6 @@ const getRandomInterests = () => {
 }
 
 class Join extends React.Component {
-  checkIfUsernameExists = debounce((isValidUsername) => {
-    const { username } = this.state
-    const { firebase } = this.props
-    if (isValidUsername) {
-      firebase.doUsernameExistsCheck(username).then((res) => {
-        this.setState(() => ({
-          usernameIsAvailable: !res.exists,
-          checkingUsernameExists: false,
-        }))
-      })
-    } else {
-      this.setState(() => ({
-        usernameIsAvailable: false,
-        checkingUsernameExists: false,
-      }))
-    }
-  }, 2000)
-
   constructor(props) {
     super(props)
     this.state = {
@@ -55,10 +37,6 @@ class Join extends React.Component {
     this.setError = this.setError.bind(this)
   }
 
-  setError(message) {
-    this.setState(() => ({ error: message }))
-  }
-
   handleChange(event) {
     const { name, value } = event.target
     const isValidUsername = name === 'username' && value.length > 4
@@ -73,6 +51,28 @@ class Join extends React.Component {
       }
     )
   }
+
+  setError(message) {
+    this.setState(() => ({ error: message }))
+  }
+
+  checkIfUsernameExists = debounce((isValidUsername) => {
+    const { username } = this.state
+    const { firebase } = this.props
+    if (isValidUsername) {
+      firebase.doUsernameExistsCheck(username).then((res) => {
+        this.setState(() => ({
+          usernameIsAvailable: !res.exists,
+          checkingUsernameExists: false,
+        }))
+      })
+    } else {
+      this.setState(() => ({
+        usernameIsAvailable: false,
+        checkingUsernameExists: false,
+      }))
+    }
+  }, 2000)
 
   render() {
     const { user } = this.props

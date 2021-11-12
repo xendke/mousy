@@ -10,10 +10,16 @@ import iconImage from '~/assets/icon.png'
 import logoImage from '~/assets/logo.png'
 
 import styles from './TopNav.module.scss'
+import { Firebase, User } from '~/types'
 
-const TopNav = ({ user, firebase }) => {
+interface TopNavProps {
+  user: User
+  firebase: Firebase
+}
+
+const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
   const [isNavbarOpened, setIsNavbarOpened] = useState(false)
-  const nodeRef = useRef()
+  const nodeRef = useRef<HTMLElement>()
   const router = useRouter()
 
   const closeNavbarAndGo = (path) => () => {
@@ -26,7 +32,7 @@ const TopNav = ({ user, firebase }) => {
   }
 
   const closeOnOutsideClick = (event) => {
-    if (!nodeRef.current.contains(event.target)) {
+    if (nodeRef.current && !nodeRef.current.contains(event.target)) {
       setIsNavbarOpened(false)
     }
   }

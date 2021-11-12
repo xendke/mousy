@@ -21,7 +21,9 @@ const sortBy = (key) => (data) => {
 
 class Firebase {
   auth: app.auth.Auth
+
   db: app.firestore.Firestore
+
   storage: app.storage.Storage
 
   constructor() {

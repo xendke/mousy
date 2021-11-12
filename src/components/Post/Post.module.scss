@@ -1,11 +1,13 @@
-.Post.box {
+.Post {
   margin: 10px 0;
   margin-bottom: 1.5rem;
+
   .media .content {
     margin-bottom: 0.5rem;
   }
+
   .button {
-      text-decoration: none;
-      padding: 0.5rem;
+    text-decoration: none;
+    padding: 0.5rem;
   }
 }
