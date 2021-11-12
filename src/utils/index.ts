@@ -4,7 +4,9 @@ export const logger = (...args) => {
 
 export const noop = () => undefined
 
-export const throttle = (callback, limit) => {
+type GenericFunction<T> = (...a) => T
+
+export const throttle = (callback: GenericFunction<void>, limit: number) => {
   let waiting = false
   return (...args) => {
     if (!waiting) {
@@ -17,7 +19,7 @@ export const throttle = (callback, limit) => {
   }
 }
 
-export const debounce = (callback, wait) => {
+export const debounce = (callback: GenericFunction<void>, wait: number) => {
   let timeout
   return (...args) => {
     const later = () => {
@@ -30,13 +32,7 @@ export const debounce = (callback, wait) => {
   }
 }
 
-export const formatInterests = (interests) =>
-  interests
-    .toLowerCase()
-    .split(',')
-    .map((s) => s.trim())
-
 export const compose =
-  (...all) =>
+  (...all: GenericFunction<unknown>[]) =>
   (original) =>
     all.reduceRight((current, f) => f(current), original)

@@ -1,10 +1,22 @@
 import React, { useState } from 'react'
 import Cropper from 'react-easy-crop'
+import cn from 'classnames'
+import { Area } from './helpers'
 import Loading from '~/components/Loading/Loading'
 
 import styles from './ImageCropper.module.scss'
 
-const ImageCropper = ({ src, getCrop, loading }) => {
+interface ImageCropperProps {
+  src: string
+  getCrop: (a: Area) => void
+  loading: boolean
+}
+
+const ImageCropper: React.FC<ImageCropperProps> = ({
+  src,
+  getCrop,
+  loading,
+}) => {
   const [crop, setCrop] = useState({
     x: 0,
     y: 0,
@@ -20,7 +32,7 @@ const ImageCropper = ({ src, getCrop, loading }) => {
   }
 
   return (
-    <div className={`${styles.ImageCropper} ${styles.cropperContainer}`}>
+    <div className={cn(styles.ImageCropper, styles.cropperContainer)}>
       <Cropper
         image={src}
         crop={crop}

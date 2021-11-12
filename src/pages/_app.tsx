@@ -36,7 +36,7 @@ const AuthListenerWrapper = compose(
 )(AuthListener)
 
 function MyApp({ Component, pageProps }) {
-  const [firebase, setFirebase] = useState(null)
+  const [firebase, setFirebase] = useState<Firebase | null>(null)
 
   useEffect(() => {
     const firebaseInstance = new Firebase()

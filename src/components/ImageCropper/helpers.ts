@@ -1,4 +1,11 @@
-const createImage = (url) =>
+export interface Area {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
+const createImage = (url: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
     const image = new Image()
     image.addEventListener('load', () => resolve(image))
@@ -7,7 +14,10 @@ const createImage = (url) =>
     image.src = url
   })
 
-const getCroppedImg = async (objectUrlImage, crop) => {
+const getCroppedImg = async (
+  objectUrlImage: string,
+  crop: Area
+): Promise<Blob> => {
   const image = await createImage(objectUrlImage)
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
