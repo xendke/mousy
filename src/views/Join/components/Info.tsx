@@ -1,7 +1,17 @@
 import React from 'react'
 import { InterestsSelect } from '~/components'
 
-const Info = ({
+interface InfoProps {
+  handleChange: (e: { target: { name: string; value: string } }) => void
+  name: string
+  username: string
+  interests: string[]
+  checkingUsernameExists: boolean
+  usernameIsAvailable: boolean
+  action: React.ReactNode
+}
+
+const Info: React.FC<InfoProps> = ({
   handleChange,
   name,
   username,

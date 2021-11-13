@@ -1,7 +1,20 @@
 import React from 'react'
 import { withFirebase } from '~/components/firebase'
+import { Firebase } from '~/types'
 
-const Credentials = ({
+interface CredentialsProps {
+  handleChange: (e: { target: { name: string; value: string } }) => void
+  email: string
+  emailConfirmation: string
+  password: string
+  name: string
+  username: string
+  interests: string[]
+  setError: (e: string) => void
+  firebase: Firebase
+}
+
+const Credentials: React.FC<CredentialsProps> = ({
   handleChange,
   email,
   emailConfirmation,

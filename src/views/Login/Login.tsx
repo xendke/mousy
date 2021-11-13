@@ -35,7 +35,6 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
 
   console.log(user)
   useEffect(() => {
-    // console.log(user)
     if (user.isSignedIn) {
       Router.push('/')
     }
@@ -44,7 +43,7 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
   return (
     <>
       {/* {user.isSignedIn && <Redirect to="/" />} */}
-      <form className={cn(styles.Login, styles.card, 'card')}>
+      <form className={cn(styles.Login, styles.section, 'section')}>
         <h1>Hi there!</h1>
 
         <div className="field">

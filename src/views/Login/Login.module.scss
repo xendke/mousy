@@ -1,9 +1,10 @@
 @import 'src/styles.scss';
 
-form.card {
+form.section {
   max-width: 418px;
   margin: auto;
-  padding: 25px;
+  padding-top: 25px;
+  padding-bottom: 25px;
   background-color: $white;
   border-radius: 5px;
 

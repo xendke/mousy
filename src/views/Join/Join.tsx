@@ -1,11 +1,12 @@
 import React from 'react'
 import Link from 'next/link'
+import cn from 'classnames'
 import Router from 'next/router'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
 import { debounce } from '~/utils'
-
 import { Info, Credentials } from './components'
+import { User, Firebase } from '~/types'
 
 import styles from './Join.module.scss'
 
@@ -19,7 +20,25 @@ const getRandomInterests = () => {
   return interests[randomIndex]
 }
 
-class Join extends React.Component {
+interface JoinProps {
+  user: User
+  firebase: Firebase
+}
+
+interface JoinState {
+  name: string
+  username: string
+  email: string
+  emailConfirmation: string
+  password: string
+  interests: string[]
+  error: string | null
+  step: 'info' | 'credentials'
+  usernameIsAvailable: boolean
+  checkingUsernameExists: boolean
+}
+
+class Join extends React.Component<JoinProps, JoinState> {
   constructor(props) {
     super(props)
     this.state = {
@@ -31,6 +50,8 @@ class Join extends React.Component {
       interests: getRandomInterests(),
       error: null,
       step: 'info',
+      usernameIsAvailable: false,
+      checkingUsernameExists: false,
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -42,7 +63,8 @@ class Join extends React.Component {
     const isValidUsername = name === 'username' && value.length > 4
 
     this.setState(
-      () => ({
+      (prev) => ({
+        ...prev,
         [name]: value,
         ...(isValidUsername && { checkingUsernameExists: true }),
       }),
@@ -61,13 +83,15 @@ class Join extends React.Component {
     const { firebase } = this.props
     if (isValidUsername) {
       firebase.doUsernameExistsCheck(username).then((res) => {
-        this.setState(() => ({
+        this.setState((prev) => ({
+          ...prev,
           usernameIsAvailable: !res.exists,
           checkingUsernameExists: false,
         }))
       })
     } else {
-      this.setState(() => ({
+      this.setState((prev) => ({
+        ...prev,
         usernameIsAvailable: false,
         checkingUsernameExists: false,
       }))
@@ -117,20 +141,29 @@ class Join extends React.Component {
           </button>
         </div>
 
-        <div className="control to-login">
-          <Link href="/login" className="is-text">
-            Already have an account?
+        <div className={cn(styles.toLogin, styles.control, 'control')}>
+          <Link href="/login" passHref>
+            <a href="wow" className="is-text">
+              Already have an account?
+            </a>
           </Link>
         </div>
       </div>
     )
 
     return (
-      <form className="section">
+      <form className={cn(styles.section, 'section')}>
         <h1>Sign Up</h1>
         <p>Join a community that listens!</p>
         {error && (
-          <div className="notification is-danger is-light">{error}</div>
+          <div
+            className={cn(
+              styles.notification,
+              'notification is-danger is-light'
+            )}
+          >
+            {error}
+          </div>
         )}
         {step === 'info' ? (
           <Info

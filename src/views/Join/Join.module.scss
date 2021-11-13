@@ -40,21 +40,7 @@ form.section {
     margin-bottom: 14px;
   }
 
-  input,
-  textarea {
-    background: $white;
-  }
-  textarea.textarea {
-    min-height: 5rem;
-  }
-
-  .checkbox-label {
-    padding-left: 10px;
-  }
-  .button.is-text {
-    font-size: 14px;
-  }
-  div.control.to-login {
+  div.control.toLogin {
     display: flex;
     flex-shrink: 1;
     align-items: center;
