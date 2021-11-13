@@ -104,7 +104,11 @@ class Home extends React.Component<HomeProps, HomeState> {
     const { posts } = this.props
     const { auth, isSignedIn, userInfo, userbase } = this.props
 
-    if (loadingPosts) {
+    // TODO: because redux store is not being persisted
+    // isSignedIn always starts as false until auth api response
+    // so logged in users always see a flash of the homepage
+
+    if (loadingPosts && isSignedIn) {
       return <Loading />
     }
 
