@@ -3,13 +3,19 @@ import { connect } from 'react-redux'
 import { Avatar, ImageCropper } from '~/components'
 import { withFirebase } from '~/components/firebase'
 import getCroppedImg from '~/components/ImageCropper/helpers'
+import { Firebase, User } from '~/types'
 
 import styles from './AvatarTab.module.scss'
 
-const AvatarTab = ({ user, firebase }) => {
+interface AvatarTabProps {
+  user: User
+  firebase: Firebase
+}
+
+const AvatarTab: React.FC<AvatarTabProps> = ({ user, firebase }) => {
   const [inputFile, setInputFile] = useState(null)
   const [uploading, setUploading] = useState(false)
-  const [successCount, setSuccessCount] = useState(false)
+  const [successCount, setSuccessCount] = useState(0)
   const [crop, setCrop] = useState(null)
 
   const onChangePicture = (e) => {
@@ -40,7 +46,7 @@ const AvatarTab = ({ user, firebase }) => {
   if (!user.auth) return null
 
   return (
-    <div className="AvatarTab">
+    <div className={styles.AvatarTab}>
       {successCount > 0 && (
         <div className="notification is-success is-light">
           Successfully updated your avatar!
@@ -61,10 +67,9 @@ const AvatarTab = ({ user, firebase }) => {
       )}
       {inputFile && (
         <>
-          <div className="cropper">
+          <div className={styles.cropper}>
             <ImageCropper
               src={inputFile}
-              // grabImageBlob={grabImageBlob}
               loading={uploading}
               getCrop={getCrop}
             />

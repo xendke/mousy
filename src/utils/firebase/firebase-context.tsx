@@ -6,7 +6,7 @@ FirebaseContext.displayName = 'FirebaseContext'
 
 const FirebaseConsumer = FirebaseContext.Consumer
 
-export const withFirebase = (Component: typeof React.Component) => {
+export const withFirebase = (Component: typeof React.Component | React.FC) => {
   const wrappedComponent = (props) => {
     return (
       <FirebaseConsumer>

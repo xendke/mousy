@@ -1,16 +1,24 @@
-import React, { useState } from 'react'
+import React, { MouseEventHandler, useState } from 'react'
 import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { withFirebase } from '~/components/firebase'
 import { setInfo } from '~/redux/actions/user'
+import { Firebase, User } from '~/types'
 
 import styles from './InfoTab.module.scss'
 
-const InfoTab = ({ user, firebase, dispatch }) => {
+interface Props {
+  user: User
+  firebase: Firebase
+  dispatch: Dispatch
+}
+
+const InfoTab: React.FC<Props> = ({ user, firebase, dispatch }) => {
   const [name, setName] = useState(user.info.name || '')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
-  const updateUserInfo = (e) => {
+  const updateUserInfo: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
     setLoading(true)
     const { auth, info } = user
@@ -25,7 +33,7 @@ const InfoTab = ({ user, firebase, dispatch }) => {
   }
 
   return (
-    <form className="InfoTab">
+    <form className={styles.InfoTab}>
       {success && (
         <div className="notification is-success is-light">
           Successfully updated your information!
