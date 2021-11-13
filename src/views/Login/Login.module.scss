@@ -1,24 +1,32 @@
-form.Login.section {
-	h1 {
-		margin-bottom: 12px;
-	}
+@import 'src/styles.scss';
 
-	.help {
-		font-size: 0.75rem;
-		margin-bottom: 0.25rem;
-	}
+form.card {
+  max-width: 418px;
+  margin: auto;
+  padding: 25px;
+  background-color: $white;
+  border-radius: 5px;
 
-	article.message.is-danger {
-		.message-body {
-			padding: 10px 10px;
-			margin-top: 20px;
-		}
-	}
-	.field .icon {
-		pointer-events: all;
-	}
+  h1 {
+    margin-bottom: 12px;
+  }
 
-	.button.is-primary {
-		margin-top: 10px;
-	}
+  .help {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  article.message.is-danger {
+    .message-body {
+      padding: 10px 10px;
+      margin-top: 20px;
+    }
+  }
+  .field .icon {
+    pointer-events: all;
+  }
+
+  .button.is-primary {
+    margin-top: 10px;
+  }
 }

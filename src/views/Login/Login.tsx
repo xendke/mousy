@@ -10,12 +10,19 @@ import {
   faEnvelope,
 } from '@fortawesome/free-solid-svg-icons'
 
+import cn from 'classnames'
 import { withFirebase } from '~/components/firebase'
 import isValidEmail from '~/utils/validation'
 
 import styles from './Login.module.scss'
+import { Firebase, User } from '~/types'
 
-const Login = ({ user, firebase }) => {
+interface LoginProps {
+  user: User
+  firebase: Firebase
+}
+
+const Login: React.FC<LoginProps> = ({ user, firebase }) => {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState(undefined)
   const [isPasswordHidden, setIsPasswordHidden] = useState(true)
@@ -37,7 +44,7 @@ const Login = ({ user, firebase }) => {
   return (
     <>
       {/* {user.isSignedIn && <Redirect to="/" />} */}
-      <form className="Login section">
+      <form className={cn(styles.Login, styles.card, 'card')}>
         <h1>Hi there!</h1>
 
         <div className="field">
@@ -60,11 +67,13 @@ const Login = ({ user, firebase }) => {
                 <FontAwesomeIcon icon={faEnvelope} />
               </span>
             </div>
-            {emailError && <p className="help is-danger">{emailError}</p>}
+            {emailError && (
+              <p className={cn(styles.help, 'help is-danger')}>{emailError}</p>
+            )}
           </label>
         </div>
 
-        <div className="field">
+        <div className={cn(styles.field, 'field')}>
           <label htmlFor="password" className="label">
             Password
             <div className="control has-icons-left has-icons-right">
@@ -85,7 +94,7 @@ const Login = ({ user, firebase }) => {
               </span>
               {password?.length > 0 && (
                 <span
-                  className="icon is-small is-right"
+                  className={cn(styles.icon, 'icon is-small is-right')}
                   tabIndex={0}
                   role="button"
                   onClick={() => setIsPasswordHidden(!isPasswordHidden)}
@@ -98,7 +107,9 @@ const Login = ({ user, firebase }) => {
               )}
             </div>
           </label>
-          {passwordError && <p className="help is-danger">{passwordError}</p>}
+          {passwordError && (
+            <p className={cn(styles.help, 'help is-danger')}>{passwordError}</p>
+          )}
         </div>
 
         {errorMessage && (
@@ -107,7 +118,7 @@ const Login = ({ user, firebase }) => {
 
         <button
           type="submit"
-          className="button is-primary"
+          className={cn(styles.button, 'button is-primary')}
           onClick={(event) => {
             event.preventDefault()
             let error = false

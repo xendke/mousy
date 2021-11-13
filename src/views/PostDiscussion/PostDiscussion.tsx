@@ -18,7 +18,7 @@ import {
 
 import styles from './PostDiscussion.module.scss'
 
-const renderComments = (comments: PostInt[] = []) =>
+const renderComments = (comments: CommentInt[] = []) =>
   comments.length > 0 ? (
     comments.map(({ id, content, userId, createdAt }) => (
       <Comment
