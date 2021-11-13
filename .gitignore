@@ -4,6 +4,7 @@
 firebase-auth.js
 
 # dependencies
+/.next
 /node_modules
 /.pnp
 .pnp.js
@@ -25,3 +26,5 @@ firebase-auth.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.vercel

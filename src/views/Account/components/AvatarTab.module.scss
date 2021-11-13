@@ -1,0 +1,19 @@
+.AvatarTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  label {
+    margin-bottom: 10px;
+  }
+  label [type='file'] {
+    margin-bottom: 10px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+  }
+  .cropper {
+    max-width: 300px;
+    margin-bottom: 10px;
+  }
+}

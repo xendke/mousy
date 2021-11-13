@@ -1,0 +1,60 @@
+@import 'src/styles.scss';
+
+.TopNav {
+  background-color: transparent;
+
+  .navbarItem {
+    font-size: 25px;
+    font-weight: 600;
+    color: $white;
+
+    &:hover {
+      color: $white;
+    }
+    .navbarIcon {
+      padding-top: 10px;
+      max-height: 1.5rem;
+      width: auto;
+    }
+    .navbarLogo {
+      display: none;
+      max-height: 2rem;
+
+      @media screen and (min-width: 1023px) {
+        display: inline-block;
+      }
+    }
+  }
+
+  .navbarBurger {
+    color: $white;
+    background: none;
+    border: none;
+  }
+  .navbarBurger:focus {
+    outline: thin dotted;
+  }
+
+  .navbarMenu {
+    background-color: $primary-color;
+
+    @media screen and (max-width: 1023px) {
+      display: block;
+      width: 100%;
+      height: 0px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      top: 40px;
+      transition: height 0.2s ease-in-out, opacity 0.2s ease-in-out,
+        box-shadow 0.2s ease-in-out;
+
+      &.isActive {
+        display: block;
+        height: 70px;
+        opacity: 1;
+        box-shadow: 0 16px 15px rgba(10, 10, 10, 0.1);
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+@import 'src/styles.scss';
+
+form.section {
+  max-width: 418px;
+  margin: auto;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  background-color: $white;
+  border-radius: 5px;
+
+  h1 {
+    margin-bottom: 12px;
+  }
+
+  .help {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  article.message.is-danger {
+    .message-body {
+      padding: 10px 10px;
+      margin-top: 20px;
+    }
+  }
+  .field .icon {
+    pointer-events: all;
+  }
+
+  .button.is-primary {
+    margin-top: 10px;
+  }
+}
