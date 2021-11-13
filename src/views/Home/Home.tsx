@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { Loading, Post, PostForm, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
@@ -8,8 +9,31 @@ import { setInterestsPosts } from '~/redux/actions/posts'
 import Landing from './Landing'
 
 import styles from './Home.module.scss'
+import { Firebase, Post as PostInterface, User, Userbase } from '~/types'
 
-class Home extends React.Component {
+const LOADING_USER: User['info'] = {
+  name: 'Loading User',
+  username: 'loading',
+  likedPosts: [],
+  email: '',
+  interests: [],
+}
+
+interface HomeProps {
+  isSignedIn: boolean
+  auth: User['auth']
+  userInfo: User['info']
+  userbase: Userbase
+  firebase: Firebase
+  dispatch: Dispatch
+  posts: PostInterface[]
+}
+
+interface HomeState {
+  loadingPosts: boolean
+}
+
+class Home extends React.Component<HomeProps, HomeState> {
   constructor(props) {
     super(props)
     this.state = {
@@ -48,7 +72,9 @@ class Home extends React.Component {
 
     const newPosts = await firebase.doInterestsPostsGet(userInfo.interests)
 
-    const uniqueUsers = [...new Set(newPosts.map((post) => post.userId))]
+    const userIds = newPosts.map((post) => post.userId)
+    const uniqueUsers = [...Array.from(new Set(userIds))]
+
     uniqueUsers.forEach((userId) => {
       const cacheExists = userbase[userId]?.lastFetchedAt
       const shouldFetchUserData =
@@ -78,20 +104,21 @@ class Home extends React.Component {
     const { posts } = this.props
     const { auth, isSignedIn, userInfo, userbase } = this.props
 
+    if (loadingPosts) {
+      return <Loading />
+    }
+
     if (!isSignedIn) {
       return <Landing />
     }
 
     const postsComponents = posts.map(
       ({ id, content, userId, createdAt, likeCount }) => {
-        let userData = {}
+        let userData = LOADING_USER
         if (userId === auth.uid) {
           userData = { ...userInfo }
         } else {
-          userData = userbase[userId] || {
-            name: 'Loading User',
-            username: 'loading',
-          }
+          userData = userbase[userId] || LOADING_USER
         }
 
         const likedPosts = userInfo.likedPosts || []
@@ -128,7 +155,7 @@ class Home extends React.Component {
 
     if (userInfo) {
       return (
-        <div className="Feed">
+        <div className={styles.Feed}>
           <PostForm getFeed={this.getFeed} />
           <h1 className="title is-medium">Feed</h1>
           {getContent()}

@@ -2,12 +2,12 @@ import React from 'react'
 import xs from 'xstream'
 import { connect } from 'react-redux'
 import { withEffects, toProps } from 'refract-xstream'
+import { withRouter } from 'next/router'
 import { withFirebase } from '~/components/firebase'
 import { compose } from '~/utils'
 import { Post, Loading, Comment, CommentForm, Empty } from '~/components'
 
 import styles from './PostDiscussion.module.scss'
-import { withRouter } from 'next/router'
 
 const Comments = ({ comments = [] }) =>
   comments.length > 0 ? (
@@ -66,6 +66,7 @@ export default compose(
       const loadPost$ = getPostId()
         .map((postId) => xs.fromPromise(firebase.doPostGet(postId)))
         .flatten()
+        .debug('POST')
         .map((post) => toProps({ post }))
 
       const loadComments$ = getPostId()

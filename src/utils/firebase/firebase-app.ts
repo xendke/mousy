@@ -2,6 +2,7 @@ import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
+import { Post } from '~/types/firebase/firestore'
 import config from './firebase-auth'
 
 const getCollectionData = (collectionRef) => {
@@ -92,7 +93,7 @@ class Firebase {
           .catch(() => [])
       : new Promise((resolve) => resolve([]))
 
-  doUserPostsGet = (uid) =>
+  doUserPostsGet = (uid): Promise<Post[]> =>
     this.db
       .collection('posts')
       .where('userId', '==', uid)
@@ -120,7 +121,7 @@ class Firebase {
       .get()
       .then((postRef) => ({ id: postId, ...postRef.data() }))
 
-  doInterestsPostsGet = (interests: any[]) =>
+  doInterestsPostsGet = (interests: string[]): Promise<Post[]> =>
     this.db
       .collection('posts')
       .where('interests', 'array-contains-any', interests)
