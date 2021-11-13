@@ -23,4 +23,12 @@ export interface Post {
   userId: string
 }
 
+export interface Comment {
+  content: string
+  createdAt: number
+  id: string
+  postId: string
+  userId: string
+}
+
 export type Userbase = Record<string, UserInfo & { lastFetchedAt: number }>

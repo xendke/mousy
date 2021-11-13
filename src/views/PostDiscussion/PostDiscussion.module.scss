@@ -1,15 +1,10 @@
-@import "src/styles.scss";
+@import 'src/styles.scss';
 
 .PostDiscussion {
   margin: auto;
   max-width: 800px;
 
   h1.title {
-    color: $green
-  }
-
-  .Post.box {
-    margin-bottom: 0;
-    border-radius: 6px 6px 0 0;
+    color: $green;
   }
 }

@@ -2,7 +2,7 @@ import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
-import { Post } from '~/types/firebase/firestore'
+import { Post, Comment } from '~/types/firebase/firestore'
 import config from './firebase-auth'
 
 const getCollectionData = (collectionRef) => {
@@ -106,7 +106,7 @@ class Firebase {
   doPostCommentAdd = (newComment) =>
     this.db.collection('comments').add(newComment)
 
-  doCommentsGet = (postId: string) =>
+  doCommentsGet = (postId: string): Promise<Comment[]> =>
     this.db
       .collection('comments')
       .where('postId', '==', postId)
@@ -114,12 +114,12 @@ class Firebase {
       .get()
       .then(getCollectionData)
 
-  doPostGet = (postId: string) =>
+  doPostGet = (postId: string): Promise<Post> =>
     this.db
       .collection('posts')
       .doc(postId)
       .get()
-      .then((postRef) => ({ id: postId, ...postRef.data() }))
+      .then((postRef) => ({ id: postId, ...postRef.data() } as Post))
 
   doInterestsPostsGet = (interests: string[]): Promise<Post[]> =>
     this.db

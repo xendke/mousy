@@ -1,15 +1,24 @@
 import React from 'react'
-import xs from 'xstream'
+import xs, { Stream } from 'xstream'
 import { connect } from 'react-redux'
 import { withEffects, toProps } from 'refract-xstream'
 import { withRouter } from 'next/router'
+import cn from 'classnames'
 import { withFirebase } from '~/components/firebase'
 import { compose } from '~/utils'
 import { Post, Loading, Comment, CommentForm, Empty } from '~/components'
 
+import {
+  Firebase,
+  Post as PostInt,
+  User,
+  Userbase,
+  Comment as CommentInt,
+} from '~/types'
+
 import styles from './PostDiscussion.module.scss'
 
-const Comments = ({ comments = [] }) =>
+const renderComments = (comments: PostInt[] = []) =>
   comments.length > 0 ? (
     comments.map(({ id, content, userId, createdAt }) => (
       <Comment
@@ -23,13 +32,25 @@ const Comments = ({ comments = [] }) =>
     <Empty message="No comments yet!" />
   )
 
-const PostDiscussion = ({ user, post, userbase, comments }) => {
+interface PostDiscussionProps {
+  user: User
+  post: PostInt
+  userbase: Userbase
+  comments: CommentInt[]
+}
+
+const PostDiscussion: React.FC<PostDiscussionProps> = ({
+  user,
+  post,
+  userbase,
+  comments,
+}) => {
   if (!post) return <Loading />
   const { id, content, createdAt, likeCount, userId: authorId } = post
   const author = userbase[authorId] || user.info
   return (
-    <div className="PostDiscussion column">
-      <h1 className="title is-medium">Comments</h1>
+    <div className={cn(styles.PostDiscussion, 'column')}>
+      <h1 className={cn(styles.title, 'title is-medium')}>Comments</h1>
       <Post
         postId={id}
         userFullName={author?.name}
@@ -41,7 +62,7 @@ const PostDiscussion = ({ user, post, userbase, comments }) => {
         hideCommentIcon
       />
       <CommentForm postId={id} />
-      <Comments comments={comments} />
+      {renderComments(comments)}
     </div>
   )
 }
@@ -56,8 +77,8 @@ export default compose(
   withFirebase,
   withRouter,
   withEffects(
-    (component, { firebase }) => {
-      const getPostId = () =>
+    (component, { firebase }: { firebase: Firebase }) => {
+      const getPostId = (): Stream<string> =>
         component
           .observe('router', ({ query }) => query.postId)
           .filter(Boolean)
@@ -66,12 +87,12 @@ export default compose(
       const loadPost$ = getPostId()
         .map((postId) => xs.fromPromise(firebase.doPostGet(postId)))
         .flatten()
-        .debug('POST')
         .map((post) => toProps({ post }))
 
       const loadComments$ = getPostId()
         .map((postId) => xs.fromPromise(firebase.doCommentsGet(postId)))
         .flatten()
+        .debug('COMMENTS')
         .map((comments) => toProps({ comments }))
 
       return xs.merge(loadPost$, loadComments$)

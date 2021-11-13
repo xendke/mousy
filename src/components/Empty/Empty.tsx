@@ -19,7 +19,7 @@ export const Action: React.FC<ActionProps> = ({ link, label }) => (
 
 interface EmptyProps {
   message: string
-  actions: React.ReactNode
+  actions?: React.ReactNode
 }
 
 const Empty: React.FC<EmptyProps> = ({ message, actions }) => (
@@ -30,5 +30,9 @@ const Empty: React.FC<EmptyProps> = ({ message, actions }) => (
     {actions && <footer className="card-footer">{actions}</footer>}
   </div>
 )
+
+Empty.defaultProps = {
+  actions: null,
+}
 
 export default Empty
