@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import xs from 'xstream'
+import xs, { Stream } from 'xstream'
 import Link from 'next/link'
 import { withRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,6 +7,7 @@ import { faComment, faHeart, faCog } from '@fortawesome/free-solid-svg-icons'
 import sampleCombine from 'xstream/extra/sampleCombine'
 import { withEffects, toProps } from 'refract-xstream'
 import { connect } from 'react-redux'
+import cn from 'classnames'
 import { compose } from '~/utils'
 import { setInfo } from '~/redux/actions/user'
 import { Post, Loading, Avatar, Empty } from '~/components'
@@ -14,10 +15,24 @@ import { Action } from '~/components/Empty/Empty'
 import { withFirebase } from '~/components/firebase'
 
 import styles from './Profile.module.scss'
+import { Post as PostInt, User, Userbase } from '~/types'
 
-const shouldRedirectToLogin = (auth, userData = {}) => !auth || userData.error
+interface ProfileProps {
+  user: User
+  isOwnProfile: boolean
+  userId: string
+  userData: User['info'] & { userNotAvailable: boolean; error: boolean }
+  userbase: Userbase
+  posts: PostInt[]
+  loadingPosts: boolean
+  showingLikes: boolean
+  showLikes: (b: boolean) => void
+  // router: Router
+}
 
-const Profile = ({
+// const shouldRedirectToLogin = (auth, userData = {}) => !auth || userData.error
+
+const Profile: React.FC<ProfileProps> = ({
   user,
   isOwnProfile,
   userId,
@@ -27,7 +42,7 @@ const Profile = ({
   loadingPosts,
   showingLikes,
   showLikes,
-  router,
+  // router,
 }) => {
   useEffect(() => {
     // if (shouldRedirectToLogin(user.auth, userData)) {
@@ -76,8 +91,14 @@ const Profile = ({
   const { userNotAvailable, name, interests } = userData
 
   return (
-    <section className="Profile container columns is-desktop">
-      <div className="column is-one-quarter-desktop user-info">
+    <section
+      className={cn(
+        styles.Profile,
+        styles.container,
+        'container columns is-desktop'
+      )}
+    >
+      <div className={cn(styles.userInfo, 'column is-one-quarter-desktop')}>
         <div className="level">
           <div className="level-item">
             <figure className="image is-64x64">
@@ -95,19 +116,24 @@ const Profile = ({
         </h2>
         {isOwnProfile && (
           <>
-            <Link href="/account">
-              <button
-                type="button"
-                className="button is-small is-primary is-inverted is-outlined"
-              >
-                <span className="icon is-small">
-                  <FontAwesomeIcon icon={faCog} />
-                </span>
-                <span>Edit</span>
-              </button>
+            <Link href="/account" passHref>
+              <a href="wow">
+                <button
+                  type="button"
+                  className={cn(
+                    styles.button,
+                    'button is-small is-primary is-inverted is-outlined'
+                  )}
+                >
+                  <span className="icon is-small">
+                    <FontAwesomeIcon icon={faCog} />
+                  </span>
+                  <span>Edit</span>
+                </button>
+              </a>
             </Link>
 
-            <div className="box">
+            <div className={cn(styles.box, 'box')}>
               <div className="buttons has-addons is-centered is-expanded">
                 <button
                   type="button"
@@ -146,10 +172,10 @@ const Profile = ({
 
 const aperture = (component, { firebase, dispatch }) => {
   const [showLikes$, showLikes] = component.useEvent(false)
-  const userIdParam = () =>
+  const userIdParam = (): Stream<string> =>
     component.observe('router', ({ query }) => query.userId)
 
-  const userAuth = () =>
+  const userAuth = (): Stream<User> =>
     component
       .observe('user')
       .filter(({ auth, info }) => auth && info)
@@ -158,7 +184,7 @@ const aperture = (component, { firebase, dispatch }) => {
   const ready$ = () => xs.combine(userIdParam(), userAuth())
 
   const loadOtherUserInfo$ = ready$()
-    .filter(([param]) => param)
+    .filter(([param]) => Boolean(param))
     .map(([userId]) =>
       xs.fromPromise(
         firebase
@@ -173,16 +199,18 @@ const aperture = (component, { firebase, dispatch }) => {
 
   const useOwnUserInfo$ = ready$()
     .debug('ready$()')
-    .filter(([param, user]) => !param && user.info && user.info.name)
-    .map(([param, user]) => ({
+    .filter(([param, user]) => Boolean(!param && user.info && user.info.name))
+    .map(([, user]: [string, User]) => ({
       userData: user.info,
       isOwnProfile: true,
       userId: user.auth?.uid,
     }))
 
   const loadOwnUserInfo$ = ready$()
-    .filter(([param, user]) => !param && user.info && !user.info.name)
-    .map(([, user]) =>
+    .filter(
+      ([param, user]: [string, User]) => !param && user.info && !user.info.name
+    )
+    .map(([, user]: [unknown, User]) =>
       xs.fromPromise(
         firebase
           .doUserInfoGet(user.auth?.uid)
@@ -206,7 +234,7 @@ const aperture = (component, { firebase, dispatch }) => {
 
   const loadPosts$ = ready$()
     .compose(sampleCombine(showLikes$)) // showLikes is not the source stream anymore so the toggle doesnt fetch likedPosts
-    .map(([[param, user], fetchLikedPosts]) => [
+    .map(([[param, user], fetchLikedPosts]: [[string, User], boolean]) => [
       fetchLikedPosts,
       param || user.auth?.uid,
       user.info.likedPosts,
@@ -239,8 +267,13 @@ const aperture = (component, { firebase, dispatch }) => {
     .map(toProps)
 }
 
+const mapStateToProps = (state) => ({
+  user: state.user,
+  userbase: state.userbase,
+})
+
 export default compose(
-  connect((state) => ({ user: state.user, userbase: state.userbase })),
+  connect(mapStateToProps),
   withRouter,
   withFirebase,
   withEffects(aperture, {
