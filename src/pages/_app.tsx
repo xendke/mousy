@@ -4,6 +4,7 @@ import '~/assets/index.scss'
 
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import Head from 'next/head'
 import { Footer, TopNav } from '~/components'
 import Firebase, { FirebaseContext, withFirebase } from '~/components/firebase'
 import { wrapper } from '~/redux/store'
@@ -44,13 +45,24 @@ function MyApp({ Component, pageProps }) {
   }, [])
 
   return (
-    <FirebaseContext.Provider value={firebase}>
-      <AuthListenerWrapper>
-        <TopNav />
-        <Component {...pageProps} />
-        <Footer />
-      </AuthListenerWrapper>
-    </FirebaseContext.Provider>
+    <>
+      <Head>
+        <title>Mousy - Find humans like you</title>
+        <meta name="theme-color" content="#00D1B2" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta
+          name="description"
+          content="Connect with people, not numbers. Join a community tailored for you."
+        />
+      </Head>
+      <FirebaseContext.Provider value={firebase}>
+        <AuthListenerWrapper>
+          <TopNav />
+          <Component {...pageProps} />
+          <Footer />
+        </AuthListenerWrapper>
+      </FirebaseContext.Provider>
+    </>
   )
 }
 

@@ -1,270 +1,26 @@
 import React, { useEffect } from 'react'
-import xs, { Stream } from 'xstream'
-import Link from 'next/link'
-import { withRouter } from 'next/router'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComment, faHeart, faCog } from '@fortawesome/free-solid-svg-icons'
-import sampleCombine from 'xstream/extra/sampleCombine'
-import { withEffects, toProps } from 'refract-xstream'
+import { useRouter, withRouter } from 'next/router'
 import { connect } from 'react-redux'
-import cn from 'classnames'
 import { compose } from '~/utils'
-import { setInfo } from '~/redux/actions/user'
-import { Post, Loading, Avatar, Empty } from '~/components'
-import { Action } from '~/components/Empty/Empty'
-import { withFirebase } from '~/components/firebase'
 
-import styles from './Profile.module.scss'
-import { Post as PostInt, User, Userbase } from '~/types'
+import OwnProfile from './components/OwnProfile'
+import UserProfile from './components/UserProfile'
 
-interface ProfileProps {
-  user: User
-  isOwnProfile: boolean
-  userId: string
-  userData: User['info'] & { userNotAvailable: boolean; error: boolean }
-  userbase: Userbase
-  posts: PostInt[]
-  loadingPosts: boolean
-  showingLikes: boolean
-  showLikes: (b: boolean) => void
-  // router: Router
-}
+const Profile = ({ user }) => {
+  const router = useRouter()
+  const { userId } = router.query
 
-// const shouldRedirectToLogin = (auth, userData = {}) => !auth || userData.error
-
-const Profile: React.FC<ProfileProps> = ({
-  user,
-  isOwnProfile,
-  userId,
-  userData,
-  userbase,
-  posts,
-  loadingPosts,
-  showingLikes,
-  showLikes,
-  // router,
-}) => {
   useEffect(() => {
-    // if (shouldRedirectToLogin(user.auth, userData)) {
-    //   return Router.push('/login')
-    // }
+    // check auth
   }, [])
 
-  if (!user.auth || !userData) {
-    return <Loading />
+  if (userId) {
+    return <UserProfile userId={userId} />
   }
-
-  const likedPosts = userData.likedPosts ? userData.likedPosts : []
-
-  const postsComponents = posts.map(
-    ({ id, content, createdAt, likeCount, userId: authorId }) => {
-      const { userNotAvailable } = userData
-      const author = userNotAvailable
-        ? { name: 'Deleted', username: 'deleted' }
-        : userbase[authorId] || userData
-      return (
-        <Post
-          key={id}
-          userId={authorId}
-          postId={id}
-          userFullName={author.name}
-          username={author.username}
-          content={content}
-          createdAt={createdAt}
-          likeCount={likeCount}
-          liked={likedPosts.includes(id)}
-        />
-      )
-    }
-  )
-
-  const getContent = () => {
-    if (loadingPosts) return <Loading />
-    if (postsComponents.length > 0) return postsComponents
-    const emptyActions = [<Action key="Feed" link="/" label="Feed" />]
-    const message = showingLikes
-      ? 'No posts here. Try heading to the Feed to like some posts!'
-      : 'No posts yet. Try heading to the Feed to post your thoughts!'
-    return <Empty message={message} actions={emptyActions} />
+  if (user.auth) {
+    return <OwnProfile />
   }
-
-  const { userNotAvailable, name, interests } = userData
-
-  return (
-    <section
-      className={cn(
-        styles.Profile,
-        styles.container,
-        'container columns is-desktop'
-      )}
-    >
-      <div className={cn(styles.userInfo, 'column is-one-quarter-desktop')}>
-        <div className="level">
-          <div className="level-item">
-            <figure className="image is-64x64">
-              <Avatar userId={userId} />
-            </figure>
-          </div>
-        </div>
-        <h1 className="title has-text-centered is-capitalized">
-          {userNotAvailable ? 'Deleted User' : name}
-        </h1>
-        <h2 className="subtitle has-text-centered">
-          {interests && interests.length > 0
-            ? `# ${interests.join(', ')}`
-            : null}
-        </h2>
-        {isOwnProfile && (
-          <>
-            <Link href="/account" passHref>
-              <a href="wow">
-                <button
-                  type="button"
-                  className={cn(
-                    styles.button,
-                    'button is-small is-primary is-inverted is-outlined'
-                  )}
-                >
-                  <span className="icon is-small">
-                    <FontAwesomeIcon icon={faCog} />
-                  </span>
-                  <span>Edit</span>
-                </button>
-              </a>
-            </Link>
-
-            <div className={cn(styles.box, 'box')}>
-              <div className="buttons has-addons is-centered is-expanded">
-                <button
-                  type="button"
-                  className={`button ${
-                    !showingLikes ? 'is-primary is-selected' : ''
-                  }`}
-                  onClick={() => showLikes(false)}
-                >
-                  <span className="icon is-small">
-                    <FontAwesomeIcon icon={faComment} />
-                  </span>
-                  <span>Posts</span>
-                </button>
-                <button
-                  type="button"
-                  className={`button ${
-                    showingLikes ? 'is-primary is-selected' : ''
-                  }`}
-                  onClick={() => showLikes(true)}
-                >
-                  <span className="icon is-small">
-                    <FontAwesomeIcon icon={faHeart} />
-                  </span>
-                  <span>Likes</span>
-                </button>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-
-      <div className="column">{getContent()}</div>
-    </section>
-  )
-}
-
-const aperture = (component, { firebase, dispatch }) => {
-  const [showLikes$, showLikes] = component.useEvent(false)
-  const userIdParam = (): Stream<string> =>
-    component.observe('router', ({ query }) => query.userId)
-
-  const userAuth = (): Stream<User> =>
-    component
-      .observe('user')
-      .filter(({ auth, info }) => auth && info)
-      .take(1)
-
-  const ready$ = () => xs.combine(userIdParam(), userAuth())
-
-  const loadOtherUserInfo$ = ready$()
-    .filter(([param]) => Boolean(param))
-    .map(([userId]) =>
-      xs.fromPromise(
-        firebase
-          .doUserInfoGet(userId)
-          .then((res) => res.data() || { userNotAvailable: true })
-          .catch(() => ({ error: true }))
-      )
-    )
-    .flatten()
-    .compose(sampleCombine(ready$()))
-    .map(([userData, [userId]]) => ({ userData, isOwnProfile: false, userId }))
-
-  const useOwnUserInfo$ = ready$()
-    .debug('ready$()')
-    .filter(([param, user]) => Boolean(!param && user.info && user.info.name))
-    .map(([, user]: [string, User]) => ({
-      userData: user.info,
-      isOwnProfile: true,
-      userId: user.auth?.uid,
-    }))
-
-  const loadOwnUserInfo$ = ready$()
-    .filter(
-      ([param, user]: [string, User]) => !param && user.info && !user.info.name
-    )
-    .map(([, user]: [unknown, User]) =>
-      xs.fromPromise(
-        firebase
-          .doUserInfoGet(user.auth?.uid)
-          .then((res) => [res.data(), user.auth?.uid])
-          .catch(() => ({ error: true }))
-      )
-    )
-    .flatten()
-    .map(([userData, userId]) => {
-      if (!userData.error) {
-        dispatch(setInfo(userData))
-      }
-      return [userData, userId]
-    })
-    .debug('userData')
-    .map(([userData, userId]) => ({
-      userData,
-      isOwnProfile: true,
-      userId,
-    }))
-
-  const loadPosts$ = ready$()
-    .compose(sampleCombine(showLikes$)) // showLikes is not the source stream anymore so the toggle doesnt fetch likedPosts
-    .map(([[param, user], fetchLikedPosts]: [[string, User], boolean]) => [
-      fetchLikedPosts,
-      param || user.auth?.uid,
-      user.info.likedPosts,
-    ])
-    .debug('loadPosts$ likes')
-    .map(([fetchLikedPosts, userId, likedPosts]) =>
-      fetchLikedPosts
-        ? xs.fromPromise(firebase.doLikedPostsGet(likedPosts))
-        : xs.fromPromise(firebase.doUserPostsGet(userId))
-    )
-    .flatten()
-    .compose(sampleCombine(showLikes$))
-    .map(([posts, showingLikes]) => {
-      return { loadingPosts: false, posts, showingLikes }
-    })
-
-  return xs
-    .merge(
-      useOwnUserInfo$,
-      loadOwnUserInfo$,
-      loadOtherUserInfo$,
-      loadPosts$,
-      showLikes$.map((showingLikes) => ({
-        showingLikes,
-        showLikes,
-        loadingPosts: true,
-      }))
-    )
-    .startWith({ posts: [], loadingPosts: true })
-    .map(toProps)
+  return null
 }
 
 const mapStateToProps = (state) => ({
@@ -272,15 +28,7 @@ const mapStateToProps = (state) => ({
   userbase: state.userbase,
 })
 
-export default compose(
-  connect(mapStateToProps),
-  withRouter,
-  withFirebase,
-  withEffects(aperture, {
-    mergeProps: true,
-    errorHandler: () => (e) => console.log(e),
-  })
-)(Profile)
+export default compose(connect(mapStateToProps), withRouter)(Profile)
 
 // TODO: rewrite so that there are two parent components
 // OwnProfile, UserProfile
@@ -290,3 +38,11 @@ export default compose(
 // problem: Figure out how to render OwnProfile vs UserProfile
 // maybe, if userId avail render UserProfile
 // maybe a prop passed by me.js
+
+// Composition
+// Profile Container Component
+//   renders either of 2 children depending on url
+// 1. OwnProfile -- effects for own
+// 2. UserProfile -- effects for other user
+// Both components will render a 4th component
+//   ProfileView - takes all the props and renders view
