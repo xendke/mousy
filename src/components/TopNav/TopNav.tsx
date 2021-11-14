@@ -11,6 +11,7 @@ import logoImage from '~/assets/logo.png'
 
 import styles from './TopNav.module.scss'
 import { Firebase, User } from '~/types'
+import { useWindowSize } from '~/utils/hooks'
 
 interface TopNavProps {
   user: User
@@ -19,6 +20,7 @@ interface TopNavProps {
 
 const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
   const [isNavbarOpened, setIsNavbarOpened] = useState(false)
+  const { width } = useWindowSize()
   const nodeRef = useRef<HTMLElement>()
   const router = useRouter()
 
@@ -59,17 +61,19 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
       <div className="navbar-brand">
         <div className={cn(styles.navbarItem, 'navbar-item')}>
           <Link href="/" passHref>
-            <a href="wow">
+            <a href="wow" className={styles.navbarBrand}>
               <Image
                 src={iconImage}
                 alt="ShyApp Icon"
-                className={cn(styles.navbarIcon, 'navbar-icon')}
+                className={styles.navbarIcon}
               />
-              <Image
-                src={logoImage}
-                alt="ShyApp Logo"
-                className={cn(styles.navbarLogo, 'navbar-logo')}
-              />
+              {width > 1023 && (
+                <Image
+                  src={logoImage}
+                  alt="ShyApp Logo"
+                  className={styles.navbarLogo}
+                />
+              )}
             </a>
           </Link>
         </div>

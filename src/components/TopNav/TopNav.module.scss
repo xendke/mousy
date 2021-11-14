@@ -11,18 +11,16 @@
     &:hover {
       color: $white;
     }
+    .navbarBrand {
+      display: flex;
+    }
     .navbarIcon {
       padding-top: 10px;
       max-height: 1.5rem;
       width: auto;
     }
     .navbarLogo {
-      display: none;
       max-height: 2rem;
-
-      @media screen and (min-width: 1023px) {
-        display: inline-block;
-      }
     }
   }
 
