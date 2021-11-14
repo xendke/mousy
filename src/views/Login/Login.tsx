@@ -29,8 +29,8 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
   const [passwordError, setPasswordError] = useState(undefined)
   const [errorMessage, setErrorMessage] = useState(undefined)
 
-  const eyeIcon = <FontAwesomeIcon icon={faEye} />
-  const eyeSlashIcon = <FontAwesomeIcon icon={faEyeSlash} />
+  const eyeIcon = <FontAwesomeIcon icon={faEye} width={18} />
+  const eyeSlashIcon = <FontAwesomeIcon icon={faEyeSlash} width={18} />
 
   useEffect(() => {
     if (user.isSignedIn) {
@@ -60,7 +60,7 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
                 }}
               />
               <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faEnvelope} />
+                <FontAwesomeIcon icon={faEnvelope} width={18} />
               </span>
             </div>
             {emailError && (
@@ -86,7 +86,7 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
                 }}
               />
               <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faKey} />
+                <FontAwesomeIcon icon={faKey} width={18} />
               </span>
               {password?.length > 0 && (
                 <span

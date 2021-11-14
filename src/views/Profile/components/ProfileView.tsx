@@ -131,7 +131,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                   )}
                 >
                   <span className="icon is-small">
-                    <FontAwesomeIcon icon={faCog} />
+                    <FontAwesomeIcon icon={faCog} width={12} />
                   </span>
                   <span>Edit</span>
                 </button>
@@ -148,7 +148,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                   onClick={() => showLikes(false)}
                 >
                   <span className="icon is-small">
-                    <FontAwesomeIcon icon={faComment} />
+                    <FontAwesomeIcon icon={faComment} width={18} />
                   </span>
                   <span>Posts</span>
                 </button>
@@ -160,7 +160,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                   onClick={() => showLikes(true)}
                 >
                   <span className="icon is-small">
-                    <FontAwesomeIcon icon={faHeart} />
+                    <FontAwesomeIcon icon={faHeart} width={18} />
                   </span>
                   <span>Likes</span>
                 </button>

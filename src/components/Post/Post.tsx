@@ -83,7 +83,7 @@ const Post: React.FC<PostProps> = ({
                         )}
                       >
                         <span className="icon">
-                          <FontAwesomeIcon icon={faComment} />
+                          <FontAwesomeIcon icon={faComment} width={12} />
                         </span>
                       </button>
                     </Link>
@@ -100,7 +100,7 @@ const Post: React.FC<PostProps> = ({
                     )}
                   >
                     <span className="icon">
-                      <FontAwesomeIcon icon={faHeart} />
+                      <FontAwesomeIcon icon={faHeart} width={12} />
                     </span>
                     <span>{likeCount}</span>
                   </button>
