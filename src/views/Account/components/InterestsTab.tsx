@@ -23,7 +23,6 @@ const InterestsTab: React.FC<Props> = ({ user, firebase, dispatch }) => {
     e.preventDefault()
     setLoading(true)
     const { auth, info } = user
-    console.log('interests', interests)
     firebase.doUserInfoEdit(auth.uid, { ...info, interests }).then(() => {
       setLoading(false)
       setSuccess(true)

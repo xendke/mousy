@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-// import { Redirect } from 'react-router-dom'
 import Router from 'next/router'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -33,7 +32,6 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
   const eyeIcon = <FontAwesomeIcon icon={faEye} />
   const eyeSlashIcon = <FontAwesomeIcon icon={faEyeSlash} />
 
-  console.log(user)
   useEffect(() => {
     if (user.isSignedIn) {
       Router.push('/')
@@ -42,7 +40,6 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
 
   return (
     <>
-      {/* {user.isSignedIn && <Redirect to="/" />} */}
       <form className={cn(styles.Login, styles.section, 'section')}>
         <h1>Hi there!</h1>
 

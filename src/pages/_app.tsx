@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import Head from 'next/head'
 import { Footer, TopNav } from '~/components'
 import Firebase, { FirebaseContext, withFirebase } from '~/components/firebase'
-import { wrapper } from '~/redux/store'
+import wrapper from '~/redux/store'
 import { signIn, signOut, setInfo } from '~/redux/actions/user'
 import { compose, noop } from '~/utils'
 

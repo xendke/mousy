@@ -67,7 +67,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({
     ({ id, content, createdAt, likeCount, userId: authorId }) => {
       const author = getPostAuthor(authorId)
 
-      console.log('author', author)
       return (
         <Post
           key={id}

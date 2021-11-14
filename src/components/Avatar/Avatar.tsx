@@ -35,7 +35,6 @@ const Avatar: FC<AvatarProps> = ({ userId, refresh, firebase }) => {
         alt="User Avatar"
         width={100}
         height={100}
-        // layout="fill"
       />
     </figure>
   )

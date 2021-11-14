@@ -36,4 +36,6 @@ const makeStore = (context) => {
   return store
 }
 
-export const wrapper = createWrapper(makeStore)
+const wrapper = createWrapper(makeStore)
+
+export default wrapper

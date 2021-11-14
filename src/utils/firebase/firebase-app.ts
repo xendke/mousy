@@ -68,10 +68,8 @@ class Firebase {
   doUsernameExistsCheck = (username: string) =>
     this.db.collection('usernames').doc(username).get()
 
-  doUserInfoEdit = (
-    uid: string,
-    information // make interface for userInfo
-  ) => this.db.collection('users').doc(uid).set(information)
+  doUserInfoEdit = (uid: string, information) =>
+    this.db.collection('users').doc(uid).set(information)
 
   doUserInfoGet = (uid: string) => this.db.collection('users').doc(uid).get()
 

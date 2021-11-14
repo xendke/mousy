@@ -1,4 +1,3 @@
-// import React, { useEffect } from 'react'
 import xs, { Stream } from 'xstream'
 import { withRouter } from 'next/router'
 import sampleCombine from 'xstream/extra/sampleCombine'
@@ -22,13 +21,11 @@ const aperture = (component, { firebase, dispatch }) => {
     component
       .observe('user')
       .filter(({ auth, isSignedIn }) => auth && isSignedIn)
-      .debug('USER AUTH')
       .take(1)
 
   const userInfo$ = component
     .observe('user')
     .filter(({ info }) => info.likedPosts)
-    .debug('USER INFO')
     .take(1)
 
   const useOwnUserInfo$ = userAuth()
@@ -63,7 +60,6 @@ const aperture = (component, { firebase, dispatch }) => {
 
   const loadPosts$ = xs
     .combine(userInfo$, showLikes$)
-    .debug('LOAD POSTS')
     .map(([user, fetchLikedPosts]: [User, boolean]) => [
       fetchLikedPosts,
       user.auth.uid,
@@ -106,6 +102,6 @@ export default compose(
   withFirebase,
   withEffects(aperture, {
     mergeProps: true,
-    errorHandler: () => (e) => console.log(e),
+    errorHandler: () => (e) => console.error(e),
   })
 )(OwnProfile)

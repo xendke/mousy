@@ -1,9 +1,7 @@
-// import React, { useEffect } from 'react'
 import xs, { Stream } from 'xstream'
 import { withEffects, toProps } from 'refract-xstream'
 import { connect } from 'react-redux'
 import { compose } from '~/utils'
-// import { setInfo } from '~/redux/actions/user'
 import { withFirebase } from '~/components/firebase'
 
 import { User } from '~/types'
@@ -34,7 +32,6 @@ const aperture = (component, { firebase, userId }) => {
     .map((userData) => ({ userData, userId }))
 
   const loadPosts$ = userAuth()
-    .debug('loadPosts$ likes')
     .map(() => xs.fromPromise(firebase.doUserPostsGet(userId)))
     .flatten()
     .map((posts) => {
@@ -63,6 +60,6 @@ export default compose(
   withFirebase,
   withEffects(aperture, {
     mergeProps: true,
-    errorHandler: () => (e) => console.log(e),
+    errorHandler: () => (e) => console.error(e),
   })
 )(UserProfile)
