@@ -1,5 +1,20 @@
+@import 'src/styles.scss';
+
 .Footer {
-    height: 50px;
-    margin-top: 5px;
-    text-align: center;
+  background: $white;
+  border-top: 1px solid darken($pastel-lavender, 6%);
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: $grey;
+}
+
+.link {
+  color: $primary-color;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
