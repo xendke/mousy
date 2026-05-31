@@ -29,10 +29,14 @@
   width: auto;
 }
 
-.actions {
+.desktopActions {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .ghostBtn {
@@ -64,14 +68,24 @@
   cursor: pointer;
   padding: 4px;
   color: $grey;
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 
   i { color: $grey !important; }
 }
 
 .drawer {
+  display: none;
   background: $white;
   border-top: 1px solid darken($pastel-lavender, 6%);
   padding: 0.5rem 0;
+
+  &.drawerOpen {
+    display: block;
+  }
 }
 
 .drawerItem {

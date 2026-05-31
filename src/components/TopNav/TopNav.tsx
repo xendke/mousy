@@ -10,7 +10,6 @@ import logoImage from '~/assets/logo.png'
 
 import styles from './TopNav.module.scss'
 import { Firebase, User } from '~/types'
-import { useWindowSize } from '~/utils/hooks'
 
 interface TopNavProps {
   user: User
@@ -19,10 +18,8 @@ interface TopNavProps {
 
 const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { width } = useWindowSize()
   const nodeRef = useRef<HTMLElement | null>(null)
   const router = useRouter()
-  const isMobile = width <= 768
 
   const closeAndGo = (path: string) => () => {
     setIsMenuOpen(false)
@@ -44,10 +41,56 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
     return () => document.removeEventListener('mousedown', closeOnOutsideClick)
   }, [isMenuOpen])
 
+  const signedInActions = (
+    <>
+      {!router.pathname.includes('/me') && (
+        <Button
+          basic
+          circular
+          size="small"
+          onClick={closeAndGo('/me')}
+          className={styles.ghostBtn}
+        >
+          <Icon name="user circle" />
+          Profile
+        </Button>
+      )}
+      <Button
+        size="small"
+        className={styles.primaryBtn}
+        onClick={() => {
+          firebase.doSignOut().then(() => router.push('/'))
+        }}
+      >
+        Log Out
+      </Button>
+    </>
+  )
+
+  const signedOutActions = (
+    <>
+      <Button
+        basic
+        circular
+        size="small"
+        className={styles.ghostBtn}
+        onClick={closeAndGo('/login')}
+      >
+        Log in
+      </Button>
+      <Button
+        size="small"
+        className={styles.primaryBtn}
+        onClick={closeAndGo('/join')}
+      >
+        Sign up free
+      </Button>
+    </>
+  )
+
   return (
     <nav ref={nodeRef} className={styles.TopNav}>
       <div className={styles.inner}>
-        {/* Brand */}
         <Link href="/" passHref legacyBehavior>
           <a href="/" className={styles.brand}>
             <Image
@@ -59,114 +102,67 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
           </a>
         </Link>
 
-        {/* Desktop actions */}
-        {!isMobile && (
-          <div className={styles.actions}>
-            {user.isSignedIn ? (
-              <>
-                {!router.pathname.includes('/me') && (
-                  <Button
-                    basic
-                    circular
-                    size="small"
-                    onClick={closeAndGo('/me')}
-                    className={styles.ghostBtn}
-                  >
-                    <Icon name="user circle" />
-                    Profile
-                  </Button>
-                )}
-                <Button
-                  size="small"
-                  className={styles.primaryBtn}
-                  onClick={() => {
-                    firebase.doSignOut().then(() => router.push('/'))
-                  }}
-                >
-                  Log Out
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  basic
-                  circular
-                  size="small"
-                  className={styles.ghostBtn}
-                  onClick={closeAndGo('/login')}
-                >
-                  Log in
-                </Button>
-                <Button
-                  size="small"
-                  className={styles.primaryBtn}
-                  onClick={closeAndGo('/join')}
-                >
-                  Sign up free
-                </Button>
-              </>
-            )}
-          </div>
-        )}
+        {/* Desktop actions — hidden on mobile via CSS */}
+        <div className={styles.desktopActions}>
+          {user.isSignedIn ? signedInActions : signedOutActions}
+        </div>
 
-        {/* Mobile burger */}
-        {isMobile && (
-          <button
-            type="button"
-            className={styles.burger}
-            aria-label="menu"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <Icon name={isMenuOpen ? 'close' : 'bars'} size="large" />
-          </button>
-        )}
+        {/* Mobile burger — hidden on desktop via CSS */}
+        <button
+          type="button"
+          className={styles.burger}
+          aria-label="menu"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <Icon name={isMenuOpen ? 'close' : 'bars'} size="large" />
+        </button>
       </div>
 
       {/* Mobile drawer */}
-      {isMobile && isMenuOpen && (
-        <div className={styles.drawer}>
-          {user.isSignedIn ? (
-            <>
-              <button
-                type="button"
-                className={styles.drawerItem}
-                onClick={closeAndGo('/me')}
-              >
-                <Icon name="user circle" /> Profile
-              </button>
-              <button
-                type="button"
-                className={styles.drawerItem}
-                onClick={() => {
-                  firebase.doSignOut().then(() => {
-                    router.push('/')
-                    setIsMenuOpen(false)
-                  })
-                }}
-              >
-                <Icon name="sign out" /> Log Out
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                type="button"
-                className={styles.drawerItem}
-                onClick={closeAndGo('/login')}
-              >
-                <Icon name="sign in" /> Log in
-              </button>
-              <button
-                type="button"
-                className={styles.drawerItem}
-                onClick={closeAndGo('/join')}
-              >
-                <Icon name="add user" /> Sign up free
-              </button>
-            </>
-          )}
-        </div>
-      )}
+      <div
+        className={`${styles.drawer} ${isMenuOpen ? styles.drawerOpen : ''}`}
+      >
+        {user.isSignedIn ? (
+          <>
+            <button
+              type="button"
+              className={styles.drawerItem}
+              onClick={closeAndGo('/me')}
+            >
+              <Icon name="user circle" /> Profile
+            </button>
+            <button
+              type="button"
+              className={styles.drawerItem}
+              onClick={() => {
+                firebase.doSignOut().then(() => {
+                  router.push('/')
+                  setIsMenuOpen(false)
+                })
+              }}
+            >
+              <Icon name="sign out" /> Log Out
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              className={styles.drawerItem}
+              onClick={closeAndGo('/login')}
+            >
+              <Icon name="sign in" /> Log in
+            </button>
+            <button
+              type="button"
+              className={styles.drawerItem}
+              onClick={closeAndGo('/join')}
+            >
+              <Icon name="add user" /> Sign up free
+            </button>
+          </>
+        )}
+      </div>
     </nav>
   )
 }
