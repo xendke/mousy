@@ -39,6 +39,9 @@
       "pre-push": "yarn run lint:ci"
     }
   },
+  "engines": {
+    "node": ">=24.x"
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
