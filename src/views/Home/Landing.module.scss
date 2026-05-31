@@ -1,45 +1,275 @@
+@import 'src/styles.scss';
+
 .Landing {
-  min-height: 75vh;
-  display: flex;
-  justify-content: space-evenly;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+// ── Hero ────────────────────────────────────────────────────────────────────
+
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, $pastel-lavender 0%, $pastel-sky 60%, $white 100%);
+  padding: 7rem 1.5rem 6rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.heroBadge {
+  display: inline-flex;
   align-items: center;
-  flex-direction: column-reverse;
+  gap: 6px;
+  background: $white;
+  border: 1px solid darken($pastel-lavender, 10%);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: $primary-color;
+  margin-bottom: 1.5rem;
 
-  @media screen and (min-width: 1023px) {
-    min-height: 85vh;
-    flex-direction: row;
+  i { color: $primary-color !important; }
+}
+
+.heroTitle {
+  font-size: 3.4rem;
+  font-weight: 800;
+  color: $black;
+  line-height: 1.15;
+  margin: 0 0 1.25rem;
+
+  @media (max-width: 768px) {
+    font-size: 2.2rem;
   }
+}
 
-  .foldImage {
-    max-width: 500px;
-    margin: 2rem;
+.highlight {
+  color: $primary-color;
+  text-decoration: underline;
+  text-decoration-color: lighten($primary-color, 25%);
+  text-underline-offset: 4px;
+}
 
-    @media screen and (min-width: 1023px) {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      svg {
-        height: 500px;
-      }
+.heroSub {
+  font-size: 1.15rem;
+  color: $grey;
+  max-width: 560px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+// Decorative blobs
+.heroBlobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.blob1, .blob2, .blob3 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+}
+.blob1 {
+  width: 360px; height: 360px;
+  background: $pastel-pink;
+  top: -80px; right: -80px;
+}
+.blob2 {
+  width: 280px; height: 280px;
+  background: $pastel-mint;
+  bottom: -60px; left: -60px;
+}
+.blob3 {
+  width: 200px; height: 200px;
+  background: $pastel-yellow;
+  top: 40%; left: 10%;
+}
+
+// ── Buttons ─────────────────────────────────────────────────────────────────
+
+.primaryBtn {
+  &.ui.button {
+    background: $primary-color !important;
+    color: $white !important;
+    border-radius: 999px !important;
+    padding: 0.85em 2em !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 18px rgba(124, 111, 224, 0.35) !important;
+    transition: transform 0.15s, box-shadow 0.15s !important;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124, 111, 224, 0.45) !important;
     }
   }
+}
 
-  .right {
-    margin: 2rem;
-
-    .logo {
-      max-width: 160px;
-    }
-    .card {
-      border-radius: 6px;
-      max-width: 500px;
-      .title {
-        font-size: 1.4rem;
-
-        @media screen and (min-width: 1023px) {
-          font-size: 1.7rem;
-        }
-      }
-    }
+.secondaryBtn {
+  &.ui.button {
+    border-radius: 999px !important;
+    border: 1.5px solid $primary-color !important;
+    color: $primary-color !important;
+    padding: 0.85em 2em !important;
+    font-weight: 600 !important;
   }
+}
+
+// ── Stats ────────────────────────────────────────────────────────────────────
+
+.statsSection {
+  background: $white;
+  padding: 3.5rem 1.5rem;
+  border-top: 1px solid darken($pastel-lavender, 5%);
+  border-bottom: 1px solid darken($pastel-lavender, 5%);
+}
+
+.stats {
+  &.ui.statistics {
+    justify-content: center;
+    gap: 2rem;
+  }
+}
+
+.stat {
+  &.ui.statistic {
+    text-align: center;
+  }
+}
+
+.statValue {
+  &.value {
+    font-size: 2.4rem !important;
+    font-weight: 800 !important;
+    color: $primary-color !important;
+  }
+}
+
+.statLabel {
+  &.label {
+    font-size: 0.85rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: $grey !important;
+  }
+}
+
+// ── Features ─────────────────────────────────────────────────────────────────
+
+.featuresSection {
+  background: $off-white;
+  padding: 5rem 1.5rem;
+  text-align: center;
+}
+
+.sectionLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: $primary-light;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $primary-color;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.25rem;
+
+  i { color: $primary-color !important; }
+}
+
+.sectionTitle {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: $black;
+  margin: 0 auto 3rem;
+  max-width: 620px;
+  line-height: 1.3;
+}
+
+.featureGrid {
+  &.ui.grid {
+    max-width: 860px;
+    margin: 0 auto !important;
+  }
+}
+
+.featureCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  border-radius: 16px;
+  padding: 1.75rem;
+  text-align: left;
+  transition: transform 0.15s;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.featureIcon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: $white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+  i { color: $primary-color !important; }
+}
+
+.featureTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $black;
+  margin: 0 0 0.4rem;
+}
+
+.featureDesc {
+  font-size: 0.92rem;
+  color: $grey;
+  line-height: 1.6;
+  margin: 0;
+}
+
+// pastel bg variants
+.bg-lavender { background: $pastel-lavender; }
+.bg-mint     { background: $pastel-mint; }
+.bg-peach    { background: $pastel-peach; }
+.bg-sky      { background: $pastel-sky; }
+
+// ── CTA Banner ───────────────────────────────────────────────────────────────
+
+.ctaSection {
+  background: linear-gradient(135deg, $pastel-peach 0%, $pastel-pink 100%);
+  padding: 5rem 1.5rem;
+  text-align: center;
+}
+
+.ctaTitle {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: $black;
+  margin: 0 0 1rem;
+}
+
+.ctaSub {
+  font-size: 1.05rem;
+  color: $grey;
+  margin: 0 auto 2.5rem;
+  max-width: 480px;
+  line-height: 1.7;
 }
