@@ -6,7 +6,7 @@ import userReducer from './reducers/user'
 import userbaseReducer from './reducers/userbase'
 import postsReducer from './reducers/posts'
 
-const makeStore = (context) => {
+const makeStore = () => {
   const isServer = typeof window === 'undefined'
 
   const reducer = (state, action) => {

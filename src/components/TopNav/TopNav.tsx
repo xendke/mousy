@@ -21,7 +21,7 @@ interface TopNavProps {
 const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
   const [isNavbarOpened, setIsNavbarOpened] = useState(false)
   const { width } = useWindowSize()
-  const nodeRef = useRef<HTMLElement>()
+  const nodeRef = useRef<HTMLElement | null>(null)
   const router = useRouter()
 
   const closeNavbarAndGo = (path) => () => {

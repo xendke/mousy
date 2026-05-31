@@ -30,8 +30,8 @@ const InputForm: React.FC<InputFormProps> = ({
   setSuccess,
   error,
   setError,
-  isForCommenting,
-  className,
+  isForCommenting = false,
+  className = '',
 }) => (
   <div className={cn('InputForm', 'box', className)}>
     <form className={cn('field', 'is-grouped', styles.group)}>
@@ -78,10 +78,5 @@ const InputForm: React.FC<InputFormProps> = ({
     )}
   </div>
 )
-
-InputForm.defaultProps = {
-  className: '',
-  isForCommenting: false,
-}
 
 export default InputForm
