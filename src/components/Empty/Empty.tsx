@@ -22,7 +22,7 @@ interface EmptyProps {
   actions?: React.ReactNode
 }
 
-const Empty: React.FC<EmptyProps> = ({ message, actions }) => (
+const Empty: React.FC<EmptyProps> = ({ message, actions = null }) => (
   <div className={cn(styles.Empty, styles.card, 'card')}>
     <div className="card-content">
       <div className="content">{message}</div>
@@ -30,9 +30,5 @@ const Empty: React.FC<EmptyProps> = ({ message, actions }) => (
     {actions && <footer className="card-footer">{actions}</footer>}
   </div>
 )
-
-Empty.defaultProps = {
-  actions: null,
-}
 
 export default Empty
