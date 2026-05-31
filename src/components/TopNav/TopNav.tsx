@@ -50,7 +50,12 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
         {/* Brand */}
         <Link href="/" passHref legacyBehavior>
           <a href="/" className={styles.brand}>
-            <Image src={logoImage} alt="Mousy" height={32} className={styles.logo} />
+            <Image
+              src={logoImage}
+              alt="Mousy"
+              height={32}
+              className={styles.logo}
+            />
           </a>
         </Link>
 
@@ -60,23 +65,43 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
             {user.isSignedIn ? (
               <>
                 {!router.pathname.includes('/me') && (
-                  <Button basic circular size="small" onClick={closeAndGo('/me')} className={styles.ghostBtn}>
+                  <Button
+                    basic
+                    circular
+                    size="small"
+                    onClick={closeAndGo('/me')}
+                    className={styles.ghostBtn}
+                  >
                     <Icon name="user circle" />
                     Profile
                   </Button>
                 )}
-                <Button size="small" className={styles.primaryBtn} onClick={() => {
-                  firebase.doSignOut().then(() => router.push('/'))
-                }}>
+                <Button
+                  size="small"
+                  className={styles.primaryBtn}
+                  onClick={() => {
+                    firebase.doSignOut().then(() => router.push('/'))
+                  }}
+                >
                   Log Out
                 </Button>
               </>
             ) : (
               <>
-                <Button basic circular size="small" className={styles.ghostBtn} onClick={closeAndGo('/login')}>
+                <Button
+                  basic
+                  circular
+                  size="small"
+                  className={styles.ghostBtn}
+                  onClick={closeAndGo('/login')}
+                >
                   Log in
                 </Button>
-                <Button size="small" className={styles.primaryBtn} onClick={closeAndGo('/join')}>
+                <Button
+                  size="small"
+                  className={styles.primaryBtn}
+                  onClick={closeAndGo('/join')}
+                >
                   Sign up free
                 </Button>
               </>
@@ -102,21 +127,40 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
         <div className={styles.drawer}>
           {user.isSignedIn ? (
             <>
-              <button type="button" className={styles.drawerItem} onClick={closeAndGo('/me')}>
+              <button
+                type="button"
+                className={styles.drawerItem}
+                onClick={closeAndGo('/me')}
+              >
                 <Icon name="user circle" /> Profile
               </button>
-              <button type="button" className={styles.drawerItem} onClick={() => {
-                firebase.doSignOut().then(() => { router.push('/'); setIsMenuOpen(false) })
-              }}>
+              <button
+                type="button"
+                className={styles.drawerItem}
+                onClick={() => {
+                  firebase.doSignOut().then(() => {
+                    router.push('/')
+                    setIsMenuOpen(false)
+                  })
+                }}
+              >
                 <Icon name="sign out" /> Log Out
               </button>
             </>
           ) : (
             <>
-              <button type="button" className={styles.drawerItem} onClick={closeAndGo('/login')}>
+              <button
+                type="button"
+                className={styles.drawerItem}
+                onClick={closeAndGo('/login')}
+              >
                 <Icon name="sign in" /> Log in
               </button>
-              <button type="button" className={styles.drawerItem} onClick={closeAndGo('/join')}>
+              <button
+                type="button"
+                className={styles.drawerItem}
+                onClick={closeAndGo('/join')}
+              >
                 <Icon name="add user" /> Sign up free
               </button>
             </>

@@ -1,29 +1,36 @@
 import React from 'react'
 import Link from 'next/link'
-import { Button, Icon, Grid, Statistic, Container } from 'semantic-ui-react'
+import {
+  Button,
+  Icon,
+  Grid,
+  Statistic,
+  Container,
+  SemanticICONS,
+} from 'semantic-ui-react'
 import styles from './Landing.module.scss'
 
 const features = [
   {
-    icon: 'users',
+    icon: 'users' as SemanticICONS,
     title: 'Find Your People',
     desc: 'Connect with others who share your passions, hobbies, and values — not just mutual followers.',
     bg: 'lavender',
   },
   {
-    icon: 'comments',
+    icon: 'comments' as SemanticICONS,
     title: 'Real Conversations',
     desc: 'Engage in meaningful discussions without the noise of algorithms pushing engagement bait.',
     bg: 'mint',
   },
   {
-    icon: 'heart',
+    icon: 'heart' as SemanticICONS,
     title: 'Interest-Based Feed',
     desc: 'Your feed is curated by what you actually care about, not by what keeps you scrolling.',
     bg: 'peach',
   },
   {
-    icon: 'shield',
+    icon: 'shield' as SemanticICONS,
     title: 'Your Space, Your Rules',
     desc: 'No ads, no tracking. A community built for humans, not engagement metrics.',
     bg: 'sky',
@@ -110,7 +117,7 @@ const Landing = () => (
             <Grid.Column key={title}>
               <div className={`${styles.featureCard} ${styles[`bg-${bg}`]}`}>
                 <div className={styles.featureIcon}>
-                  <Icon name={icon as any} size="large" />
+                  <Icon name={icon} size="large" />
                 </div>
                 <div>
                   <h3 className={styles.featureTitle}>{title}</h3>
