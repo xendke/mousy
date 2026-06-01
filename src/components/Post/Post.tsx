@@ -48,7 +48,7 @@ const Post: React.FC<PostProps> = ({
   )
 
   return (
-    <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-5 mb-3">
+    <div className="rounded-2xl bg-white border-2 border-black p-5 mb-3">
       <article className="flex gap-4">
         <div className="flex-1 min-w-0">
           <div>

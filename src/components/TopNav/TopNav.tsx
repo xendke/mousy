@@ -68,10 +68,10 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
   )
 
   return (
-    <nav ref={nodeRef} className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-pastel-lavender/60">
+    <nav ref={nodeRef} className="sticky top-0 z-50 bg-white backdrop-blur-md border-b-2 border-black">
       <div className="flex items-center justify-between max-w-5xl mx-auto px-6 py-3">
         <Link href="/" className="flex items-center">
-          <Image src={logoImage} alt="Mousy" height={32} className="h-8 w-auto" />
+          <Image src={logoImage} alt="Mousy" height={32} className="h-8 w-auto" style={{ filter: 'brightness(0)' }} />
         </Link>
 
         {/* Desktop */}
