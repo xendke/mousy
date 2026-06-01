@@ -1,5 +1,3 @@
-import 'fomantic-ui-css/semantic.min.css'
-import 'bulma/css/bulma.css'
 import 'normalize.css'
 import '~/assets/index.scss'
 
