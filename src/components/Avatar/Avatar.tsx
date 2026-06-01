@@ -10,9 +10,10 @@ interface AvatarProps {
   userId: string
   refresh?: number
   firebase: Firebase
+  size?: number
 }
 
-const Avatar: FC<AvatarProps> = ({ userId, refresh, firebase }) => {
+const Avatar: FC<AvatarProps> = ({ userId, refresh, firebase, size = 100 }) => {
   const [avatarUrl, setAvatarUrl] = useState(DEFAULT_AVATAR)
 
   useEffect(() => {
@@ -33,8 +34,8 @@ const Avatar: FC<AvatarProps> = ({ userId, refresh, firebase }) => {
         className="rounded-full object-cover"
         src={avatarUrl}
         alt="User Avatar"
-        width={100}
-        height={100}
+        width={size}
+        height={size}
       />
     </figure>
   )
