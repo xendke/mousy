@@ -106,7 +106,7 @@ const Landing = () => (
           {features.map(({ icon, title, desc, bg }) => {
             const Icon = featureIcons[icon] || Users
             return (
-              <div key={title} className="flex items-start gap-4 rounded-2xl p-7 bg-white border-2 border-black transition-transform hover:-translate-y-1">
+              <div key={title} className={`flex items-start gap-4 rounded-2xl p-7 ${bg} border-2 border-black transition-transform hover:-translate-y-1`}>
                 <div className="shrink-0 h-12 w-12 bg-black rounded-xl flex items-center justify-center">
                   <Icon className="h-5 w-5 text-white" />
                 </div>

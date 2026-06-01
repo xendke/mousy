@@ -31,7 +31,7 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
   }, [user.isSignedIn])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-pastel-lavender/30 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <Card className="w-full max-w-sm">
         <CardContent className="pt-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Hi there!</h1>

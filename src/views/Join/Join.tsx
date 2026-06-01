@@ -140,14 +140,14 @@ class Join extends React.Component<JoinProps, JoinState> {
         >
           Continue
         </Button>
-        <Link href="/login" className="text-sm text-brand hover:underline">
+        <Link href="/login" className="text-sm text-black font-medium hover:underline">
           Already have an account?
         </Link>
       </div>
     )
 
     return (
-      <div className="min-h-screen flex items-center justify-center bg-pastel-lavender/30 px-4 py-10">
+      <div className="min-h-screen flex items-center justify-center bg-white px-4 py-10">
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Sign Up</h1>
