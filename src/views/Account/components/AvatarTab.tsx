@@ -4,8 +4,8 @@ import { Avatar, ImageCropper } from '~/components'
 import { withFirebase } from '~/components/firebase'
 import getCroppedImg from '~/components/ImageCropper/helpers'
 import { Firebase, User } from '~/types'
-
-import styles from './AvatarTab.module.scss'
+import { Alert } from '~/components/ui/alert'
+import { Button } from '~/components/ui/button'
 
 interface AvatarTabProps {
   user: User
@@ -46,18 +46,16 @@ const AvatarTab: React.FC<AvatarTabProps> = ({ user, firebase }) => {
   if (!user.auth) return null
 
   return (
-    <div className={styles.AvatarTab}>
+    <div className="space-y-4 py-4">
       {successCount > 0 && (
-        <div className="notification is-success is-light">
-          Successfully updated your avatar!
-        </div>
+        <Alert variant="success">Successfully updated your avatar!</Alert>
       )}
       <Avatar userId={user.auth.uid} refresh={successCount} />
       {!uploading && (
-        <label htmlFor="fileInpupt" className="button is-primary">
+        <label htmlFor="fileInput" className="inline-flex cursor-pointer items-center rounded-full bg-brand px-5 py-2 text-sm font-medium text-white shadow-md hover:bg-brand/90">
           Choose a File
           <input
-            className="button"
+            className="sr-only"
             id="fileInput"
             type="file"
             onChange={(e) => onChangePicture(e)}
@@ -67,7 +65,7 @@ const AvatarTab: React.FC<AvatarTabProps> = ({ user, firebase }) => {
       )}
       {inputFile && (
         <>
-          <div className={styles.cropper}>
+          <div className="overflow-hidden rounded-xl">
             <ImageCropper
               src={inputFile}
               loading={uploading}
@@ -75,14 +73,13 @@ const AvatarTab: React.FC<AvatarTabProps> = ({ user, firebase }) => {
             />
           </div>
 
-          <button
-            className="button is-primary"
+          <Button
             type="button"
             onClick={uploadAvatar}
             disabled={uploading}
           >
             Upload
-          </button>
+          </Button>
         </>
       )}
     </div>

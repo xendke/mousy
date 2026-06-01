@@ -1,15 +1,9 @@
 import React from 'react'
-import cn from 'classnames'
-import styles from './Loading.module.scss'
+import { Progress } from '~/components/ui/progress'
 
 const Loading = () => (
-  <div className={styles.Loading}>
-    <div className={cn('box', styles.box)}>
-      <progress
-        className="progress is-small is-primary is-inverted"
-        max="100"
-      />
-    </div>
+  <div className="mx-auto mt-10 max-w-xs rounded-2xl bg-white p-6 shadow-sm">
+    <Progress />
   </div>
 )
 

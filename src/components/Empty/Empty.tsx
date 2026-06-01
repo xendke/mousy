@@ -1,8 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import cn from 'classnames'
-
-import styles from './Empty.module.scss'
+import { Card, CardContent, CardFooter } from '~/components/ui/card'
 
 interface ActionProps {
   link: string
@@ -10,10 +8,8 @@ interface ActionProps {
 }
 
 export const Action: React.FC<ActionProps> = ({ link, label }) => (
-  <Link href={link} passHref>
-    <a href="wow" className="card-footer-item">
-      {label}
-    </a>
+  <Link href={link} className="flex-1 py-3 text-center text-sm font-medium text-brand hover:bg-pastel-lavender transition-colors">
+    {label}
   </Link>
 )
 
@@ -23,12 +19,16 @@ interface EmptyProps {
 }
 
 const Empty: React.FC<EmptyProps> = ({ message, actions = null }) => (
-  <div className={cn(styles.Empty, styles.card, 'card')}>
-    <div className="card-content">
-      <div className="content">{message}</div>
-    </div>
-    {actions && <footer className="card-footer">{actions}</footer>}
-  </div>
+  <Card>
+    <CardContent>
+      <p className="text-gray-500">{message}</p>
+    </CardContent>
+    {actions && (
+      <CardFooter className="divide-x divide-gray-100 p-0">
+        {actions}
+      </CardFooter>
+    )}
+  </Card>
 )
 
 export default Empty

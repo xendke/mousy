@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Router from 'next/router'
 import { connect } from 'react-redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faEye,
-  faEyeSlash,
-  faKey,
-  faEnvelope,
-} from '@fortawesome/free-solid-svg-icons'
-
-import cn from 'classnames'
+import { Eye, EyeOff, KeyRound, Mail } from 'lucide-react'
 import { withFirebase } from '~/components/firebase'
 import isValidEmail from '~/utils/validation'
-
-import styles from './Login.module.scss'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
+import { Button } from '~/components/ui/button'
+import { Alert } from '~/components/ui/alert'
+import { Card, CardContent } from '~/components/ui/card'
 import { Firebase, User } from '~/types'
 
 interface LoginProps {
@@ -29,9 +24,6 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
   const [passwordError, setPasswordError] = useState(undefined)
   const [errorMessage, setErrorMessage] = useState(undefined)
 
-  const eyeIcon = <FontAwesomeIcon icon={faEye} width={18} />
-  const eyeSlashIcon = <FontAwesomeIcon icon={faEyeSlash} width={18} />
-
   useEffect(() => {
     if (user.isSignedIn) {
       Router.push('/')
@@ -39,110 +31,99 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
   }, [user.isSignedIn])
 
   return (
-    <>
-      <form className={cn(styles.Login, styles.section, 'section')}>
-        <h1>Hi there!</h1>
-
-        <div className="field">
-          <label htmlFor="email" className="label">
-            Email
-            <div className="control has-icons-left">
-              <input
-                className={`input ${emailError ? 'is-danger' : ''}`}
-                id="email"
-                type="text"
-                value={email}
-                onChange={(e) => {
-                  const val = e.target.value
-                  setErrorMessage(undefined)
-                  setEmailError(undefined)
-                  setEmail(val)
-                }}
-              />
-              <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faEnvelope} width={18} />
-              </span>
+    <div className="min-h-screen flex items-center justify-center bg-pastel-lavender/30 px-4">
+      <Card className="w-full max-w-sm">
+        <CardContent className="pt-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">Hi there!</h1>
+          <form>
+            <div className="mb-4">
+              <Label htmlFor="email">Email</Label>
+              <div className="relative mt-1">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  id="email"
+                  type="text"
+                  className={`pl-9 ${emailError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                  value={email}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    setErrorMessage(undefined)
+                    setEmailError(undefined)
+                    setEmail(val)
+                  }}
+                />
+              </div>
+              {emailError && <p className="mt-1 text-xs text-red-500">{emailError}</p>}
             </div>
-            {emailError && (
-              <p className={cn(styles.help, 'help is-danger')}>{emailError}</p>
+
+            <div className="mb-6">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative mt-1">
+                <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  id="password"
+                  type={isPasswordHidden ? 'password' : 'text'}
+                  className={`pl-9 pr-9 ${passwordError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                  value={password}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    setErrorMessage(undefined)
+                    setPasswordError(undefined)
+                    setPassword(val)
+                  }}
+                />
+                {password?.length > 0 && (
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    tabIndex={0}
+                    onClick={() => setIsPasswordHidden(!isPasswordHidden)}
+                    onKeyDown={({ key }) => key === 'Enter' && setIsPasswordHidden(!isPasswordHidden)}
+                  >
+                    {isPasswordHidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                  </button>
+                )}
+              </div>
+              {passwordError && <p className="mt-1 text-xs text-red-500">{passwordError}</p>}
+            </div>
+
+            {errorMessage && (
+              <Alert variant="danger" className="mb-4">{errorMessage}</Alert>
             )}
-          </label>
-        </div>
 
-        <div className={cn(styles.field, 'field')}>
-          <label htmlFor="password" className="label">
-            Password
-            <div className="control has-icons-left has-icons-right">
-              <input
-                className={`input ${passwordError ? 'is-danger' : ''}`}
-                id="password"
-                type={`${isPasswordHidden ? 'password' : 'text'}`}
-                value={password}
-                onChange={(e) => {
-                  const val = e.target.value
-                  setErrorMessage(undefined)
+            <Button
+              type="submit"
+              className="w-full"
+              onClick={(event) => {
+                event.preventDefault()
+                let error = false
+                if (!isValidEmail(email)) {
+                  setEmailError('Invalid Email')
+                  error = true
+                } else {
+                  setEmailError(undefined)
+                }
+                if (password.length < 1) {
+                  setPasswordError('Password cannot be empty.')
+                  error = true
+                } else {
                   setPasswordError(undefined)
-                  setPassword(val)
-                }}
-              />
-              <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faKey} width={18} />
-              </span>
-              {password?.length > 0 && (
-                <span
-                  className={cn(styles.icon, 'icon is-small is-right')}
-                  tabIndex={0}
-                  role="button"
-                  onClick={() => setIsPasswordHidden(!isPasswordHidden)}
-                  onKeyDown={({ key }) =>
-                    key === 'Enter' && setIsPasswordHidden(!isPasswordHidden)
-                  }
-                >
-                  {isPasswordHidden ? eyeIcon : eyeSlashIcon}
-                </span>
-              )}
-            </div>
-          </label>
-          {passwordError && (
-            <p className={cn(styles.help, 'help is-danger')}>{passwordError}</p>
-          )}
-        </div>
+                }
+                if (error) return
 
-        {errorMessage && (
-          <div className="notification is-danger is-light">{errorMessage}</div>
-        )}
-
-        <button
-          type="submit"
-          className={cn(styles.button, 'button is-primary')}
-          onClick={(event) => {
-            event.preventDefault()
-            let error = false
-            if (!isValidEmail(email)) {
-              setEmailError('Invalid Email')
-              error = true
-            } else {
-              setEmailError(undefined)
-            }
-            if (password.length < 1) {
-              setPasswordError('Password cannot be empty.')
-              error = true
-            } else {
-              setPasswordError(undefined)
-            }
-            if (error) return
-
-            firebase
-              .doSignInWithEmailAndPassword(email, password) // success handled by onAuthStateChanged
-              .catch((e) => {
-                setErrorMessage(e.message)
-              })
-          }}
-        >
-          Log in
-        </button>
-      </form>
-    </>
+                firebase
+                  .doSignInWithEmailAndPassword(email, password)
+                  .catch((e) => {
+                    setErrorMessage(e.message)
+                  })
+              }}
+            >
+              Log in
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
 

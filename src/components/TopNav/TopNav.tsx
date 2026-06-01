@@ -3,12 +3,10 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
 import { connect } from 'react-redux'
-import { Button, Icon } from 'semantic-ui-react'
-
+import { Menu, X, UserCircle, LogOut, LogIn, UserPlus } from 'lucide-react'
+import { Button } from '~/components/ui/button'
 import { withFirebase } from '~/components/firebase'
 import logoImage from '~/assets/logo.png'
-
-import styles from './TopNav.module.scss'
 import { Firebase, User } from '~/types'
 
 interface TopNavProps {
@@ -44,23 +42,14 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
   const signedInActions = (
     <>
       {!router.pathname.includes('/me') && (
-        <Button
-          basic
-          circular
-          size="small"
-          onClick={closeAndGo('/me')}
-          className={styles.ghostBtn}
-        >
-          <Icon name="user circle" />
+        <Button variant="ghost" size="sm" onClick={closeAndGo('/me')}>
+          <UserCircle className="h-4 w-4" />
           Profile
         </Button>
       )}
       <Button
-        size="small"
-        className={styles.primaryBtn}
-        onClick={() => {
-          firebase.doSignOut().then(() => router.push('/'))
-        }}
+        size="sm"
+        onClick={() => firebase.doSignOut().then(() => router.push('/'))}
       >
         Log Out
       </Button>
@@ -69,106 +58,65 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
 
   const signedOutActions = (
     <>
-      <Button
-        basic
-        circular
-        size="small"
-        className={styles.ghostBtn}
-        onClick={closeAndGo('/login')}
-      >
+      <Button variant="ghost" size="sm" onClick={closeAndGo('/login')}>
         Log in
       </Button>
-      <Button
-        size="small"
-        className={styles.primaryBtn}
-        onClick={closeAndGo('/join')}
-      >
+      <Button size="sm" onClick={closeAndGo('/join')}>
         Sign up free
       </Button>
     </>
   )
 
   return (
-    <nav ref={nodeRef} className={styles.TopNav}>
-      <div className={styles.inner}>
-        <Link href="/" passHref legacyBehavior>
-          <a href="/" className={styles.brand}>
-            <Image
-              src={logoImage}
-              alt="Mousy"
-              height={32}
-              className={styles.logo}
-            />
-          </a>
+    <nav ref={nodeRef} className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-pastel-lavender/60">
+      <div className="flex items-center justify-between max-w-5xl mx-auto px-6 py-3">
+        <Link href="/" className="flex items-center">
+          <Image src={logoImage} alt="Mousy" height={32} className="h-8 w-auto" />
         </Link>
 
-        {/* Desktop actions — hidden on mobile via CSS */}
-        <div className={styles.desktopActions}>
+        {/* Desktop */}
+        <div className="hidden md:flex items-center gap-3">
           {user.isSignedIn ? signedInActions : signedOutActions}
         </div>
 
-        {/* Mobile burger — hidden on desktop via CSS */}
+        {/* Mobile burger */}
         <button
           type="button"
-          className={styles.burger}
+          className="md:hidden p-1 text-gray-500"
           aria-label="menu"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          <Icon name={isMenuOpen ? 'close' : 'bars'} size="large" />
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Mobile drawer */}
-      <div
-        className={`${styles.drawer} ${isMenuOpen ? styles.drawerOpen : ''}`}
-      >
-        {user.isSignedIn ? (
-          <>
-            <button
-              type="button"
-              className={styles.drawerItem}
-              onClick={closeAndGo('/me')}
-            >
-              <Icon name="user circle" /> Profile
-            </button>
-            <button
-              type="button"
-              className={styles.drawerItem}
-              onClick={() => {
-                firebase.doSignOut().then(() => {
-                  router.push('/')
-                  setIsMenuOpen(false)
-                })
-              }}
-            >
-              <Icon name="sign out" /> Log Out
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              type="button"
-              className={styles.drawerItem}
-              onClick={closeAndGo('/login')}
-            >
-              <Icon name="sign in" /> Log in
-            </button>
-            <button
-              type="button"
-              className={styles.drawerItem}
-              onClick={closeAndGo('/join')}
-            >
-              <Icon name="add user" /> Sign up free
-            </button>
-          </>
-        )}
-      </div>
+      {isMenuOpen && (
+        <div className="md:hidden border-t border-gray-100 bg-white py-2">
+          {user.isSignedIn ? (
+            <>
+              <button type="button" className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender" onClick={closeAndGo('/me')}>
+                <UserCircle size={18} className="text-brand" /> Profile
+              </button>
+              <button type="button" className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender" onClick={() => { firebase.doSignOut().then(() => { router.push('/'); setIsMenuOpen(false) }) }}>
+                <LogOut size={18} className="text-brand" /> Log Out
+              </button>
+            </>
+          ) : (
+            <>
+              <button type="button" className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender" onClick={closeAndGo('/login')}>
+                <LogIn size={18} className="text-brand" /> Log in
+              </button>
+              <button type="button" className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender" onClick={closeAndGo('/join')}>
+                <UserPlus size={18} className="text-brand" /> Sign up free
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   )
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-})
-
+const mapStateToProps = (state) => ({ user: state.user })
 export default connect(mapStateToProps)(withFirebase(TopNav))

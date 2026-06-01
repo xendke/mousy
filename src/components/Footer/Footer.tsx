@@ -1,15 +1,12 @@
 import React from 'react'
-import { Icon } from 'semantic-ui-react'
-import styles from './Footer.module.scss'
+import { Heart } from 'lucide-react'
 
 const Footer = () => (
-  <footer className={styles.Footer}>
-    <span>
-      Made with <Icon name="heart" color="pink" /> by{' '}
-      <a href="https://twitter.com/xendke" className={styles.link}>
-        @xendke
-      </a>
-    </span>
+  <footer className="border-t border-gray-100 py-5 text-center text-sm text-gray-500">
+    Made with <Heart className="inline h-4 w-4 text-pink-400 fill-pink-400 mx-1" /> by{' '}
+    <a href="https://twitter.com/xendke" className="text-brand font-medium hover:underline">
+      @xendke
+    </a>
   </footer>
 )
 

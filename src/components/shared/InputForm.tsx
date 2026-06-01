@@ -1,9 +1,12 @@
 import React, { ChangeEventHandler } from 'react'
 import Link from 'next/link'
-import cn from 'classnames'
+import { X } from 'lucide-react'
 import Avatar from '~/components/Avatar/Avatar'
+import { Input } from '~/components/ui/input'
+import { Button } from '~/components/ui/button'
+import { Alert } from '~/components/ui/alert'
+import { cn } from '~/lib/utils'
 
-import styles from './InputForm.module.scss'
 import { User } from '~/types'
 
 interface InputFormProps {
@@ -33,48 +36,50 @@ const InputForm: React.FC<InputFormProps> = ({
   isForCommenting = false,
   className = '',
 }) => (
-  <div className={cn('InputForm', 'box', className)}>
-    <form className={cn('field', 'is-grouped', styles.group)}>
-      <Link href="/me" passHref>
-        <a href="wow" className={cn('image', styles.avatar)}>
-          <Avatar userId={user.auth.uid} />
-        </a>
+  <div className={cn('rounded-2xl bg-white shadow-sm border border-gray-100 p-4 mb-3', className)}>
+    <form className="flex items-start gap-3">
+      <Link href="/me" className="shrink-0">
+        <Avatar userId={user.auth.uid} />
       </Link>
-      <p className="control is-expanded">
-        <input
-          className="input"
+      <div className="flex-1">
+        <Input
           type="text"
           placeholder={isForCommenting ? 'Comment...' : "What's up?"}
           value={content}
           onChange={setContent}
         />
-      </p>
-      <p className="control">
-        <button
-          type="submit"
-          className={`button is-primary ${isLoading ? 'is-loading' : null}`}
-          onClick={submit}
-          disabled={isLoading}
-        >
-          {isForCommenting ? 'Comment' : 'Post'}
-        </button>
-      </p>
+      </div>
+      <Button
+        type="submit"
+        onClick={submit}
+        disabled={isLoading}
+      >
+        {isForCommenting ? 'Comment' : 'Post'}
+      </Button>
     </form>
     {success && !error && (
-      <div className="notification is-primary is-light">
+      <Alert variant="default" className="mt-3">
+        {`Your ${isForCommenting ? 'comment' : 'post'} was published!`}
         <button
           type="button"
-          className="delete"
           onClick={() => setSuccess(false)}
-        />
-        {`Your ${isForCommenting ? 'comment' : 'post'} was published!`}
-      </div>
+          className="ml-auto"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </Alert>
     )}
     {error && error.message && (
-      <div className="notification is-danger is-light">
-        <button type="button" className="delete" onClick={() => setError()} />
+      <Alert variant="danger" className="mt-3">
         {error.message}
-      </div>
+        <button
+          type="button"
+          onClick={() => setError()}
+          className="ml-auto"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </Alert>
     )}
   </div>
 )

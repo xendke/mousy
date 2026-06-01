@@ -1,14 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
-import cn from 'classnames'
 import Router from 'next/router'
 import { connect } from 'react-redux'
 import { withFirebase } from '~/components/firebase'
 import { debounce } from '~/utils'
 import { Info, Credentials } from './components'
 import { User, Firebase } from '~/types'
-
-import styles from './Join.module.scss'
+import { Alert } from '~/components/ui/alert'
+import { Button } from '~/components/ui/button'
+import { Card, CardContent } from '~/components/ui/card'
 
 const getRandomInterests = () => {
   const interests = [
@@ -116,78 +116,69 @@ class Join extends React.Component<JoinProps, JoinState> {
     } = this.state
 
     const Continue = (
-      <div className="field is-grouped">
-        <div className="control ">
-          <button
-            type="button"
-            className="button is-primary"
-            onClick={() => {
-              if (name.length <= 2) {
-                return this.setError('Name is too short.')
-              }
-              if (username.length <= 4) {
-                return this.setError('Username is too short.')
-              }
-              if (!usernameIsAvailable) {
-                return this.setError('Username is not available.')
-              }
-              if (interests.length < 2) {
-                return this.setError('Must have at least two interests.')
-              }
-              return this.setState(() => ({ step: 'credentials', error: null }))
-            }}
-          >
-            Continue
-          </button>
-        </div>
-
-        <div className={cn(styles.toLogin, styles.control, 'control')}>
-          <Link href="/login" passHref>
-            <a href="wow" className="is-text">
-              Already have an account?
-            </a>
-          </Link>
-        </div>
+      <div className="flex items-center gap-4 mt-4">
+        <Button
+          type="button"
+          onClick={() => {
+            if (name.length <= 2) {
+              return this.setError('Name is too short.')
+            }
+            if (username.length <= 4) {
+              return this.setError('Username is too short.')
+            }
+            if (!usernameIsAvailable) {
+              return this.setError('Username is not available.')
+            }
+            if (interests.length < 2) {
+              return this.setError('Must have at least two interests.')
+            }
+            return this.setState(() => ({ step: 'credentials', error: null }))
+          }}
+        >
+          Continue
+        </Button>
+        <Link href="/login" className="text-sm text-brand hover:underline">
+          Already have an account?
+        </Link>
       </div>
     )
 
     return (
-      <form className={cn(styles.section, 'section')}>
-        <h1>Sign Up</h1>
-        <p>Join a community that listens!</p>
-        {error && (
-          <div
-            className={cn(
-              styles.notification,
-              'notification is-danger is-light'
+      <div className="min-h-screen flex items-center justify-center bg-pastel-lavender/30 px-4 py-10">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6">
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">Sign Up</h1>
+            <p className="text-gray-500 mb-6">Join a community that listens!</p>
+            {error && (
+              <Alert variant="danger" className="mb-4">{error}</Alert>
             )}
-          >
-            {error}
-          </div>
-        )}
-        {step === 'info' ? (
-          <Info
-            handleChange={this.handleChange}
-            name={name}
-            username={username}
-            interests={interests}
-            checkingUsernameExists={checkingUsernameExists}
-            usernameIsAvailable={usernameIsAvailable}
-            action={Continue}
-          />
-        ) : (
-          <Credentials
-            handleChange={this.handleChange}
-            email={email}
-            emailConfirmation={emailConfirmation}
-            password={password}
-            name={name}
-            username={username}
-            interests={interests}
-            setError={this.setError}
-          />
-        )}
-      </form>
+            <form>
+              {step === 'info' ? (
+                <Info
+                  handleChange={this.handleChange}
+                  name={name}
+                  username={username}
+                  interests={interests}
+                  checkingUsernameExists={checkingUsernameExists}
+                  usernameIsAvailable={usernameIsAvailable}
+                  action={Continue}
+                />
+              ) : (
+                <Credentials
+                  handleChange={this.handleChange}
+                  email={email}
+                  emailConfirmation={emailConfirmation}
+                  password={password}
+                  name={name}
+                  username={username}
+                  interests={interests}
+                  setError={this.setError}
+                />
+              )}
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     )
   }
 }

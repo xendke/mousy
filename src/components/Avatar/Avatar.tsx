@@ -28,9 +28,9 @@ const Avatar: FC<AvatarProps> = ({ userId, refresh, firebase }) => {
   }, [userId, firebase, refresh])
 
   return (
-    <figure className="Avatar image">
+    <figure className="Avatar">
       <Image
-        className="is-rounded"
+        className="rounded-full object-cover"
         src={avatarUrl}
         alt="User Avatar"
         width={100}

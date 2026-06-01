@@ -1,17 +1,15 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { MessageSquare, Heart } from 'lucide-react'
 import Link from 'next/link'
 import { withEffects, toProps } from 'refract-xstream'
 import { formatDistanceToNowStrict } from 'date-fns'
 import xs from 'xstream'
 import { connect } from 'react-redux'
-import cn from 'classnames'
+import { cn } from '~/lib/utils'
 import { compose } from '~/utils'
 import { withFirebase } from '~/components/firebase'
 import { setLikedPosts } from '~/redux/actions/user'
-
-import styles from './Post.module.scss'
+import { Button } from '~/components/ui/button'
 
 interface PostProps {
   postId: string
@@ -44,68 +42,45 @@ const Post: React.FC<PostProps> = ({
   const userRoute = uid === userId ? '/me' : `/shy/${userId}`
   const author = (
     <>
-      <strong className="is-capitalized has-text-grey-darker">
-        {userFullName}
-      </strong>
-      <small className="has-text-grey-dark"> @{username}</small>
+      <strong className="capitalize text-gray-700">{userFullName}</strong>
+      <small className="text-gray-500"> @{username}</small>
     </>
   )
 
   return (
-    <div className={cn(styles.Post, 'box')}>
-      <article className={cn(styles.media, 'media')}>
-        <div className="media-content">
-          <div className={cn(styles.content, 'content')}>
+    <div className="rounded-2xl bg-white shadow-sm border border-gray-100 p-5 mb-3">
+      <article className="flex gap-4">
+        <div className="flex-1 min-w-0">
+          <div>
             <p>
               {userId ? (
-                <Link href={userRoute} passHref>
-                  <a href="wow">{author}</a>
-                </Link>
+                <Link href={userRoute}>{author}</Link>
               ) : (
                 author
               )}
-              <small className="has-text-grey-light"> {timePosted} ago</small>
+              <small className="text-gray-400"> {timePosted} ago</small>
               <br />
               {content}
             </p>
           </div>
-          <nav className="level is-mobile">
-            <div className="level-left">
-              <div className="field has-addons">
-                {!hideCommentIcon && (
-                  <p className="control">
-                    <Link href={`/post/${postId}`} passHref>
-                      <button
-                        type="button"
-                        className={cn(
-                          styles.button,
-                          'button is-small is-text has-text-primary'
-                        )}
-                      >
-                        <span className="icon">
-                          <FontAwesomeIcon icon={faComment} width={12} />
-                        </span>
-                      </button>
-                    </Link>
-                  </p>
-                )}
-                <p className="control">
-                  <button
-                    type="button"
-                    onClick={() => onLike(true)}
-                    className={cn(
-                      styles.button,
-                      'button is-small is-text',
-                      liked ? 'has-text-danger' : 'has-text-primary'
-                    )}
-                  >
-                    <span className="icon">
-                      <FontAwesomeIcon icon={faHeart} width={12} />
-                    </span>
-                    <span>{likeCount}</span>
-                  </button>
-                </p>
-              </div>
+          <nav className="flex items-center justify-between mt-2">
+            <div className="flex items-center gap-2">
+              {!hideCommentIcon && (
+                <Link href={`/post/${postId}`}>
+                  <Button variant="ghost" size="sm">
+                    <MessageSquare className="h-3 w-3" />
+                  </Button>
+                </Link>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onLike(true)}
+                className={cn(liked ? 'text-red-500' : '')}
+              >
+                <Heart className="h-3 w-3" />
+                <span>{likeCount}</span>
+              </Button>
             </div>
           </nav>
         </div>

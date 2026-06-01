@@ -1,5 +1,7 @@
 import React from 'react'
 import { InterestsSelect } from '~/components'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
 
 interface InfoProps {
   handleChange: (e: { target: { name: string; value: string } }) => void
@@ -22,13 +24,13 @@ const Info: React.FC<InfoProps> = ({
 }) => {
   const usernameAvailabilityMessage = () => {
     if (checkingUsernameExists) {
-      return <p className="help">Checking if username is available...</p>
+      return <p className="mt-1 text-xs text-gray-500">Checking if username is available...</p>
     }
     if (usernameIsAvailable) {
-      return <p className="help">Username is available!</p>
+      return <p className="mt-1 text-xs text-green-600">Username is available!</p>
     }
     if (username.length > 4) {
-      return <p className="help">Username is not available</p>
+      return <p className="mt-1 text-xs text-red-500">Username is not available</p>
     }
 
     return null
@@ -36,53 +38,43 @@ const Info: React.FC<InfoProps> = ({
 
   return (
     <>
-      <div className="field">
-        <div className="control">
-          <label htmlFor="name" className="label">
-            Name
-            <input
-              className="input"
-              id="name"
-              type="text"
-              name="name"
-              value={name}
-              onChange={handleChange}
-            />
-          </label>
-        </div>
+      <div className="mb-4">
+        <Label htmlFor="name">Name</Label>
+        <Input
+          className="mt-1"
+          id="name"
+          type="text"
+          name="name"
+          value={name}
+          onChange={handleChange}
+        />
       </div>
 
-      <div className="field">
-        <div className="control">
-          <label htmlFor="username" className="label">
-            Username
-            <input
-              className="input"
-              id="username"
-              type="text"
-              name="username"
-              value={username}
-              onChange={handleChange}
-            />
-          </label>
-        </div>
+      <div className="mb-4">
+        <Label htmlFor="username">Username</Label>
+        <Input
+          className="mt-1"
+          id="username"
+          type="text"
+          name="username"
+          value={username}
+          onChange={handleChange}
+        />
         {usernameAvailabilityMessage()}
       </div>
 
-      <div className="field">
-        <div className="control">
-          <label htmlFor="interests" className="label">
-            Interests
-            <InterestsSelect
-              id="interests"
-              defaultInterests={interests}
-              getInterests={(value) =>
-                handleChange({
-                  target: { name: 'interests', value },
-                })
-              }
-            />
-          </label>
+      <div className="mb-4">
+        <Label htmlFor="interests">Interests</Label>
+        <div className="mt-1">
+          <InterestsSelect
+            id="interests"
+            defaultInterests={interests}
+            getInterests={(value) =>
+              handleChange({
+                target: { name: 'interests', value },
+              })
+            }
+          />
         </div>
       </div>
 

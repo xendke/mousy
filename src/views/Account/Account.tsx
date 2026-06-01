@@ -3,14 +3,12 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { NextRouter, withRouter } from 'next/router'
-import cn from 'classnames'
 import { compose } from '~/utils'
 import AvatarTab from './components/AvatarTab'
 import InfoTab from './components/InfoTab'
 import InterestsTab from './components/InterestsTab'
 import { User } from '~/types'
-
-import styles from './Account.module.scss'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '~/components/ui/tabs'
 
 interface AccountProps {
   user: User
@@ -20,14 +18,10 @@ interface AccountProps {
 const Account: React.FC<AccountProps> = ({ user, router }) => {
   const { query } = router
   const tab = query.tab ? query.tab[0] : ''
-  const tabContents = {
-    avatar: <AvatarTab />,
-    info: <InfoTab />,
-    interests: <InterestsTab />,
-  }
 
+  const validTabs = ['avatar', 'info', 'interests']
   let currentTab = 'avatar'
-  if (Object.keys(tabContents).includes(tab)) currentTab = tab
+  if (validTabs.includes(tab)) currentTab = tab
 
   const setCurrentTab = (target: string) => router.push(`/account/${target}`)
 
@@ -38,65 +32,23 @@ const Account: React.FC<AccountProps> = ({ user, router }) => {
   }, [router, user.isSignedIn])
 
   return (
-    <div className={cn(styles.Account, styles.container, 'container section')}>
-      <div className={cn(styles.box, 'box')}>
-        <div className={cn(styles.tabs, 'tabs')}>
-          <ul>
-            <li
-              className={cn(
-                currentTab === 'avatar' && 'is-active',
-                currentTab === 'avatar' && styles.active
-              )}
-            >
-              <a
-                onClick={() => setCurrentTab('avatar')}
-                role="button"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') setCurrentTab('avatar')
-                }}
-                tabIndex={0}
-              >
-                Avatar
-              </a>
-            </li>
-            <li
-              className={cn(
-                currentTab === 'info' && 'is-active',
-                currentTab === 'info' && styles.active
-              )}
-            >
-              <a
-                onClick={() => setCurrentTab('info')}
-                role="button"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') setCurrentTab('info')
-                }}
-                tabIndex={0}
-              >
-                Info
-              </a>
-            </li>
-            <li
-              className={cn(
-                currentTab === 'interests' && 'is-active',
-                currentTab === 'interests' && styles.active
-              )}
-            >
-              <a
-                onClick={() => setCurrentTab('interests')}
-                role="button"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') setCurrentTab('interests')
-                }}
-                tabIndex={0}
-              >
-                Interests
-              </a>
-            </li>
-          </ul>
-        </div>
-        {tabContents[currentTab]}
-      </div>
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      <Tabs value={currentTab} onValueChange={setCurrentTab}>
+        <TabsList>
+          <TabsTrigger value="avatar">Avatar</TabsTrigger>
+          <TabsTrigger value="info">Info</TabsTrigger>
+          <TabsTrigger value="interests">Interests</TabsTrigger>
+        </TabsList>
+        <TabsContent value="avatar">
+          <AvatarTab />
+        </TabsContent>
+        <TabsContent value="info">
+          <InfoTab />
+        </TabsContent>
+        <TabsContent value="interests">
+          <InterestsTab />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

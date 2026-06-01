@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
 import Link from 'next/link'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComment, faHeart, faCog } from '@fortawesome/free-solid-svg-icons'
+import { MessageSquare, Heart, Settings } from 'lucide-react'
 
-import cn from 'classnames'
 import { Post, Loading, Avatar, Empty } from '~/components'
 import { Action } from '~/components/Empty/Empty'
+import { Button } from '~/components/ui/button'
+import { cn } from '~/lib/utils'
 
-import styles from './ProfileView.module.scss'
 import { Post as PostInt, User, Userbase } from '~/types'
 
 interface ProfileViewProps {
@@ -20,10 +19,7 @@ interface ProfileViewProps {
   loadingPosts: boolean
   showingLikes: boolean
   showLikes: (b: boolean) => void
-  // router: Router
 }
-
-// const shouldRedirectToLogin = (auth, userData = {}) => !auth || userData.error
 
 const ProfileView: React.FC<ProfileViewProps> = ({
   user,
@@ -35,13 +31,8 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   loadingPosts,
   showingLikes,
   showLikes,
-  // router,
 }) => {
-  useEffect(() => {
-    // if (shouldRedirectToLogin(user.auth, userData)) {
-    //   return Router.push('/login')
-    // }
-  }, [])
+  useEffect(() => {}, [])
 
   if (!user.auth || !userData) {
     return <Loading />
@@ -96,73 +87,53 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   const { userNotAvailable, name, interests } = userData
 
   return (
-    <section
-      className={cn(
-        styles.Profile,
-        styles.container,
-        'container columns is-desktop'
-      )}
-    >
-      <div className={cn(styles.userInfo, 'column is-one-quarter-desktop')}>
-        <div className="level">
-          <div className="level-item">
-            <figure className="image is-64x64">
-              <Avatar userId={userId} />
-            </figure>
-          </div>
+    <section className="max-w-5xl mx-auto px-4 py-8 md:flex md:gap-8">
+      <div className="md:w-64 shrink-0 mb-6 md:mb-0">
+        <div className="flex justify-center mb-4">
+          <Avatar userId={userId} />
         </div>
-        <h1 className="title has-text-centered is-capitalized">
+        <h1 className="text-xl font-bold text-center capitalize text-gray-900">
           {userNotAvailable ? 'Deleted User' : name}
         </h1>
-        <h2 className="subtitle has-text-centered">
+        <h2 className="text-sm text-center text-gray-500 mt-1">
           {interests && interests.length > 0
             ? `# ${interests.join(', ')}`
             : null}
         </h2>
         {isOwnProfile && (
           <>
-            <Link href="/account" passHref>
-              <a href="wow">
+            <div className="flex justify-center mt-4">
+              <Link href="/account">
+                <Button variant="outline" size="sm">
+                  <Settings className="h-3 w-3" />
+                  Edit
+                </Button>
+              </Link>
+            </div>
+
+            <div className="mt-4 rounded-2xl bg-white shadow-sm border border-gray-100 p-3">
+              <div className="flex">
                 <button
                   type="button"
                   className={cn(
-                    styles.button,
-                    'button is-small is-primary is-inverted is-outlined'
+                    'flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium transition-colors',
+                    !showingLikes ? 'bg-brand text-white' : 'text-gray-500 hover:bg-gray-50'
                   )}
-                >
-                  <span className="icon is-small">
-                    <FontAwesomeIcon icon={faCog} width={12} />
-                  </span>
-                  <span>Edit</span>
-                </button>
-              </a>
-            </Link>
-
-            <div className={cn(styles.box, 'box')}>
-              <div className="buttons has-addons is-centered is-expanded">
-                <button
-                  type="button"
-                  className={`button ${
-                    !showingLikes ? 'is-primary is-selected' : ''
-                  }`}
                   onClick={() => showLikes(false)}
                 >
-                  <span className="icon is-small">
-                    <FontAwesomeIcon icon={faComment} width={18} />
-                  </span>
-                  <span>Posts</span>
+                  <MessageSquare className="h-4 w-4" />
+                  Posts
                 </button>
                 <button
                   type="button"
-                  className={`button ${
-                    showingLikes ? 'is-primary is-selected' : ''
-                  }`}
+                  className={cn(
+                    'flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium transition-colors',
+                    showingLikes ? 'bg-brand text-white' : 'text-gray-500 hover:bg-gray-50'
+                  )}
                   onClick={() => showLikes(true)}
                 >
-                  <span className="icon is-small">
-                    <FontAwesomeIcon icon={faHeart} width={18} />
-                  </span>
-                  <span>Likes</span>
+                  <Heart className="h-4 w-4" />
+                  Likes
                 </button>
               </div>
             </div>
@@ -170,7 +141,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({
         )}
       </div>
 
-      <div className="column">{getContent()}</div>
+      <div className="flex-1">{getContent()}</div>
     </section>
   )
 }
