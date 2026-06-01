@@ -70,7 +70,9 @@ const Credentials: React.FC<CredentialsProps> = ({
         <input type="checkbox" id="checkbox" className="h-4 w-4" />
         <label htmlFor="checkbox" className="text-sm text-gray-600">
           I agree to the{' '}
-          <a href="https://google.com" className="text-brand hover:underline">terms and conditions</a>
+          <a href="https://google.com" className="text-brand hover:underline">
+            terms and conditions
+          </a>
         </label>
       </div>
 
@@ -89,8 +91,10 @@ const Credentials: React.FC<CredentialsProps> = ({
 
             const { exists } = await firebase.doUsernameExistsCheck(username)
             if (!exists) {
-              const authUser =
-                await firebase.doCreateUserWithEmailAndPassword(email, password)
+              const authUser = await firebase.doCreateUserWithEmailAndPassword(
+                email,
+                password
+              )
               await firebase.doUserInfoEdit(authUser.user.uid, {
                 name,
                 username,

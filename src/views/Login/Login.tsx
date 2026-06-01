@@ -43,7 +43,11 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
                 <Input
                   id="email"
                   type="text"
-                  className={`pl-9 ${emailError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                  className={`pl-9 ${
+                    emailError
+                      ? 'border-red-500 focus-visible:ring-red-500'
+                      : ''
+                  }`}
                   value={email}
                   onChange={(e) => {
                     const val = e.target.value
@@ -53,7 +57,9 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
                   }}
                 />
               </div>
-              {emailError && <p className="mt-1 text-xs text-red-500">{emailError}</p>}
+              {emailError && (
+                <p className="mt-1 text-xs text-red-500">{emailError}</p>
+              )}
             </div>
 
             <div className="mb-6">
@@ -63,7 +69,11 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
                 <Input
                   id="password"
                   type={isPasswordHidden ? 'password' : 'text'}
-                  className={`pl-9 pr-9 ${passwordError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                  className={`pl-9 pr-9 ${
+                    passwordError
+                      ? 'border-red-500 focus-visible:ring-red-500'
+                      : ''
+                  }`}
                   value={password}
                   onChange={(e) => {
                     const val = e.target.value
@@ -78,17 +88,27 @@ const Login: React.FC<LoginProps> = ({ user, firebase }) => {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
                     tabIndex={0}
                     onClick={() => setIsPasswordHidden(!isPasswordHidden)}
-                    onKeyDown={({ key }) => key === 'Enter' && setIsPasswordHidden(!isPasswordHidden)}
+                    onKeyDown={({ key }) =>
+                      key === 'Enter' && setIsPasswordHidden(!isPasswordHidden)
+                    }
                   >
-                    {isPasswordHidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    {isPasswordHidden ? (
+                      <Eye className="h-4 w-4" />
+                    ) : (
+                      <EyeOff className="h-4 w-4" />
+                    )}
                   </button>
                 )}
               </div>
-              {passwordError && <p className="mt-1 text-xs text-red-500">{passwordError}</p>}
+              {passwordError && (
+                <p className="mt-1 text-xs text-red-500">{passwordError}</p>
+              )}
             </div>
 
             {errorMessage && (
-              <Alert variant="danger" className="mb-4">{errorMessage}</Alert>
+              <Alert variant="danger" className="mb-4">
+                {errorMessage}
+              </Alert>
             )}
 
             <Button

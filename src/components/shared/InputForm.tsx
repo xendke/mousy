@@ -36,7 +36,12 @@ const InputForm: React.FC<InputFormProps> = ({
   isForCommenting = false,
   className = '',
 }) => (
-  <div className={cn('rounded-2xl bg-white shadow-sm border border-gray-100 p-4 mb-3', className)}>
+  <div
+    className={cn(
+      'rounded-2xl bg-white shadow-sm border border-gray-100 p-4 mb-3',
+      className
+    )}
+  >
     <form className="flex items-start gap-3">
       <Link href="/me" className="shrink-0">
         <Avatar userId={user.auth.uid} />
@@ -49,11 +54,7 @@ const InputForm: React.FC<InputFormProps> = ({
           onChange={setContent}
         />
       </div>
-      <Button
-        type="submit"
-        onClick={submit}
-        disabled={isLoading}
-      >
+      <Button type="submit" onClick={submit} disabled={isLoading}>
         {isForCommenting ? 'Comment' : 'Post'}
       </Button>
     </form>
@@ -72,11 +73,7 @@ const InputForm: React.FC<InputFormProps> = ({
     {error && error.message && (
       <Alert variant="danger" className="mt-3">
         {error.message}
-        <button
-          type="button"
-          onClick={() => setError()}
-          className="ml-auto"
-        >
+        <button type="button" onClick={() => setError()} className="ml-auto">
           <X className="h-4 w-4" />
         </button>
       </Alert>

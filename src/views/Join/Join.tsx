@@ -153,7 +153,9 @@ class Join extends React.Component<JoinProps, JoinState> {
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Sign Up</h1>
             <p className="text-gray-500 mb-6">Join a community that listens!</p>
             {error && (
-              <Alert variant="danger" className="mb-4">{error}</Alert>
+              <Alert variant="danger" className="mb-4">
+                {error}
+              </Alert>
             )}
             <form>
               {step === 'info' ? (

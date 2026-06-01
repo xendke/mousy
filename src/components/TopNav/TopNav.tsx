@@ -68,10 +68,18 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
   )
 
   return (
-    <nav ref={nodeRef} className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-pastel-lavender/60">
+    <nav
+      ref={nodeRef}
+      className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-pastel-lavender/60"
+    >
       <div className="flex items-center justify-between max-w-5xl mx-auto px-6 py-3">
         <Link href="/" className="flex items-center">
-          <Image src={logoImage} alt="Mousy" height={32} className="h-8 w-auto" />
+          <Image
+            src={logoImage}
+            alt="Mousy"
+            height={32}
+            className="h-8 w-auto"
+          />
         </Link>
 
         {/* Desktop */}
@@ -95,19 +103,40 @@ const TopNav: React.FC<TopNavProps> = ({ user, firebase }) => {
         <div className="md:hidden border-t border-gray-100 bg-white py-2">
           {user.isSignedIn ? (
             <>
-              <button type="button" className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender" onClick={closeAndGo('/me')}>
+              <button
+                type="button"
+                className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender"
+                onClick={closeAndGo('/me')}
+              >
                 <UserCircle size={18} className="text-brand" /> Profile
               </button>
-              <button type="button" className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender" onClick={() => { firebase.doSignOut().then(() => { router.push('/'); setIsMenuOpen(false) }) }}>
+              <button
+                type="button"
+                className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender"
+                onClick={() => {
+                  firebase.doSignOut().then(() => {
+                    router.push('/')
+                    setIsMenuOpen(false)
+                  })
+                }}
+              >
                 <LogOut size={18} className="text-brand" /> Log Out
               </button>
             </>
           ) : (
             <>
-              <button type="button" className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender" onClick={closeAndGo('/login')}>
+              <button
+                type="button"
+                className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender"
+                onClick={closeAndGo('/login')}
+              >
                 <LogIn size={18} className="text-brand" /> Log in
               </button>
-              <button type="button" className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender" onClick={closeAndGo('/join')}>
+              <button
+                type="button"
+                className="flex w-full items-center gap-3 px-6 py-3 text-left text-gray-700 hover:bg-pastel-lavender"
+                onClick={closeAndGo('/join')}
+              >
                 <UserPlus size={18} className="text-brand" /> Sign up free
               </button>
             </>

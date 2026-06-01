@@ -8,7 +8,10 @@ interface ActionProps {
 }
 
 export const Action: React.FC<ActionProps> = ({ link, label }) => (
-  <Link href={link} className="flex-1 py-3 text-center text-sm font-medium text-brand hover:bg-pastel-lavender transition-colors">
+  <Link
+    href={link}
+    className="flex-1 py-3 text-center text-sm font-medium text-brand hover:bg-pastel-lavender transition-colors"
+  >
     {label}
   </Link>
 )

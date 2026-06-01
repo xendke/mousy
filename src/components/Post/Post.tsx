@@ -53,11 +53,7 @@ const Post: React.FC<PostProps> = ({
         <div className="flex-1 min-w-0">
           <div>
             <p>
-              {userId ? (
-                <Link href={userRoute}>{author}</Link>
-              ) : (
-                author
-              )}
+              {userId ? <Link href={userRoute}>{author}</Link> : author}
               <small className="text-gray-400"> {timePosted} ago</small>
               <br />
               {content}

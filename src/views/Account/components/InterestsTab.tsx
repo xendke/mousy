@@ -50,11 +50,7 @@ const InterestsTab: React.FC<Props> = ({ user, firebase, dispatch }) => {
           />
         </div>
       </div>
-      <Button
-        type="submit"
-        onClick={updateUserInterests}
-        disabled={loading}
-      >
+      <Button type="submit" onClick={updateUserInterests} disabled={loading}>
         Update
       </Button>
     </form>

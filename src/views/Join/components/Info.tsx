@@ -24,13 +24,21 @@ const Info: React.FC<InfoProps> = ({
 }) => {
   const usernameAvailabilityMessage = () => {
     if (checkingUsernameExists) {
-      return <p className="mt-1 text-xs text-gray-500">Checking if username is available...</p>
+      return (
+        <p className="mt-1 text-xs text-gray-500">
+          Checking if username is available...
+        </p>
+      )
     }
     if (usernameIsAvailable) {
-      return <p className="mt-1 text-xs text-green-600">Username is available!</p>
+      return (
+        <p className="mt-1 text-xs text-green-600">Username is available!</p>
+      )
     }
     if (username.length > 4) {
-      return <p className="mt-1 text-xs text-red-500">Username is not available</p>
+      return (
+        <p className="mt-1 text-xs text-red-500">Username is not available</p>
+      )
     }
 
     return null

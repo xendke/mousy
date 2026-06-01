@@ -1,6 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
-import { Users, MessageCircle, Heart, Shield, Zap, Star, ArrowRight } from 'lucide-react'
+import {
+  Users,
+  MessageCircle,
+  Heart,
+  Shield,
+  Zap,
+  Star,
+  ArrowRight,
+} from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import styles from './Landing.module.scss'
 
@@ -56,19 +64,25 @@ const Landing = () => (
         </div>
         <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-5">
           Connect with{' '}
-          <span className="text-brand underline decoration-brand/30 underline-offset-4">humans,</span>
+          <span className="text-brand underline decoration-brand/30 underline-offset-4">
+            humans,
+          </span>
           <br />
           not numbers.
         </h1>
         <p className="text-lg text-gray-500 max-w-xl mx-auto mb-10 leading-relaxed">
-          Mousy brings you closer to people who truly get you. Share your thoughts, discover your tribe, and have conversations that actually matter.
+          Mousy brings you closer to people who truly get you. Share your
+          thoughts, discover your tribe, and have conversations that actually
+          matter.
         </p>
         <div className="flex gap-4 justify-center flex-wrap">
           <Link href="/join">
             <Button size="lg">Get Started — it&apos;s free</Button>
           </Link>
           <Link href="/login">
-            <Button size="lg" variant="outline">Log in</Button>
+            <Button size="lg" variant="outline">
+              Log in
+            </Button>
           </Link>
         </div>
       </div>
@@ -85,7 +99,9 @@ const Landing = () => (
         {stats.map(({ value, label }) => (
           <div key={label}>
             <div className="text-4xl font-extrabold text-brand">{value}</div>
-            <div className="text-xs uppercase tracking-widest text-gray-400 mt-1">{label}</div>
+            <div className="text-xs uppercase tracking-widest text-gray-400 mt-1">
+              {label}
+            </div>
           </div>
         ))}
       </div>
@@ -100,19 +116,28 @@ const Landing = () => (
         </div>
         <h2 className="text-3xl font-extrabold text-gray-900 mb-12">
           A community designed around&nbsp;
-          <span className="text-brand underline decoration-brand/30 underline-offset-4">real people.</span>
+          <span className="text-brand underline decoration-brand/30 underline-offset-4">
+            real people.
+          </span>
         </h2>
         <div className="grid md:grid-cols-2 gap-5 text-left">
           {features.map(({ icon, title, desc, bg }) => {
             const Icon = featureIcons[icon] || Users
             return (
-              <div key={title} className={`flex items-start gap-4 rounded-2xl p-7 ${bg} transition-transform hover:-translate-y-1`}>
+              <div
+                key={title}
+                className={`flex items-start gap-4 rounded-2xl p-7 ${bg} transition-transform hover:-translate-y-1`}
+              >
                 <div className="shrink-0 h-12 w-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
                   <Icon className="h-5 w-5 text-brand" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 mb-1">{title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
+                  <h3 className="text-base font-bold text-gray-900 mb-1">
+                    {title}
+                  </h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">
+                    {desc}
+                  </p>
                 </div>
               </div>
             )
@@ -124,7 +149,9 @@ const Landing = () => (
     {/* CTA Banner */}
     <section className="bg-gradient-to-r from-pastel-peach to-pastel-pink py-20 px-6 text-center">
       <div className="max-w-xl mx-auto">
-        <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Ready to find your people?</h2>
+        <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
+          Ready to find your people?
+        </h2>
         <p className="text-lg text-gray-500 mb-10 leading-relaxed">
           Join Mousy today. No algorithm, no ads — just genuine connections.
         </p>

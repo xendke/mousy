@@ -117,7 +117,9 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                   type="button"
                   className={cn(
                     'flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium transition-colors',
-                    !showingLikes ? 'bg-brand text-white' : 'text-gray-500 hover:bg-gray-50'
+                    !showingLikes
+                      ? 'bg-brand text-white'
+                      : 'text-gray-500 hover:bg-gray-50'
                   )}
                   onClick={() => showLikes(false)}
                 >
@@ -128,7 +130,9 @@ const ProfileView: React.FC<ProfileViewProps> = ({
                   type="button"
                   className={cn(
                     'flex flex-1 items-center justify-center gap-2 rounded-xl py-2 text-sm font-medium transition-colors',
-                    showingLikes ? 'bg-brand text-white' : 'text-gray-500 hover:bg-gray-50'
+                    showingLikes
+                      ? 'bg-brand text-white'
+                      : 'text-gray-500 hover:bg-gray-50'
                   )}
                   onClick={() => showLikes(true)}
                 >

@@ -50,11 +50,7 @@ const InfoTab: React.FC<Props> = ({ user, firebase, dispatch }) => {
           onChange={({ target }) => setName(target.value)}
         />
       </div>
-      <Button
-        type="submit"
-        onClick={updateUserInfo}
-        disabled={loading}
-      >
+      <Button type="submit" onClick={updateUserInfo} disabled={loading}>
         Update
       </Button>
     </form>
