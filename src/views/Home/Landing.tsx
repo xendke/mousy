@@ -92,7 +92,7 @@ const Landing = () => (
     </section>
 
     {/* Features */}
-    <section className="bg-gray-50 py-20 px-6 text-center">
+    <section className="bg-white border-t-2 border-black py-20 px-6 text-center">
       <div className="max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 bg-white border-2 border-black rounded-full px-4 py-1.5 text-xs font-bold text-black uppercase tracking-wider mb-5">
           <Zap className="h-3 w-3" />
@@ -122,7 +122,7 @@ const Landing = () => (
     </section>
 
     {/* CTA Banner */}
-    <section className="bg-gradient-to-r from-pastel-peach to-pastel-pink py-20 px-6 text-center">
+    <section className="bg-gradient-to-r from-pastel-peach to-pastel-pink border-t-2 border-black py-20 px-6 text-center">
       <div className="max-w-xl mx-auto">
         <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Ready to find your people?</h2>
         <p className="text-lg text-gray-500 mb-10 leading-relaxed">
