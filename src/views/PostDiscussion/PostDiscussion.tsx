@@ -3,7 +3,6 @@ import xs, { Stream } from 'xstream'
 import { connect } from 'react-redux'
 import { withEffects, toProps } from 'refract-xstream'
 import { withRouter } from 'next/router'
-import cn from 'classnames'
 import { withFirebase } from '~/components/firebase'
 import { compose } from '~/utils'
 import { Post, Loading, Comment, CommentForm, Empty } from '~/components'
@@ -15,8 +14,6 @@ import {
   Userbase,
   Comment as CommentInt,
 } from '~/types'
-
-import styles from './PostDiscussion.module.scss'
 
 const renderComments = (comments: CommentInt[] = []) =>
   comments.length > 0 ? (
@@ -49,8 +46,8 @@ const PostDiscussion: React.FC<PostDiscussionProps> = ({
   const { id, content, createdAt, likeCount, userId: authorId } = post
   const author = userbase[authorId] || user.info
   return (
-    <div className={cn(styles.PostDiscussion, 'column')}>
-      <h1 className={cn(styles.title, 'title is-medium')}>Comments</h1>
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      <h1 className="text-xl font-semibold text-gray-800 mb-4">Comments</h1>
       <Post
         postId={id}
         userFullName={author?.name}

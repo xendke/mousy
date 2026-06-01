@@ -8,7 +8,6 @@ import { setUserbaseInfo } from '~/redux/actions/userbase'
 import { setInterestsPosts } from '~/redux/actions/posts'
 import Landing from './Landing'
 
-import styles from './Home.module.scss'
 import { Firebase, Post as PostInterface, User, Userbase } from '~/types'
 
 const LOADING_USER: User['info'] = {
@@ -159,9 +158,9 @@ class Home extends React.Component<HomeProps, HomeState> {
 
     if (userInfo) {
       return (
-        <div className={styles.Feed}>
+        <div className="w-full max-w-2xl mx-auto px-4 py-6">
           <PostForm getFeed={this.getFeed} />
-          <h1 className="title is-medium">Feed</h1>
+          <h1 className="text-xl font-semibold text-gray-800 my-4">Feed</h1>
           {getContent()}
         </div>
       )

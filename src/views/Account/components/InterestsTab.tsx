@@ -5,8 +5,9 @@ import { withFirebase } from '~/components/firebase'
 import { InterestsSelect } from '~/components'
 import { setInfo } from '~/redux/actions/user'
 import { Firebase, User } from '~/types'
-
-import styles from './InterestsTab.module.scss'
+import { Label } from '~/components/ui/label'
+import { Button } from '~/components/ui/button'
+import { Alert } from '~/components/ui/alert'
 
 interface Props {
   user: User
@@ -35,34 +36,27 @@ const InterestsTab: React.FC<Props> = ({ user, firebase, dispatch }) => {
   }
 
   return (
-    <form className={styles.InterestsTab}>
+    <form className="space-y-4 py-4">
       {success && (
-        <div className="notification is-success is-light">
-          Successfully updated your interests!
-        </div>
+        <Alert variant="success">Successfully updated your interests!</Alert>
       )}
-      <div className="field">
-        <div className="control">
-          <label htmlFor="interests" className="label">
-            Interests
-            <InterestsSelect
-              id="interests"
-              defaultInterests={user.info.interests}
-              getInterests={getInterests}
-            />
-          </label>
+      <div>
+        <Label htmlFor="interests">Interests</Label>
+        <div className="mt-1">
+          <InterestsSelect
+            id="interests"
+            defaultInterests={user.info.interests}
+            getInterests={getInterests}
+          />
         </div>
       </div>
-      <div className="control">
-        <button
-          type="submit"
-          className="button is-primary"
-          onClick={updateUserInterests}
-          disabled={loading}
-        >
-          Update
-        </button>
-      </div>
+      <Button
+        type="submit"
+        onClick={updateUserInterests}
+        disabled={loading}
+      >
+        Update
+      </Button>
     </form>
   )
 }

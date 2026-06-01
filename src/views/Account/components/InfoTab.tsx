@@ -4,8 +4,10 @@ import { Dispatch } from 'redux'
 import { withFirebase } from '~/components/firebase'
 import { setInfo } from '~/redux/actions/user'
 import { Firebase, User } from '~/types'
-
-import styles from './InfoTab.module.scss'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
+import { Button } from '~/components/ui/button'
+import { Alert } from '~/components/ui/alert'
 
 interface Props {
   user: User
@@ -33,37 +35,28 @@ const InfoTab: React.FC<Props> = ({ user, firebase, dispatch }) => {
   }
 
   return (
-    <form className={styles.InfoTab}>
+    <form className="space-y-4 py-4">
       {success && (
-        <div className="notification is-success is-light">
-          Successfully updated your information!
-        </div>
+        <Alert variant="success">Successfully updated your information!</Alert>
       )}
-      <div className="field">
-        <div className="control">
-          <label htmlFor="name" className="label">
-            Name
-            <input
-              className="input"
-              id="name"
-              type="text"
-              name="name"
-              value={name}
-              onChange={({ target }) => setName(target.value)}
-            />
-          </label>
-        </div>
+      <div>
+        <Label htmlFor="name">Name</Label>
+        <Input
+          className="mt-1"
+          id="name"
+          type="text"
+          name="name"
+          value={name}
+          onChange={({ target }) => setName(target.value)}
+        />
       </div>
-      <div className="control">
-        <button
-          type="submit"
-          className="button is-primary"
-          onClick={updateUserInfo}
-          disabled={loading}
-        >
-          Update
-        </button>
-      </div>
+      <Button
+        type="submit"
+        onClick={updateUserInfo}
+        disabled={loading}
+      >
+        Update
+      </Button>
     </form>
   )
 }

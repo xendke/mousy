@@ -26,40 +26,34 @@ const Comment: React.FC<CommentProps> = ({
   const timePosted = formatDistanceToNowStrict(createdAt)
   const author = (
     <>
-      <strong className="is-capitalized has-text-grey-darker">
-        {authorData.name}
-      </strong>
-      <small className="has-text-grey-dark"> @{authorData.username}</small>
+      <strong className="capitalize text-gray-700">{authorData.name}</strong>
+      <small className="text-gray-500"> @{authorData.username}</small>
     </>
   )
 
   return (
-    <div className="box" style={{ margin: 0, marginBottom: 15 }}>
-      <article className="media">
-        <div className="media-left">
-          <figure className="image is-48x48">
-            <Link href={`/shy/${authorId}`} passHref>
-              <a href="wow">
-                <Avatar userId={authorId} />
-              </a>
-            </Link>
-          </figure>
+    <div className="flex gap-4 rounded-2xl bg-white shadow-sm border border-gray-100 p-4 mb-3">
+      <div>
+        <div className="h-12 w-12">
+          <Link href={`/shy/${authorId}`}>
+            <Avatar userId={authorId} />
+          </Link>
         </div>
-        <div className="media-content">
-          <div className="content">
-            <p>
-              {authorId ? (
-                <Link href={`/shy/${authorId}`}>{author}</Link>
-              ) : (
-                author
-              )}
-              <small className="has-text-grey-light"> {timePosted} ago</small>
-              <br />
-              {content}
-            </p>
-          </div>
+      </div>
+      <div className="flex-1">
+        <div>
+          <p>
+            {authorId ? (
+              <Link href={`/shy/${authorId}`}>{author}</Link>
+            ) : (
+              author
+            )}
+            <small className="text-gray-400"> {timePosted} ago</small>
+            <br />
+            {content}
+          </p>
         </div>
-      </article>
+      </div>
     </div>
   )
 }
