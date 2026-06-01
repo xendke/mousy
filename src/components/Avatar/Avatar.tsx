@@ -8,7 +8,7 @@ const DEFAULT_AVATAR =
 
 interface AvatarProps {
   userId: string
-  refresh: number
+  refresh?: number
   firebase: Firebase
 }
 
