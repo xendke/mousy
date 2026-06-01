@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { MessageSquare, Heart, Settings } from 'lucide-react'
 
@@ -32,8 +32,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({
   showingLikes,
   showLikes,
 }) => {
-  useEffect(() => {}, [])
-
   if (!user.auth || !userData) {
     return <Loading />
   }
