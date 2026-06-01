@@ -100,7 +100,10 @@ class Join extends React.Component<JoinProps, JoinState> {
 
   render() {
     const { user } = this.props
-    if (user.isSignedIn) return Router.push('/me')
+    if (user.isSignedIn) {
+      Router.push('/me')
+      return null
+    }
 
     const {
       name,
