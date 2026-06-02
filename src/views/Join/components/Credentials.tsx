@@ -3,7 +3,6 @@ import { withFirebase } from '~/components/firebase'
 import { Firebase } from '~/types'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import { Button } from '~/components/ui/button'
 
 interface CredentialsProps {
   handleChange: (e: { target: { name: string; value: string } }) => void
@@ -70,12 +69,13 @@ const Credentials: React.FC<CredentialsProps> = ({
         <input type="checkbox" id="checkbox" className="h-4 w-4" />
         <label htmlFor="checkbox" className="text-sm text-gray-600">
           I agree to the{' '}
-          <a href="https://google.com" className="text-brand hover:underline">terms and conditions</a>
+          <a href="https://google.com" className="font-semibold underline" style={{ color: '#181f2a' }}>terms and conditions</a>
         </label>
       </div>
 
-      <Button
+      <button
         type="submit"
+        style={{ background: '#0c0c0c', color: '#fff', fontFamily: 'inherit', fontWeight: 700, fontSize: 16, border: 'none', borderRadius: 999, height: 54, width: '100%', cursor: 'pointer', marginTop: 4 }}
         onClick={async (event) => {
           event.preventDefault()
           try {
@@ -107,7 +107,7 @@ const Credentials: React.FC<CredentialsProps> = ({
         }}
       >
         Sign up
-      </Button>
+      </button>
     </>
   )
 }

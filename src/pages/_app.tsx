@@ -2,6 +2,7 @@ import 'normalize.css'
 import '~/assets/index.scss'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import { Footer, TopNav } from '~/components'
@@ -9,6 +10,8 @@ import Firebase, { FirebaseContext, withFirebase } from '~/components/firebase'
 import wrapper from '~/redux/store'
 import { signIn, signOut, setInfo } from '~/redux/actions/user'
 import { compose, noop } from '~/utils'
+
+const AUTH_ROUTES = ['/login', '/join']
 
 const AuthListener = ({ children, firebase, dispatch }) => {
   useEffect(() => {
@@ -37,6 +40,8 @@ const AuthListenerWrapper = compose(
 
 function MyApp({ Component, pageProps }) {
   const [firebase, setFirebase] = useState<Firebase | null>(null)
+  const router = useRouter()
+  const hideFooter = AUTH_ROUTES.includes(router.pathname)
 
   useEffect(() => {
     const firebaseInstance = new Firebase()
@@ -61,7 +66,7 @@ function MyApp({ Component, pageProps }) {
         <AuthListenerWrapper>
           <TopNav />
           <Component {...pageProps} />
-          <Footer />
+          {!hideFooter && <Footer />}
         </AuthListenerWrapper>
       </FirebaseContext.Provider>
     </>
