@@ -48,6 +48,9 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>Mousy - Find humans like you</title>
         <meta name="theme-color" content="#00D1B2" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet" />
         <link rel="manifest" href="/manifest.json" />
         <meta
           name="description"

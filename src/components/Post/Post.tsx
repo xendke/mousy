@@ -25,6 +25,14 @@ interface PostProps {
   uid: string
 }
 
+const TOPIC_COLORS = ['#fce6d7', '#d8edfe', '#d3efe7', '#e6e2f8']
+
+function postColor(postId: string): string {
+  let hash = 0
+  for (let i = 0; i < postId.length; i++) hash = (hash * 31 + postId.charCodeAt(i)) >>> 0
+  return TOPIC_COLORS[hash % TOPIC_COLORS.length]
+}
+
 const Post: React.FC<PostProps> = ({
   postId,
   userFullName,
@@ -40,49 +48,51 @@ const Post: React.FC<PostProps> = ({
 }) => {
   const timePosted = formatDistanceToNowStrict(createdAt)
   const userRoute = uid === userId ? '/me' : `/shy/${userId}`
-  const author = (
-    <>
-      <strong className="capitalize text-gray-700">{userFullName}</strong>
-      <small className="text-gray-500"> @{username}</small>
-    </>
-  )
+  const initial = (userFullName || username || '?')[0].toUpperCase()
+  const bg = postColor(postId)
 
   return (
-    <div className="rounded-2xl bg-white border-2 border-black p-5 mb-3">
-      <article className="flex gap-4">
-        <div className="flex-1 min-w-0">
-          <div>
-            <p>
-              {userId ? (
-                <Link href={userRoute}>{author}</Link>
-              ) : (
-                author
-              )}
-              <small className="text-gray-400"> {timePosted} ago</small>
-              <br />
-              {content}
-            </p>
+    <div className="rounded-2xl border-2 border-black p-5 mb-3" style={{ background: bg }}>
+      <article>
+        <div className="flex items-center gap-3 mb-3">
+          <div
+            className="flex-shrink-0 w-10 h-10 rounded-full border-2 border-black flex items-center justify-center font-bold text-base"
+            style={{ background: '#fff', fontFamily: '"Archivo", sans-serif' }}
+          >
+            {initial}
           </div>
-          <nav className="flex items-center justify-between mt-2">
-            <div className="flex items-center gap-2">
-              {!hideCommentIcon && (
-                <Link href={`/post/${postId}`}>
-                  <Button variant="ghost" size="sm">
-                    <MessageSquare className="h-3 w-3" />
-                  </Button>
-                </Link>
-              )}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onLike(true)}
-                className={cn(liked ? 'text-red-500' : '')}
-              >
-                <Heart className="h-3 w-3" />
-                <span>{likeCount}</span>
-              </Button>
-            </div>
-          </nav>
+          <div className="flex-1 min-w-0">
+            {userId ? (
+              <Link href={userRoute} className="hover:underline">
+                <span className="font-bold text-sm capitalize" style={{ color: '#181f2a' }}>{userFullName}</span>
+                <span className="text-gray-500 text-sm ml-1">@{username}</span>
+              </Link>
+            ) : (
+              <>
+                <span className="font-bold text-sm capitalize" style={{ color: '#181f2a' }}>{userFullName}</span>
+                <span className="text-gray-500 text-sm ml-1">@{username}</span>
+              </>
+            )}
+            <span className="text-gray-400 text-xs ml-1">{timePosted} ago</span>
+          </div>
+        </div>
+        <p className="text-base leading-relaxed mb-3" style={{ color: '#181f2a' }}>{content}</p>
+        <div className="flex items-center gap-4" style={{ color: '#5b616b' }}>
+          {!hideCommentIcon && (
+            <Link href={`/post/${postId}`}>
+              <button type="button" className="flex items-center gap-2 font-bold text-sm hover:text-black transition-colors">
+                <MessageSquare className="h-5 w-5" />
+              </button>
+            </Link>
+          )}
+          <button
+            type="button"
+            className={cn('flex items-center gap-2 font-bold text-sm transition-colors', liked ? 'text-red-500' : 'hover:text-black')}
+            onClick={() => onLike(true)}
+          >
+            <Heart className={cn('h-5 w-5', liked ? 'fill-red-500' : '')} />
+            <span>{likeCount}</span>
+          </button>
         </div>
       </article>
     </div>
