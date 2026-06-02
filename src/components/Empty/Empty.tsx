@@ -8,7 +8,7 @@ interface ActionProps {
 }
 
 export const Action: React.FC<ActionProps> = ({ link, label }) => (
-  <Link href={link} className="flex-1 py-3 text-center text-sm font-medium text-brand hover:bg-pastel-lavender transition-colors">
+  <Link href={link} className="flex-1 py-3 text-center text-sm font-medium text-black hover:bg-gray-100 transition-colors">
     {label}
   </Link>
 )
@@ -24,7 +24,7 @@ const Empty: React.FC<EmptyProps> = ({ message, actions = null }) => (
       <p className="text-gray-500">{message}</p>
     </CardContent>
     {actions && (
-      <CardFooter className="divide-x divide-gray-100 p-0">
+      <CardFooter className="divide-x divide-black p-0">
         {actions}
       </CardFooter>
     )}

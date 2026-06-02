@@ -2,6 +2,7 @@ import 'normalize.css'
 import '~/assets/index.scss'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import { Footer, TopNav } from '~/components'
@@ -9,6 +10,8 @@ import Firebase, { FirebaseContext, withFirebase } from '~/components/firebase'
 import wrapper from '~/redux/store'
 import { signIn, signOut, setInfo } from '~/redux/actions/user'
 import { compose, noop } from '~/utils'
+
+const AUTH_ROUTES = ['/login', '/join']
 
 const AuthListener = ({ children, firebase, dispatch }) => {
   useEffect(() => {
@@ -37,6 +40,8 @@ const AuthListenerWrapper = compose(
 
 function MyApp({ Component, pageProps }) {
   const [firebase, setFirebase] = useState<Firebase | null>(null)
+  const router = useRouter()
+  const hideFooter = AUTH_ROUTES.includes(router.pathname)
 
   useEffect(() => {
     const firebaseInstance = new Firebase()
@@ -48,6 +53,9 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>Mousy - Find humans like you</title>
         <meta name="theme-color" content="#00D1B2" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet" />
         <link rel="manifest" href="/manifest.json" />
         <meta
           name="description"
@@ -58,7 +66,7 @@ function MyApp({ Component, pageProps }) {
         <AuthListenerWrapper>
           <TopNav />
           <Component {...pageProps} />
-          <Footer />
+          {!hideFooter && <Footer />}
         </AuthListenerWrapper>
       </FirebaseContext.Provider>
     </>

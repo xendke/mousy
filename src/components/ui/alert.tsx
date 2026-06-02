@@ -13,7 +13,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         'flex items-start gap-3 rounded-xl px-4 py-3 text-sm',
         variant === 'success' && 'bg-green-50 text-green-800',
         variant === 'danger' && 'bg-red-50 text-red-700',
-        variant === 'default' && 'bg-brand/10 text-brand',
+        variant === 'default' && 'bg-gray-100 text-gray-800',
         className
       )}
       {...props}

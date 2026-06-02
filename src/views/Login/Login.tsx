@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import Router from 'next/router'
+import Link from 'next/link'
 import { connect } from 'react-redux'
-import { Eye, EyeOff, KeyRound, Mail } from 'lucide-react'
+import { Eye, EyeOff, Mail, KeyRound } from 'lucide-react'
 import { withFirebase } from '~/components/firebase'
 import isValidEmail from '~/utils/validation'
-import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
-import { Button } from '~/components/ui/button'
-import { Alert } from '~/components/ui/alert'
-import { Card, CardContent } from '~/components/ui/card'
 import { Firebase, User } from '~/types'
+
+const GRADIENT = 'linear-gradient(180deg,#ece7fa 0%,#e6effc 38%,#fbeede 78%,#fde9ea 100%)'
+
+const fieldBox: React.CSSProperties = {
+  display: 'flex', alignItems: 'center', gap: 10,
+  border: '2px solid #0c0c0c', borderRadius: 14,
+  padding: '0 14px', height: 52, background: '#fff',
+}
 
 interface LoginProps {
   user: User
@@ -18,119 +22,120 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ user, firebase }) => {
   const [email, setEmail] = useState('')
-  const [emailError, setEmailError] = useState(undefined)
+  const [emailError, setEmailError] = useState<string | undefined>()
   const [isPasswordHidden, setIsPasswordHidden] = useState(true)
   const [password, setPassword] = useState('')
-  const [passwordError, setPasswordError] = useState(undefined)
-  const [errorMessage, setErrorMessage] = useState(undefined)
+  const [passwordError, setPasswordError] = useState<string | undefined>()
+  const [errorMessage, setErrorMessage] = useState<string | undefined>()
 
   useEffect(() => {
-    if (user.isSignedIn) {
-      Router.push('/')
-    }
+    if (user.isSignedIn) Router.push('/')
   }, [user.isSignedIn])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-pastel-lavender/30 px-4">
-      <Card className="w-full max-w-sm">
-        <CardContent className="pt-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">Hi there!</h1>
+    <div
+      className="flex items-center justify-center px-4 py-10"
+      style={{ minHeight: 'calc(100vh - 74px)', background: GRADIENT }}
+    >
+      <div style={{ width: '100%', maxWidth: 420, background: '#fff', border: '2px solid #0c0c0c', borderRadius: 26, overflow: 'hidden' }}>
+        <div style={{ padding: '36px 38px 34px' }}>
+
+          {/* Tab switcher */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, background: '#fff', border: '2px solid #0c0c0c', borderRadius: 999, padding: 5, marginBottom: 24 }}>
+            <div style={{ background: '#0c0c0c', color: '#fff', fontWeight: 700, fontSize: 15, padding: '10px 0', borderRadius: 999, textAlign: 'center' }}>
+              Log in
+            </div>
+            <Link href="/join" style={{ color: '#6b7280', fontWeight: 700, fontSize: 15, padding: '10px 0', borderRadius: 999, textAlign: 'center', textDecoration: 'none', display: 'block' }}>
+              Sign up
+            </Link>
+          </div>
+
+          <h1 style={{ fontFamily: '"Archivo", sans-serif', fontWeight: 800, fontSize: 30, letterSpacing: '-0.01em', lineHeight: 1.05, color: '#181f2a' }}>
+            Welcome back
+          </h1>
+          <p style={{ color: '#6b7280', fontSize: 15, marginTop: 8, marginBottom: 24 }}>
+            Log in to find your people.
+          </p>
+
           <form>
-            <div className="mb-4">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative mt-1">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  id="email"
+            {/* Email */}
+            <label style={{ display: 'block', marginBottom: 16 }}>
+              <span style={{ display: 'block', fontWeight: 700, fontSize: 13, color: '#181f2a', marginBottom: 7 }}>Email</span>
+              <div style={fieldBox}>
+                <Mail size={20} color="#9aa0aa" style={{ flexShrink: 0 }} />
+                <input
                   type="text"
-                  className={`pl-9 ${emailError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                  placeholder="you@example.com"
                   value={email}
-                  onChange={(e) => {
-                    const val = e.target.value
-                    setErrorMessage(undefined)
-                    setEmailError(undefined)
-                    setEmail(val)
-                  }}
+                  onChange={(e) => { setEmailError(undefined); setErrorMessage(undefined); setEmail(e.target.value) }}
+                  style={{ flex: 1, border: 'none', outline: 'none', fontFamily: 'inherit', fontSize: 16, color: '#181f2a', background: 'transparent' }}
                 />
               </div>
-              {emailError && <p className="mt-1 text-xs text-red-500">{emailError}</p>}
-            </div>
+              {emailError && <p style={{ marginTop: 4, fontSize: 12, color: '#ef4444' }}>{emailError}</p>}
+            </label>
 
-            <div className="mb-6">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative mt-1">
-                <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
-                  id="password"
+            {/* Password */}
+            <label style={{ display: 'block', marginBottom: 4 }}>
+              <span style={{ display: 'block', fontWeight: 700, fontSize: 13, color: '#181f2a', marginBottom: 7 }}>Password</span>
+              <div style={fieldBox}>
+                <KeyRound size={20} color="#9aa0aa" style={{ flexShrink: 0 }} />
+                <input
                   type={isPasswordHidden ? 'password' : 'text'}
-                  className={`pl-9 pr-9 ${passwordError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                  placeholder="••••••••"
                   value={password}
-                  onChange={(e) => {
-                    const val = e.target.value
-                    setErrorMessage(undefined)
-                    setPasswordError(undefined)
-                    setPassword(val)
-                  }}
+                  onChange={(e) => { setPasswordError(undefined); setErrorMessage(undefined); setPassword(e.target.value) }}
+                  style={{ flex: 1, border: 'none', outline: 'none', fontFamily: 'inherit', fontSize: 16, color: '#181f2a', background: 'transparent' }}
                 />
-                {password?.length > 0 && (
+                {password.length > 0 && (
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-                    tabIndex={0}
                     onClick={() => setIsPasswordHidden(!isPasswordHidden)}
-                    onKeyDown={({ key }) => key === 'Enter' && setIsPasswordHidden(!isPasswordHidden)}
+                    style={{ display: 'flex', color: '#9aa0aa', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                   >
-                    {isPasswordHidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    {isPasswordHidden ? <Eye size={20} /> : <EyeOff size={20} />}
                   </button>
                 )}
               </div>
-              {passwordError && <p className="mt-1 text-xs text-red-500">{passwordError}</p>}
+              {passwordError && <p style={{ marginTop: 4, fontSize: 12, color: '#ef4444' }}>{passwordError}</p>}
+            </label>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '8px 0 22px' }}>
+              <span style={{ color: '#181f2a', fontWeight: 600, fontSize: 13.5, borderBottom: '1.5px solid rgba(12,12,12,.25)', cursor: 'default' }}>
+                Forgot password?
+              </span>
             </div>
 
             {errorMessage && (
-              <Alert variant="danger" className="mb-4">{errorMessage}</Alert>
+              <p style={{ color: '#ef4444', fontSize: 14, marginBottom: 16 }}>{errorMessage}</p>
             )}
 
-            <Button
+            <button
               type="submit"
-              className="w-full"
-              onClick={(event) => {
-                event.preventDefault()
-                let error = false
-                if (!isValidEmail(email)) {
-                  setEmailError('Invalid Email')
-                  error = true
-                } else {
-                  setEmailError(undefined)
-                }
-                if (password.length < 1) {
-                  setPasswordError('Password cannot be empty.')
-                  error = true
-                } else {
-                  setPasswordError(undefined)
-                }
-                if (error) return
-
-                firebase
-                  .doSignInWithEmailAndPassword(email, password)
-                  .catch((e) => {
-                    setErrorMessage(e.message)
-                  })
+              style={{ background: '#0c0c0c', color: '#fff', fontFamily: 'inherit', fontWeight: 700, fontSize: 16, border: 'none', borderRadius: 999, height: 54, width: '100%', cursor: 'pointer' }}
+              onClick={(e) => {
+                e.preventDefault()
+                let hasError = false
+                if (!isValidEmail(email)) { setEmailError('Invalid email'); hasError = true }
+                if (password.length < 1) { setPasswordError('Password cannot be empty.'); hasError = true }
+                if (hasError) return
+                firebase.doSignInWithEmailAndPassword(email, password).catch((err) => setErrorMessage(err.message))
               }}
             >
               Log in
-            </Button>
+            </button>
           </form>
-        </CardContent>
-      </Card>
+
+          <p style={{ textAlign: 'center', color: '#6b7280', fontSize: 14, marginTop: 20 }}>
+            New to Mousy?{' '}
+            <Link href="/join" style={{ color: '#181f2a', fontWeight: 800, borderBottom: '1.5px solid #0c0c0c', textDecoration: 'none' }}>
+              Create an account
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  }
-}
-
+const mapStateToProps = (state) => ({ user: state.user })
 export default connect(mapStateToProps)(withFirebase(Login))

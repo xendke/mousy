@@ -36,10 +36,10 @@ const InputForm: React.FC<InputFormProps> = ({
   isForCommenting = false,
   className = '',
 }) => (
-  <div className={cn('rounded-2xl bg-white shadow-sm border border-gray-100 p-4 mb-3', className)}>
+  <div className={cn('rounded-2xl bg-white border-2 border-black p-4 mb-3', className)}>
     <form className="flex items-start gap-3">
       <Link href="/me" className="shrink-0">
-        <Avatar userId={user.auth.uid} />
+        <Avatar userId={user.auth.uid} size={40} />
       </Link>
       <div className="flex-1">
         <Input

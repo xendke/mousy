@@ -52,7 +52,7 @@ const AvatarTab: React.FC<AvatarTabProps> = ({ user, firebase }) => {
       )}
       <Avatar userId={user.auth.uid} refresh={successCount} />
       {!uploading && (
-        <label htmlFor="fileInput" className="inline-flex cursor-pointer items-center rounded-full bg-brand px-5 py-2 text-sm font-medium text-white shadow-md hover:bg-brand/90">
+        <label htmlFor="fileInput" className="inline-flex cursor-pointer items-center rounded-full border-2 border-black bg-black px-5 py-2 text-sm font-bold text-white hover:bg-black/80">
           Choose a File
           <input
             className="sr-only"
