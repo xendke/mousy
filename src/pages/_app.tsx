@@ -52,7 +52,10 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <title>Mousy - Find humans like you</title>
-        <meta name="theme-color" content="#00D1B2" />
+        <meta name="theme-color" content="#e8e2f8" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16" />
+        <link rel="apple-touch-icon" href="/favicon-180.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet" />

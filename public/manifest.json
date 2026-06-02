@@ -1,15 +1,25 @@
 {
-  "short_name": "Shy App",
-  "name": "Shy App",
+  "short_name": "Mousy",
+  "name": "Mousy",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "48x48 32x32 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "src": "favicon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#00D1B2",
-  "background_color": "#00D1B2"
+  "theme_color": "#e8e2f8",
+  "background_color": "#f4f1ec"
 }
