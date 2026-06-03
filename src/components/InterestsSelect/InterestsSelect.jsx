@@ -9,14 +9,16 @@ const components = {
 const customStyles = {
   control: (provided, state) => ({
     ...provided,
-    boxShadow: 'inset 0 0.0625em 0.125em rgb(10 10 10 / 5%)',
-    backgroundColor: '#F8F8FF',
-    ...(state.isFocused
-      ? {
-          borderColor: '#3273dc',
-          boxShadow: '0 0 0 0.125em rgb(50 115 220 / 25%)',
-        }
-      : {}),
+    backgroundColor: '#ffffff',
+    borderWidth: '2px',
+    borderColor: '#000000',
+    borderRadius: '0.5rem',
+    boxShadow: state.isFocused
+      ? '0 0 0 2px #ffffff, 0 0 0 4px #000000'
+      : 'none',
+    '&:hover': {
+      borderColor: '#000000',
+    },
   }),
 }
 
