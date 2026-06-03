@@ -92,7 +92,7 @@ const Landing = () => (
     </section>
 
     {/* Features */}
-    <section className="bg-white border-t-2 border-black py-20 px-6 text-center">
+    <section className="bg-white py-20 px-6 text-center">
       <div className="max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 bg-white border-2 border-black rounded-full px-4 py-1.5 text-xs font-bold text-black uppercase tracking-wider mb-5">
           <Zap className="h-3 w-3" />
